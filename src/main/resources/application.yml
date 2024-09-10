@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: secret
+  application:
+    name: MOJI
+  mvc:
+    view:
+      prefix: /WEB-INF/page/
+      suffix: .jsp
+
+server:
+  port: 8090

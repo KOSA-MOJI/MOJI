@@ -1,0 +1,16 @@
+/* 모든 페이지에 적용되는 공통 스타일(리셋 스타일)을 정의합니다. */
+@font-face {
+    font-family: "KyoboHand";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    font-family: "KyoboHand";
+    background-color: #ffeeb3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
