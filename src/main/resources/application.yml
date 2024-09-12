@@ -5,7 +5,7 @@ spring:
     name: MOJI
   mvc:
     view:
-      prefix: /WEB-INF/page/
+      prefix: /WEB-INF/jsp/page/
       suffix: .jsp
 
 server:

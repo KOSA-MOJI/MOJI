@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.spring.moji.domain.test.mapper.TestMapper">
-    <select id="findAll" resultType="com.spring.moji.domain.test.entity.TestEntity">
+<mapper namespace="com.spring.moji.mapper.TestMapper">
+    <select id="findAll" resultType="com.spring.moji.entity.TestEntity">
         SELECT * FROM TMP_USERS
     </select>
-    <insert id="createTestUser" parameterType="com.spring.moji.domain.test.entity.TestEntity">
+    <insert id="createTestUser" parameterType="com.spring.moji.entity.TestEntity">
         INSERT INTO TMP_USERS (id, pw) VALUES (#{id},#{password})
     </insert>
 </mapper>
