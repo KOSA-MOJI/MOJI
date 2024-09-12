@@ -28,12 +28,12 @@ public class SecurityConfig {
 	private DataSource dataSource;
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http.authorizeHttpRequests(auth -> auth
-			.requestMatchers("/admin/**").hasRole("ADMIN")
-			.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-			.anyRequest().permitAll())
+				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("**").hasAnyRole("USER", "ADMIN")
+				.anyRequest().permitAll())
 			.formLogin(withDefaults())
 			.logout(withDefaults());
 
@@ -45,6 +45,7 @@ public class SecurityConfig {
 		return http.build();
 
 	}
+
 	@Bean
 	public UserDetailsService userDetailsService() {
 		UserDetails user = User.builder()
@@ -56,14 +57,15 @@ public class SecurityConfig {
 		UserDetails admin = User.builder()
 			.username("admin")
 			.password(passwordEncoder().encode("1007"))
-			.roles("USER","ADMIN")
+			.roles("USER", "ADMIN")
 			.build();
 
-		return new InMemoryUserDetailsManager(user,admin);
+		return new InMemoryUserDetailsManager(user, admin);
 	}
 
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws
+		Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
