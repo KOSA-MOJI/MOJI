@@ -44,7 +44,7 @@
 
 
     <div class="content">
-        <include... src = "{content}"
+
     </div>
 
     <footer id="footer" class="footer">
