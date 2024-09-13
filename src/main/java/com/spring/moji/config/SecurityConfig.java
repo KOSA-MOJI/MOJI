@@ -24,53 +24,57 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private DataSource dataSource;
+  @Autowired
+  private DataSource dataSource;
 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-		http.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/admin/**").hasRole("ADMIN")
-				.requestMatchers("**").hasAnyRole("USER", "ADMIN")
-				.anyRequest().permitAll())
-			.formLogin(withDefaults())
-			.logout(withDefaults());
+    http.authorizeHttpRequests(auth -> auth
+            .requestMatchers("/user/**").hasAnyRole("COUPLE", "SOLO")
+            .requestMatchers("/couple/**").hasRole("COUPLE")
+            .requestMatchers("/solo/**").hasRole("SOLO")
+            .anyRequest().permitAll())
+        .formLogin(withDefaults())
+        .logout(withDefaults());
 
-		http.logout(logout -> logout
-			.logoutUrl("/logout")
-			.logoutSuccessUrl("/")
-			.deleteCookies("JSESSIONID")
-			.invalidateHttpSession(true));
-		return http.build();
+    http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
 
-	}
+    http.logout(logout -> logout
+        .logoutUrl("/logout")
+        .logoutSuccessUrl("/")
+        .deleteCookies("JSESSIONID")
+        .invalidateHttpSession(true));
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		UserDetails user = User.builder()
-			.username("user")
-			.password(passwordEncoder().encode("1004"))
-			.roles("USER")
-			.build();
+    return http.build();
 
-		UserDetails admin = User.builder()
-			.username("admin")
-			.password(passwordEncoder().encode("1007"))
-			.roles("USER", "ADMIN")
-			.build();
+  }
 
-		return new InMemoryUserDetailsManager(user, admin);
-	}
+  @Bean
+  public UserDetailsService userDetailsService() {
+    JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
 
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws
-		Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
+    //사용자 인증 쿼리
+    String sql1 = "select email as email , password as password  from users where email=?";
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    //사용자 권한 쿼리
+    String sql2 = "select email as email , role_id as roleId from user_auth where email=?";
+
+    userDetailsManager.setUsersByUsernameQuery(sql1); //계정 비번 확인
+    userDetailsManager.setAuthoritiesByUsernameQuery(sql2); //권한 처리
+
+    return userDetailsManager;
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(
+      AuthenticationConfiguration authenticationConfiguration) throws
+      Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }
