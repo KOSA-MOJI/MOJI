@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity {
 
-  private String email;
-  private String userName;
+  private String email;  // 이메일
+  private String userName; // 성함
   private LocalDate birthday;
   private char gender;
   private String password;
