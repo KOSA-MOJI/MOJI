@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.book-cover {
+  perspective: 2000px;
+  position: relative;
+  display: flex;
+}
+
+.book {
+  width: 800px;
+  height: 800px;
+  position: relative;
+}
+
+.book__page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.book__page--cover {
+  left: 0;
+  z-index: 3;
+  background-color: #f4f4f4;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Toolbar on the right */
+.toolbar-right {
+  position: absolute;
+  right: -200px; /* Adjust this value to move the toolbar closer or farther */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toolbar-right button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
