@@ -16,16 +16,18 @@ public class UserEntity {
   private char gender;
   private String password;
   private LocalDate createdAt;
+  private int roleId;
 
 
   @Builder
   public UserEntity(String email, String userName, LocalDate birthday, char gender, String password,
-      LocalDate createdAt) {
+      LocalDate createdAt, int roleId) {
     this.email = email;
     this.userName = userName;
     this.birthday = birthday;
     this.gender = gender;
     this.password = password;
     this.createdAt = createdAt;
+    this.roleId = roleId;
   }
 }
