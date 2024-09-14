@@ -1,6 +1,8 @@
 package com.spring.moji.controller;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +21,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/test")
 public class TestController {
+	@Value("${kakao.api-key}")
+	private String kakaoApiKey;
 	private final TestService testService;
 	private final S3Util s3Util;
 
 	@GetMapping
-	public String login() {
-		return null;
+	public String test(Model model) {
+		model.addAttribute("kakaoApiKey", kakaoApiKey);
+		model.addAttribute("contentURL","/WEB-INF/jsp/content/diary/write-diary-left-component.jsp");
+		return "diary/diary-page";
 	}
 
 	@GetMapping("/public")
