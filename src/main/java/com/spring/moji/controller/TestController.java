@@ -26,11 +26,22 @@ public class TestController {
 	private final TestService testService;
 	private final S3Util s3Util;
 
-	@GetMapping
-	public String test(Model model) {
-		model.addAttribute("kakaoApiKey", kakaoApiKey);
-		model.addAttribute("contentURL","/WEB-INF/jsp/content/diary/write-diary-left-component.jsp");
-		return "diary/diary-page";
+	@GetMapping("/diary/cover")
+	public String coverDiary(Model model) {
+		model.addAttribute("contentURL","/WEB-INF/jsp/content/diary/cover-diary.jsp");
+		return "diary/cover-diary-page";
+	}
+
+	@GetMapping("/diary/read")
+	public String createDiary(Model model) {
+		model.addAttribute("contentURL","/WEB-INF/jsp/content/diary/read-diary.jsp");
+		return "diary/read-diary-page";
+	}
+
+	@GetMapping("/diary/write")
+	public String writeDiary(Model model) {
+		model.addAttribute("contentURL","/WEB-INF/jsp/content/diary/write-diary.jsp");
+		return "diary/write-diary-page";
 	}
 
 	@GetMapping("/public")
@@ -42,6 +53,7 @@ public class TestController {
 	@GetMapping("/read")
 	public String readTestUser(Model model) {
 		List<TestResponseDTO> tests = testService.getAllIds();
+		System.out.println(tests.toString());
 		model.addAttribute("tests", tests);
 		return "test/test-read-user";
 	}
