@@ -13,16 +13,16 @@ public class Page {
 	private Long pageId;
 	private Long diaryId;
 	private LocalDate createdAt;
-	private String wheather;
+	private String weather;
 	private String content;
 	private Character publicStatus;
 	private Long templateId;
 	@Builder
-	public Page(Long pageId, Long diaryId, LocalDate createdAt, String wheather, String content, Character publicStatus, Long templateId) {
+	public Page(Long pageId, Long diaryId, LocalDate createdAt, String weather, String content, Character publicStatus, Long templateId) {
 		this.pageId = pageId;
 		this.diaryId = diaryId;
 		this.createdAt = createdAt;
-		this.wheather = wheather;
+		this.weather = weather;
 		this.content = content;
 		this.publicStatus = publicStatus;
 		this.templateId = templateId;
