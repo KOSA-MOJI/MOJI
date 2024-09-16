@@ -68,7 +68,7 @@ CREATE OR REPLACE TRIGGER image_urls_bi
 BEFORE INSERT ON image_urls
 FOR EACH ROW
 BEGIN
-    :NEW.image_urls_id := image_urls_seq.NEXTVAL;  -- 기본 키 자동 증가
+    :NEW.image_url_id := image_urls_seq.NEXTVAL;  -- 기본 키 자동 증가
 END;
 /
 
