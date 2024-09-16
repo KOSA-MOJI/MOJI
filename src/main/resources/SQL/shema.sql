@@ -21,7 +21,7 @@ CREATE TABLE templates (
 );
 
 CREATE TABLE image_urls (
-                            image_urls_id NUMBER PRIMARY KEY,  -- 기본 키
+                            image_url_id NUMBER PRIMARY KEY,  -- 기본 키
                             location_id NUMBER NOT NULL,  -- NULL 허용하지 않음
                             map_image VARCHAR2(255) NULL,  -- NULL 허용
                             created_at DATE DEFAULT sysdate NULL  -- NULL 허용
