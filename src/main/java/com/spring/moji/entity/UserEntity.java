@@ -1,15 +1,18 @@
 package com.spring.moji.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity {
 
+  List<UserAuth> authList;
   private String email;  // 이메일
   private String userName; // 성함
   private LocalDate birthday;

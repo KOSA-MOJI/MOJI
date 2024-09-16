@@ -2,6 +2,7 @@ package com.spring.moji.config;
 
 import static org.springframework.security.config.Customizer.*;
 
+import com.spring.moji.security.CustomerDetailService;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +28,19 @@ public class SecurityConfig {
   @Autowired
   private DataSource dataSource;
 
+  @Autowired
+  private CustomerDetailService customerDetailService;  //사용자 정의 방식으로 만든 객체 (mybatis 연동)
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
     http.authorizeHttpRequests(auth -> auth
-            .requestMatchers("/user/**").hasAnyRole("COUPLE", "SOLO")
-            .requestMatchers("/couple/**").hasRole("COUPLE")
-            .requestMatchers("/solo/**").hasRole("SOLO")
+            .requestMatchers("/user/**").hasAnyRole("USER", "SOLO")
+            .requestMatchers("/couple/**").hasRole("USER")
+            .requestMatchers("/solo/**").hasRole("USER")
             .anyRequest().permitAll())
         .formLogin(withDefaults())
         .logout(withDefaults());
-
-    http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
 
     http.logout(logout -> logout
         .logoutUrl("/logout")
@@ -46,24 +48,10 @@ public class SecurityConfig {
         .deleteCookies("JSESSIONID")
         .invalidateHttpSession(true));
 
+    http.userDetailsService(customerDetailService);
+
     return http.build();
 
-  }
-
-  @Bean
-  public UserDetailsService userDetailsService() {
-    JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-
-    //사용자 인증 쿼리
-    String sql1 = "select email as email , password as password  from users where email=?";
-
-    //사용자 권한 쿼리
-    String sql2 = "select email as email , role_id as roleId from user_auth where email=?";
-
-    userDetailsManager.setUsersByUsernameQuery(sql1); //계정 비번 확인
-    userDetailsManager.setAuthoritiesByUsernameQuery(sql2); //권한 처리
-
-    return userDetailsManager;
   }
 
   @Bean
