@@ -22,7 +22,7 @@ public class PageRestController {
 	private final PageService pageService;
 
 	@GetMapping("/{diaryId}")
-	public Page dd(@PathVariable Long diaryId) {
+	public Page findRecentPage(@PathVariable Long diaryId) {
 		return pageService.findRecentPage(diaryId);
 	}
 
