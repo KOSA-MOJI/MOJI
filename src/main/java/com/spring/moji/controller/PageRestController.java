@@ -22,7 +22,12 @@ public class PageRestController {
 	private final PageService pageService;
 
 	@GetMapping("/{diaryId}")
-	public List<Page> getPage(@PathVariable Long diaryId, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate startDate, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate) {
+	public Page dd(@PathVariable Long diaryId) {
+		return pageService.findRecentPage(diaryId);
+	}
+
+	@GetMapping("prefetch/{diaryId}")
+	public List<Page> fetchDiaryPages(@PathVariable Long diaryId, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate startDate, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate) {
 		return pageService.fetchDiaryPages(diaryId, startDate, endDate);
 	}
 }

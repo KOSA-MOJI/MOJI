@@ -22,9 +22,14 @@ public class PageServiceImpl implements PageService {
 	@Override
 	public List<Page> fetchDiaryPages(Long diaryId, LocalDate startDate, LocalDate endDate) {
 		PageRequestDTO pageRequestDTO = PageRequestDTO.builder().diaryId(diaryId).startDate(startDate).endDate(endDate).build();
-		System.out.println(pageRequestDTO);
 		List<Page> pages = pageMapper.findByDuration(pageRequestDTO);
-		System.out.println(pages);
 		return pages;
+	}
+
+	@Override
+	public Page findRecentPage(Long diaryId) {
+		PageRequestDTO pageRequestDTO = PageRequestDTO.builder().diaryId(diaryId).build();
+		Page page = pageMapper.findRecentPage(pageRequestDTO);
+		return page;
 	}
 }

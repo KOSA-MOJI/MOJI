@@ -10,4 +10,5 @@ import com.spring.moji.entity.Page;
 @Mapper
 public interface PageMapper {
 	List<Page> findByDuration(PageRequestDTO pageRequestDTO);
+	Page findRecentPage(PageRequestDTO pageRequestDTO);
 }

@@ -10,4 +10,16 @@
           and created_at between trunc(#{startDate}) and trunc(#{endDate})+0.999
         order by created_at
     </select>
+
+    <select id="findRecentPage" parameterType="com.spring.moji.dto.request.PageRequestDTO" resultType="com.spring.moji.entity.Page">
+        select *
+        from(
+            select *
+            from pages
+            where 1=1
+              and diary_id = #{diaryId}
+            order by created_at desc
+        )
+        where rownum = 1
+    </select>
 </mapper>
