@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,16 +22,24 @@
         <div class="auth-form">
             <span class="close">&times;</span>
             <h1>로그인</h1>
-            <form>
+            <form action="/login-process" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                 <div class="form-group">
                     <label for="email">이메일</label>
-                    <input type="email" class="form-control" id="email" placeholder="이메일을 입력하세요"
+                    <input type="email"
+                           class="form-control"
+                           id="email"
+                           name="email"
+                           placeholder="이메일을 입력하세요"
                            required>
                 </div>
 
                 <div class="form-group">
                     <label for="password">비밀번호</label>
-                    <input type="password" class="form-control" id="password"
+                    <input type="password"
+                           class="form-control"
+                           id="password"
+                           name="password"
                            placeholder="비밀번호를 입력하세요" required>
                 </div>
 
@@ -46,5 +56,7 @@
 
 
 <script src="${pageContext.request.contextPath}/js/user/setting.js"></script>
+<script src="${pageContext.request.contextPath}/js/user/test.js"></script>
+
 </body>
 </html>

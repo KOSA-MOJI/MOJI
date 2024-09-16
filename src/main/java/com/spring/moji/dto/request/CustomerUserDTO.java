@@ -1,17 +1,17 @@
-package com.spring.moji.entity;
+package com.spring.moji.dto.request;
 
+import com.spring.moji.entity.UserEntity;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class CustomerUserEntity implements UserDetails {
+public class CustomerUserDTO implements UserDetails {
 
   private UserEntity user;
 
-  public CustomerUserEntity(UserEntity user) {
+  public CustomerUserDTO(UserEntity user) {
     this.user = user;
   }
 

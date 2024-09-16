@@ -33,7 +33,7 @@ public class HomeController {
   }
 
   @GetMapping("/signin")
-  public String siginIn(Model model, Principal principal) {
+  public String signIn(Model model, Principal principal) {
     String loginId = principal != null ? principal.getName() : "guest";
     return "user/sign-in";
   }

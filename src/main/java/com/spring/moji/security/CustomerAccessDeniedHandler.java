@@ -1,0 +1,24 @@
+package com.spring.moji.security;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.web.access.AccessDeniedHandler;
+
+
+@Slf4j
+public class CustomerAccessDeniedHandler implements AccessDeniedHandler {
+
+  @Override
+  public void handle(HttpServletRequest request, HttpServletResponse response,
+      org.springframework.security.access.AccessDeniedException accessDeniedException)
+      throws IOException, ServletException {
+    log.info("접근 거부 에러 처리");
+
+    int statusCode = response.getStatus(); //응답 상태코드
+    log.info("HTTP 응답 상태 코드 : " + statusCode);
+    log.info("accessDeniedException : " + accessDeniedException);
+  }
+}

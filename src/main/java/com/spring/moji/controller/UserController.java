@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 public class UserController {
 
-  @GetMapping({"/",""})
-  public String index(Model model, Principal principal) {
-    log.info("[[[  /user  ]]]");
+  @GetMapping({"/", ""})
+  public String profile(Model model, Principal principal) {
+    log.info("[[[  /profile  ]]]");
     String loginId = principal != null ? principal.getName() : "guest";
-    model.addAttribute("loginId",loginId);
-    return"/user/index";
+    model.addAttribute("loginId", loginId);
+    return "user/solo-profile";
   }
 }
