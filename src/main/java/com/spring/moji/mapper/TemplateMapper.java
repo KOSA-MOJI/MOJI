@@ -9,4 +9,5 @@ import com.spring.moji.entity.Template;
 @Mapper
 public interface TemplateMapper {
 	List<Template> findAll();
+	Template findById(Long templateId);
 }

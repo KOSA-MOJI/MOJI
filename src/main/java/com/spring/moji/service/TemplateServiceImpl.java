@@ -20,4 +20,9 @@ public class TemplateServiceImpl implements TemplateService {
 	public List<Template> findAll() {
 		return templateMapper.findAll();
 	}
+
+	@Override
+	public Template findById(Long templateId) {
+		return templateMapper.findById(templateId);
+	}
 }

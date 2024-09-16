@@ -3,6 +3,7 @@ package com.spring.moji.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,10 @@ public class TemplateRestController {
 	@GetMapping
 	public List<Template> findAll() {
 		return templateService.findAll();
+	}
+	@GetMapping("/{templateId}")
+	public Template findById(@PathVariable Long templateId) {
+		return templateService.findById(templateId);
 	}
 
 }

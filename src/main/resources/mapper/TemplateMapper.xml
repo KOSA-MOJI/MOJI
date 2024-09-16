@@ -7,4 +7,10 @@
         from templates
         order by created_at
     </select>
+    <select id="findById" parameterType="java.lang.Long" resultType="com.spring.moji.entity.Template">
+        select *
+        from templates
+        where 1=1
+        and template_id = #{templateId}
+    </select>
 </mapper>
