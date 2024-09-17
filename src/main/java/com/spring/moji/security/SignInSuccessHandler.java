@@ -19,7 +19,6 @@ public class SignInSuccessHandler implements AuthenticationSuccessHandler {
       Authentication authentication) throws IOException, ServletException {
     log.info("로그인 인증 성공");
 
-    // User user = (User)authentication.getPrincipal();
     CustomerUserDTO user = (CustomerUserDTO) authentication.getPrincipal();
 
     log.info("아이디 :" + user.getUsername());

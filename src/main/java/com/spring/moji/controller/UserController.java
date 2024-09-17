@@ -16,7 +16,8 @@ public class UserController {
   public String profile(Model model, Principal principal) {
     log.info("[[[  /profile  ]]]");
     String loginId = principal != null ? principal.getName() : "guest";
-    model.addAttribute("loginId", loginId);
-    return "user/solo-profile";
+    model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/solo-profile.jsp");
+    return "user/profile-page";
+
   }
 }
