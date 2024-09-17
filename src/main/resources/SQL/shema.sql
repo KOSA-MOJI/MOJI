@@ -10,6 +10,7 @@
 CREATE SEQUENCE templates_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE image_urls_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE locations_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE bookmarks_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE diaries_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE pages_seq START WITH 1 INCREMENT BY 1;
 
@@ -36,12 +37,22 @@ CREATE TABLE locations (
                            created_at DATE DEFAULT sysdate NULL  -- NULL 허용
 );
 
+--책깔피 이미지
+CREATE TABLE bookmarks (
+                           bookmark_id NUMBER PRIMARY KEY,  -- 기본 키
+                           bookmark_image VARCHAR2(150) NULL,
+                           created_at DATE DEFAULT sysdate NULL
+);
+
 CREATE TABLE diaries (
                          diary_id NUMBER PRIMARY KEY,  -- 기본 키
                          couple_id NUMBER NULL,  -- NULL 허용
                          cover_image VARCHAR2(150) NULL,  -- NULL 허용
-                         bookmark_id NUMBER NULL  -- NULL 허용
+                         bookmark_id NUMBER NOT NULL,  -- NULL 허용하지 않음
+                         FOREIGN KEY (bookmark_id) REFERENCES bookmarks(bookmark_id) --책깔피 FK
 );
+
+
 
 CREATE TABLE pages (
                        page_id NUMBER PRIMARY KEY,  -- 기본 키
@@ -77,6 +88,14 @@ BEFORE INSERT ON locations
 FOR EACH ROW
 BEGIN
     :NEW.location_id := locations_seq.NEXTVAL;  -- 기본 키 자동 증가
+END;
+/
+
+CREATE OR REPLACE TRIGGER bookmarks_bi
+BEFORE INSERT ON bookmarks
+FOR EACH ROW
+BEGIN
+    :NEW.bookmark_id := bookmarks_seq.NEXTVAL;  -- 기본 키 자동 증가
 END;
 /
 
