@@ -48,7 +48,7 @@ CREATE TABLE diaries (
                          diary_id NUMBER PRIMARY KEY,  -- 기본 키
                          couple_id NUMBER NULL,  -- NULL 허용
                          cover_image VARCHAR2(150) NULL,  -- NULL 허용
-                         bookmark_id NUMBER NOT NULL,  -- NULL 허용
+                         bookmark_id NUMBER NOT NULL,  -- NULL 허용하지 않음
                          FOREIGN KEY (bookmark_id) REFERENCES bookmarks(bookmark_id) --책깔피 FK
 );
 
