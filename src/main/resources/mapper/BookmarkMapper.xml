@@ -3,6 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.moji.mapper.BookmarkMapper">
 
+    <select id="findByBookmarkId" parameterType="java.lang.Long" resultType="com.spring.moji.entity.Bookmark">
+        SELECT * FROM bookmarks WHERE bookmark_id = #{bookmarkId}
+    </select>
 
 
 </mapper>
