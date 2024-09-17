@@ -22,7 +22,7 @@ public class TemplateRestController {
 		return templateService.findAll();
 	}
 	@GetMapping("/{templateId}")
-	public Template findById(@PathVariable Long templateId) {
+	public Template findById(@PathVariable("templateId") Long templateId) {
 		return templateService.findById(templateId);
 	}
 
