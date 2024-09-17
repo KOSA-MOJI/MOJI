@@ -14,7 +14,7 @@ import com.spring.moji.util.S3Util;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class DiaryServiceImpl implements DiaryService {
 
@@ -28,6 +28,7 @@ public class DiaryServiceImpl implements DiaryService {
 	}
 
 	@Override
+	@Transactional
 	public String updateCoverImage(Long diaryId, MultipartFile diaryCoverImage) throws IOException {
 		// TODO : 기존 S3내 이미지 삭제 로직 추가
 		String imageURL = s3Util.uploadFile(diaryCoverImage);
