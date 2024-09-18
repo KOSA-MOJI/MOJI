@@ -44,7 +44,8 @@ public class SecurityConfig {
             .requestMatchers("/solo/**").hasRole("USER")
             .anyRequest().permitAll())
         .formLogin(withDefaults())
-        .logout(withDefaults());
+        .logout(withDefaults()
+        );
 
     http.formLogin(form -> form
         .loginPage("/signin")  // 커스텀 로그인 페이지 요청 경로
@@ -54,7 +55,6 @@ public class SecurityConfig {
         .passwordParameter("password")  // 패스워드 파라미터 설정
         .successHandler(authenticationSuccessHandler())  // 성공 시 핸들러 설정
         .permitAll()  // 모든 사용자에게 로그인 페이지 접근 허용
-
     );
 
     http.logout(logout -> logout
