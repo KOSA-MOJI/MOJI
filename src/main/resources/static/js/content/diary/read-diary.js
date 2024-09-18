@@ -6,7 +6,7 @@ document.getElementById('saveBtn').addEventListener('click', function () {
   const textContent = document.getElementById('textContentPage1');
   textContent.contentEditable = 'false';
 
-  // 저장 완료 메시지 표시
+  // 저장완료 메시지 표시
   alert('일기가 저장');
 });
 

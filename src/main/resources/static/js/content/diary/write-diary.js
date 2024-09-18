@@ -8,7 +8,7 @@ const templateButton = document.getElementById('templateButton');
 templateButton.addEventListener('click', function() {
   templateDiv.style.display = templateDiv.style.display === 'none' ? 'block' : 'none';
 });
-// 이미지 변경 함수
+// 이미지 변경함수
 function changeImage(imgElement) {
   mainImage.src = imgElement.src;
   templateDiv.style.display = 'none';

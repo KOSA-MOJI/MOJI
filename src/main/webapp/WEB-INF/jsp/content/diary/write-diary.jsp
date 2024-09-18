@@ -8,7 +8,7 @@
                 <!-- 툴바 포함 -->
                 <%@ include file="toolbar.jsp" %>
 
-                <!-- 템플릿 포함 -->
+                <!-- 템플릿 포함-->
                 <%@ include file="template.jsp" %>
 
                 <!-- 다이어리 내용 포함 -->

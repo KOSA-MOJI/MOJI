@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!-- Template image list -->
+<!-- Template image list-->
 <div class="template" id="template" style="display: none;">
     <div class="template-row">
         <img src="${pageContext.request.contextPath}/image/content/diary/001.png" alt="Template 1" onclick="changeImage(this)">

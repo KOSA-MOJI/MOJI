@@ -8,7 +8,7 @@
             <div class="editor-container">
                 <!-- 툴바가 숨겨짐 -->
                 <div class="editor-content" id="editorContentPage1">
-                    <!-- 일기 저장 영역 포함 - 일기 왼쪽 페이지 -->
+                    <!-- 일기 저장 영역 포함 -일기 왼쪽 페이지 -->
                     <%@ include file="diary-read-page.jsp" %>
                     <!-- 수정 버튼 추가 -->
                     <button id="editBtn" class="edit-btn" style="position: absolute; top: 10px; right: 10px;">수정</button>

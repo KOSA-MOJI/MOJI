@@ -9,7 +9,7 @@
         </div>
         <div id="map" class="map" style="width: 100%; height: 200px"></div>
 
-        <!-- 지도 띄워주는 곳 -->
+        <!-- 지도 띄워 주는 곳 -->
         <div class="extra-address"></div>
         <div class = "marker-list" id = "markerList"></div>
 

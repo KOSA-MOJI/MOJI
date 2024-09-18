@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!-- toolbar.jsp -->
+<!-- toolbar.jsp  -->
 <div class="toolbar" id="toolbar">
     <div class="toolbar-left">
         <label for="fontSizeSelect"></label><select id="fontSizeSelect">
