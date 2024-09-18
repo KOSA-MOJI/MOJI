@@ -1,6 +1,6 @@
 package com.spring.moji.service;
 
-import com.spring.moji.entity.UserAuth;
+import com.spring.moji.entity.UserAuthEntity;
 import com.spring.moji.entity.UserEntity;
 import com.spring.moji.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -36,16 +36,16 @@ public class UserServiceImpl implements UserService {
     int result = userMapper.join(user);
 
     if (result > 0) {
-      UserAuth userAuth = new UserAuth();
-      userAuth.setUserEmail(user.getEmail());
-      userAuth.setAuth("ROLE_USER");
-      result += userMapper.insertAuth(userAuth);
+      UserAuthEntity userAuthEntity = new UserAuthEntity();
+      userAuthEntity.setUserEmail(user.getEmail());
+      userAuthEntity.setAuth("ROLE_USER");
+      result += userMapper.insertAuth(userAuthEntity);
     }
     return result;
   }
 
   @Override
-  public int insertAuth(UserAuth userAuth) throws Exception {
+  public int insertAuth(UserAuthEntity userAuthEntity) throws Exception {
     return 0;
   }
 }

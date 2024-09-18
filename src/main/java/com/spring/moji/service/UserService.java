@@ -1,6 +1,6 @@
 package com.spring.moji.service;
 
-import com.spring.moji.entity.UserAuth;
+import com.spring.moji.entity.UserAuthEntity;
 import com.spring.moji.entity.UserEntity;
 
 public interface UserService {
@@ -9,5 +9,5 @@ public interface UserService {
 
   public int join(UserEntity user) throws Exception;
 
-  public int insertAuth(UserAuth userAuth) throws Exception;
+  public int insertAuth(UserAuthEntity userAuthEntity) throws Exception;
 }
