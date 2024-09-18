@@ -7,7 +7,7 @@ document.getElementById('saveBtn').addEventListener('click', function () {
   textContent.contentEditable = 'false';
 
   // 저장 완료 메시지 표시
-  alert('일기가 저장되었습니다');
+  alert('일기가 저장');
 });
 
 // 수정 버튼 클릭 시 edit-diary.jsp로 이동
