@@ -19,6 +19,6 @@ public class CustomerAccessDeniedHandler implements AccessDeniedHandler {
 
     int statusCode = response.getStatus(); //응답 상태코드
     log.info("HTTP 응답 상태 코드 : " + statusCode);
-    log.info("accessDeniedException : " + accessDeniedException);
+    log.error("accessDeniedException : " + accessDeniedException);
   }
 }
