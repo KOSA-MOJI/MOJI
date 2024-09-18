@@ -1,6 +1,8 @@
 package com.spring.moji.controller;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import com.spring.moji.dto.request.TestRequestDTO;
 import com.spring.moji.dto.response.TestResponseDTO;
-import com.spring.moji.service.TestService;
+import com.spring.moji.service.TestServiceImpl;
 import com.spring.moji.util.S3Util;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +21,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/test")
 public class TestController {
-	private final TestService testService;
+	@Value("${kakao.api-key}")
+	private String kakaoApiKey;
+	private final TestServiceImpl testService;
 	private final S3Util s3Util;
 
 	@GetMapping("/diary/cover")

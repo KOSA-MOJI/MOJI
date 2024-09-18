@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.spring.moji.mapper.TestMapper">
+<mapper namespace="com.spring.moji.mapper.PageMapper">
+    <select id="findByDuration" parameterType="com.spring.moji.dto.request.PageRequestDTO" resultType="com.spring.moji.entity.Page">
+        select *
+        from pages
+        where 1=1
+          and diary_id = #{diaryId}
+          and created_at between trunc(#{startDate}) and trunc(#{endDate})+0.999
+        order by created_at
+    </select>
 
+    <select id="findRecentPage" parameterType="com.spring.moji.dto.request.PageRequestDTO" resultType="com.spring.moji.entity.Page">
+        select *
+        from(
+            select *
+            from pages
+            where 1=1
+              and diary_id = #{diaryId}
+            order by created_at desc
+        )
+        where rownum = 1
+    </select>
 </mapper>

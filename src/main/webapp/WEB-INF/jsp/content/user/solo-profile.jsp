@@ -97,7 +97,7 @@
                         <div class="pfp-container">
                             <img
                                     class="pfp"
-                                    src="${pageContext.request.contextPath}/image/conten/user/man.jpg"
+                                    src="${pageContext.request.contextPath}/image/content/user/man.jpg"
                                     alt="남자의 프로필 사진"
                             />
                         </div>
