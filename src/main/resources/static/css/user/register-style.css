@@ -1,0 +1,103 @@
+
+@font-face {
+  font-family: "KyoboHand";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "KyoboHand";
+  background-color: #ffeeb3; /* 배경색 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+
+
+.container {
+  background-color: #ffffff; /* 폼 배경색 */
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 400px; /* 폼 너비 */
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #555; /* 제목 색상 */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333; /* 레이블 색상 */
+}
+
+
+/* 이메일 중복확인 */
+.email-container {
+  display: flex;
+  align-items: center;
+}
+
+.email-container input {
+  flex: 1; /* 입력란이 가능한 공간을 차지하도록 설정 */
+  margin-right: 10px; /* 버튼과의 간격 조정 */
+}
+
+.email-container .btn-check {
+  padding: 5px 10px; /* 버튼의 패딩 조정 */
+  font-size: 0.9em; /* 버튼의 글씨 크기 조정 */
+  width: auto; /* 자동 너비로 설정 */
+  min-width: 100px; /* 최소 너비를 설정 (필요시 조정) */
+}
+
+
+
+/* 모든 input과 select 요소의 너비를 100%로 설정 */
+input, .gender-select, .date-select {
+  width: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+/* 버튼의 너비도 100%로 설정 */
+.btn {
+  width: 100%; /* 버튼도 동일하게 100% 너비로 설정 */
+}
+
+.btn {
+  background-color: #ffe898; /* 버튼 색상 */
+  font-family: "KyoboHand";
+  color: #000000;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background-color: #e0a800; /* 버튼 호버 색상 */
+}
+
+
+/*비밀번호 유효성 검사*/
+.text-danger {
+    color: rgb(227, 54, 54); /* 빨간색으로 설정 */
+    font-weight: bold; /* 글씨를 굵게 */
+}
