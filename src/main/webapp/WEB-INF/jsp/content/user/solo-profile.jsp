@@ -43,7 +43,6 @@
                                 accept="image/*"
                         />
                     </div>
-                    <i class="hidden bi bi-camera-fill"></i>
                 </div>
                 <p>안녕하세요 jalaluddin muhammad akbar입니다</p>
                 <div class="btn-container d-flex justify-content-between">
