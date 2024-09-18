@@ -3,7 +3,7 @@ package com.spring.moji.entity;
 import lombok.Data;
 
 @Data
-public class UserAuth {
+public class UserAuthEntity {
 
   private int authNo;
   private String userEmail;
