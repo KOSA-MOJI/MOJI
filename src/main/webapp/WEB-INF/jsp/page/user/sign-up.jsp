@@ -13,11 +13,12 @@
 <div class="container">
     <!-- <div class="form-container"> -->
     <h2>회원가입</h2>
-    <form>
+    <form action="signup-process" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
         <div class="form-group">
             <label for="email">이메일</label>
             <div class="email-container">
-                <input type="email" id="email" placeholder="example@naver.com">
+                <input type="email" id="email" placeholder="example@naver.com" name="email">
                 <button type="button" class="btn btn-check" onclick="checkEmail()">이메일 중복 확인
                 </button>
             </div>
@@ -25,7 +26,7 @@
         <div class="form-group">
             <label for="password">비밀번호</label>
             <input type="password" id="password" placeholder="********"
-                   oninput="validatePassword()">
+                   oninput="validatePassword()" name="password">
             <small id="passwordValidation" class="form-text text-danger" style="display: none;">비밀번호는
                 8~15자, 영문, 숫자, 특수문자를 포함해야 합니다.</small>
         </div>
@@ -39,21 +40,21 @@
 
         <div class="form-group">
             <label for="username">이름</label>
-            <input type="text" id="username" placeholder="홍길동">
+            <input type="text" id="username" placeholder="홍길동" name="userName">
         </div>
 
         <div class="form-group">
             <label for="birthdate">생년월일</label>
-            <input type="date" id="birthdate" class="date-selec">
+            <input type="date" id="birthdate" class="date-selec" name="birthday">
         </div>
 
 
         <!-- 성별 -->
         <div class="form-group">
             <label for="genderSelect">성별</label>
-            <select id="genderSelect" class="gender-select">
-                <option value="femail">여자</option>
-                <option value="mail">남자</option>
+            <select id="genderSelect" class="gender-select" name="gender">
+                <option value="F">여자</option>
+                <option value="M">남자</option>
             </select>
         </div>
 
