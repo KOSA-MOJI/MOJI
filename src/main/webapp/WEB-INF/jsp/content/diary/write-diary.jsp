@@ -24,3 +24,6 @@
 
 <!-- js -->
 <script src="${pageContext.request.contextPath}/js/content/diary/write-diary.js"></script>
+<script src="${pageContext.request.contextPath}/js/content/diary/write-diary-left-component.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApiKey}&libraries=services"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
