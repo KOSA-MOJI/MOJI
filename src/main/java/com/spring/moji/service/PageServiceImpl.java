@@ -1,5 +1,6 @@
 package com.spring.moji.service;
 
+import com.spring.moji.entity.Diary;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,5 +32,13 @@ public class PageServiceImpl implements PageService {
 		PageRequestDTO pageRequestDTO = PageRequestDTO.builder().diaryId(diaryId).build();
 		Page page = pageMapper.findRecentPage(pageRequestDTO);
 		return page;
+	}
+
+	@Override
+	public void deleteByPageId(Long pageId) {
+		int rowsAffected = pageMapper.deleteByPageId(pageId);
+		if (rowsAffected == 0) {
+			throw new RuntimeException("No page found with the given ID");
+		}
 	}
 }
