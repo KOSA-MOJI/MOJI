@@ -2,13 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.moji.mapper.PageMapper">
-    <select id="findByDuration" parameterType="com.spring.moji.dto.request.PageRequestDTO" resultType="com.spring.moji.entity.Page">
-        select *
-        from pages
-        where 1=1
-          and diary_id = #{diaryId}
-          and created_at between trunc(#{startDate}) and trunc(#{endDate})+0.999
-        order by created_at
+    <resultMap id="PageResultMap" type="com.spring.moji.entity.Page">
+        <id property="pageId" column="page_id"/>
+        <result property="diaryId" column="page_diary_id"/>
+        <result property="createdAt" column="page_created_at"/>
+        <result property="weather" column="weather"/>
+        <result property="content" column="content"/>
+        <result property="publicStatus" column="public_status"/>
+        <association property="template" javaType="com.spring.moji.entity.Template">
+            <id property="templateId" column="template_id"/>
+            <result property="templateImage" column="template_image"/>
+            <result property="createdAt" column="template_created_at"/>
+        </association>
+        <collection property="locations" ofType="com.spring.moji.entity.Location">
+            <id property="locationId" column="location_id"/>
+            <result property="pageId" column="location_page_id"/>
+            <result property="address" column="address"/>
+            <result property="latitude" column="latitude"/>
+            <result property="longitude" column="longitude"/>
+            <result property="createdAt" column="location_created_at"/>
+            <collection property="imageUrls" ofType="com.spring.moji.entity.ImageUrl">
+                <id property="imageUrlId" column="image_url_id"/>
+                <result property="locationId" column="image_location_id"/>
+                <result property="mapImage" column="map_image"/>
+                <result property="createdAt" column="image_url_created_at"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="findByDuration" parameterType="com.spring.moji.dto.request.PageRequestDTO" resultMap="PageResultMap">
+        SELECT
+            p.page_id,
+            p.diary_id AS page_diary_id,
+            p.created_at AS page_created_at,
+            p.weather,
+            p.content,
+            p.public_status,
+            t.template_id,
+            t.template_image,
+            t.created_at AS template_created_at,
+            l.location_id,
+            l.page_id AS location_page_id,
+            l.address,
+            l.latitude,
+            l.longitude,
+            l.created_at AS location_created_at,
+            i.image_url_id,
+            i.location_id AS image_location_id,
+            i.map_image,
+            i.created_at AS image_url_created_at
+        FROM
+            pages p
+                LEFT JOIN templates t ON p.template_id = t.template_id
+                LEFT JOIN locations l ON p.page_id = l.page_id
+                LEFT JOIN image_urls i ON l.location_id = i.location_id
+        WHERE
+            p.diary_id = #{diaryId}
+          AND p.created_at BETWEEN TRUNC(#{startDate}) AND TRUNC(#{endDate}) + INTERVAL '1' DAY - INTERVAL '1' SECOND
+        ORDER BY
+            p.created_at
     </select>
 
     <select id="findRecentPage" parameterType="com.spring.moji.dto.request.PageRequestDTO" resultType="com.spring.moji.entity.Page">
