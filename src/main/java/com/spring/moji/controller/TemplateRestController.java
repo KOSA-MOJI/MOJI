@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/template")
 public class TemplateRestController {
 	private final TemplateService templateService;
+	//TODO: 조회 기능 보류;
+
 	@GetMapping
 	public List<Template> findAll() {
 		return templateService.findAll();

@@ -1,14 +1,19 @@
 package com.spring.moji.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.moji.dto.request.DiaryRequestDTO;
+import com.spring.moji.dto.request.PageRequestDTO;
 import com.spring.moji.entity.Diary;
+import com.spring.moji.entity.Page;
 import com.spring.moji.mapper.DiaryMapper;
+import com.spring.moji.mapper.PageMapper;
 import com.spring.moji.util.S3Util;
 
 import lombok.RequiredArgsConstructor;
@@ -19,12 +24,18 @@ import lombok.RequiredArgsConstructor;
 public class DiaryServiceImpl implements DiaryService {
 
 	private final DiaryMapper diaryMapper;
+	private final PageMapper pageMapper;
 	private final S3Util s3Util;
 
 	@Override
 	public Diary findByCoupleId(Long coupleId) {
-		Diary result = diaryMapper.findByCoupleId(coupleId);
-		return result;
+		return diaryMapper.findByCoupleId(coupleId);
+	}
+
+	@Override
+	public List<Page> fetchDiaryPages(Long diaryId, LocalDate startDate, LocalDate endDate) {
+		PageRequestDTO pageRequestDTO = PageRequestDTO.builder().diaryId(diaryId).startDate(startDate).endDate(endDate).build();
+		return pageMapper.findByDuration(pageRequestDTO);
 	}
 
 	@Override

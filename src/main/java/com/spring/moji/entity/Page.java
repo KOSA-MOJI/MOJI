@@ -1,6 +1,7 @@
 package com.spring.moji.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,15 +17,15 @@ public class Page {
 	private String weather;
 	private String content;
 	private Character publicStatus;
-	private Long templateId;
+	private Template template;
+	private List<Location> locations;
 	@Builder
-	public Page(Long pageId, Long diaryId, LocalDate createdAt, String weather, String content, Character publicStatus, Long templateId) {
+	public Page(Long pageId, Long diaryId, LocalDate createdAt, String weather, String content, Character publicStatus) {
 		this.pageId = pageId;
 		this.diaryId = diaryId;
 		this.createdAt = createdAt;
 		this.weather = weather;
 		this.content = content;
 		this.publicStatus = publicStatus;
-		this.templateId = templateId;
 	}
 }

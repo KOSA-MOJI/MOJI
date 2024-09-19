@@ -1,5 +1,7 @@
 package com.spring.moji.entity;
 
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +14,7 @@ public class Diary {
 	private Long coupleId;
 	private String coverImage;
 	private Long bookmarkId;
+	private List<Page> pages;
 
 	@Builder
 	public Diary(Long coupleId, Long bookmarkId, String coverImage, Long diaryId) {
