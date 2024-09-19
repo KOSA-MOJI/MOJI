@@ -22,13 +22,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/page")
 public class PageRestController {
 	private final PageService pageService;
+	//TODO: 조회 기능 보류;
 
-	@GetMapping("/{diaryId}")
+	@GetMapping("/recent/{diaryId}")
 	public Page findRecentPage(@PathVariable Long diaryId) {
 		return pageService.findRecentPage(diaryId);
 	}
 
-	@GetMapping("prefetch/{diaryId}")
+	@GetMapping("/prefetch/{diaryId}")
 	public List<Page> fetchDiaryPages(@PathVariable Long diaryId, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate startDate, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate) {
 		return pageService.fetchDiaryPages(diaryId, startDate, endDate);
 	}

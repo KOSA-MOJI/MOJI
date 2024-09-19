@@ -3,19 +3,78 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.moji.mapper.DiaryMapper">
 
-<!--    <resultMap id="diaryResultMap" type="com.spring.moji.entity.Diary">-->
-<!--        <result column="DIARY_ID" property="diaryId"/>-->
-<!--        <result column="COUPLE_ID" property="coupleId"/>-->
-<!--        <result column="COVER_IMAGE" property="coverImage"/>-->
-<!--        <result column="BOOKMARK_ID" property="bookmarkId"/>-->
-<!--    </resultMap>-->
+    <resultMap id="DiaryResultMap" type="com.spring.moji.entity.Diary">
+        <id property="diaryId" column="diary_id"/>
+        <result property="coupleId" column="couple_id"/>
+        <result property="coverImage" column="cover_image"/>
+        <result property="bookmarkId" column="bookmark_id"/>
+        <collection property="pages" ofType="com.spring.moji.entity.Page">
+            <id property="pageId" column="page_id"/>
+            <result property="diaryId" column="page_diary_id"/>
+            <result property="createdAt" column="page_created_at"/>
+            <result property="weather" column="weather"/>
+            <result property="content" column="content"/>
+            <result property="publicStatus" column="public_status"/>
+            <association property="template" javaType="com.spring.moji.entity.Template">
+                <id property="templateId" column="template_id"/>
+                <result property="templateImage" column="template_image"/>
+                <result property="createdAt" column="template_created_at"/>
+            </association>
+            <collection property="locations" ofType="com.spring.moji.entity.Location">
+                <id property="locationId" column="location_id"/>
+                <result property="pageId" column="location_page_id"/>
+                <result property="address" column="address"/>
+                <result property="latitude" column="latitude"/>
+                <result property="longitude" column="longitude"/>
+                <result property="createdAt" column="location_created_at"/>
+                <collection property="imageUrls" ofType="com.spring.moji.entity.ImageUrl">
+                    <id property="imageUrlId" column="image_url_id"/>
+                    <result property="locationId" column="image_location_id"/>
+                    <result property="mapImage" column="map_image"/>
+                    <result property="createdAt" column="image_url_created_at"/>
+                </collection>
+            </collection>
+        </collection>
+    </resultMap>
 
-<!--    <select id="findByCoupleId" parameterType="java.lang.Long" resultMap="diaryResultMap">-->
-<!--        SELECT * FROM diaries WHERE couple_id = #{coupleId}-->
-<!--    </select>-->
-
-    <select id="findByCoupleId" parameterType="java.lang.Long" resultType="com.spring.moji.entity.Diary">
-        SELECT * FROM diaries WHERE couple_id = #{coupleId}
+    <select id="findByCoupleId" parameterType="java.lang.Long" resultMap="DiaryResultMap">
+        SELECT
+            d.diary_id,
+            d.couple_id,
+            d.cover_image,
+            d.bookmark_id,
+            p.page_id,
+            p.diary_id AS page_diary_id,
+            p.created_at AS page_created_at,
+            p.weather,
+            p.content,
+            p.public_status,
+            t.template_id,
+            t.template_image,
+            t.created_at AS template_created_at,
+            l.location_id,
+            l.page_id AS location_page_id,
+            l.address,
+            l.latitude,
+            l.longitude,
+            l.created_at AS location_created_at,
+            i.image_url_id,
+            i.location_id AS image_location_id,
+            i.map_image,
+            i.created_at AS image_url_created_at
+        FROM
+            diaries d
+                LEFT JOIN pages p ON d.diary_id = p.diary_id
+                LEFT JOIN locations l ON p.page_id = l.page_id
+                LEFT JOIN image_urls i ON l.location_id = i.location_id
+                LEFT JOIN templates t ON p.template_id = t.template_id
+        WHERE
+            d.couple_id = #{coupleId}
+          AND p.page_id = (
+            SELECT MAX(page_id)
+            FROM pages
+            WHERE diary_id = d.diary_id
+        )
     </select>
 
     <update id="updateCoverImage" parameterType="com.spring.moji.dto.request.DiaryRequestDTO">

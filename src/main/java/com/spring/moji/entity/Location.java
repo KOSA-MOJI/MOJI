@@ -1,6 +1,7 @@
 package com.spring.moji.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,6 +17,7 @@ public class Location {
 	private float latitude;
 	private float longitude;
 	private LocalDate createdAt;
+	private List<ImageUrl> imageUrls;
 	@Builder
 	public Location(Long locationId, Long pageId, String address, float latitude, float longitude, LocalDate createdAt) {
 		this.locationId = locationId;
