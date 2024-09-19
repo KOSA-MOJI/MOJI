@@ -1,3 +1,27 @@
+//TO DO: 현재 내 위치 받아오기
+function getCurrentLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      // 현재 위치를 콘솔에 출력
+      console.log(`현재 위치: 위도 ${latitude}, 경도 ${longitude}`);
+
+      // 필요에 따라 여기서 추가 작업 수행 가능
+      // 예: KakaoMap에 현재 위치 표시 등
+
+    }, (error) => {
+      console.error('위치 정보 가져오기 에러:', error);
+    });
+  } else {
+    console.error('이 브라우저는 Geolocation을 지원하지 않습니다.');
+  }
+}
+
+// 페이지 로드 시 현재 위치 가져오기
+window.onload = getCurrentLocation;
+
 let currentImageIndex = 0;
 const images = Array.from({length: 13}, (_, i) => i + 1); // 1부터 13까지의 배열
 
