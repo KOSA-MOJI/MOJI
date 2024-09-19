@@ -1,6 +1,6 @@
 package com.spring.moji.security;
 
-import com.spring.moji.dto.request.CustomerUserDTO;
+import com.spring.moji.dto.request.UserRequestDTO;
 import com.spring.moji.entity.UserEntity;
 import com.spring.moji.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +30,10 @@ public class CustomerDetailService implements UserDetailsService {
       throw new UsernameNotFoundException("요청하신 이메일디 회원정보에 존재하지 않습니다." + email);
     }
 
-    CustomerUserDTO customerUser = new CustomerUserDTO(user);
-    log.debug("Loaded CustomerUserDTO with authorities: {}", customerUser.getAuthorities());
+    UserRequestDTO customerUser = new UserRequestDTO(user);
+    log.debug("Loaded UserRequestDTO with authorities: {}", customerUser.getAuthorities());
 
     return customerUser;
   }
+
 }

@@ -14,13 +14,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -57,6 +53,12 @@ public class SecurityConfig {
         .permitAll()  // 모든 사용자에게 로그인 페이지 접근 허용
     );
 
+    http.sessionManagement(session -> session
+        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+        .maximumSessions(1)
+        .maxSessionsPreventsLogin(true)
+    );
+
     http.logout(logout -> logout
         .logoutUrl("/logout")
         .logoutSuccessUrl("/")
@@ -79,6 +81,7 @@ public class SecurityConfig {
       Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
+
 
   @Bean
   public PasswordEncoder passwordEncoder() {

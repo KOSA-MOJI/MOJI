@@ -9,7 +9,9 @@
     <result column="gender" property="gender"/>
     <result column="password" property="password"/>
     <result column="created_at" property="createdAt"/>
-    <collection property="authList" resultMap="authMap"></collection>
+    <result column="profile_image_url" property="profileImageUrl"/>
+    <result column="couple_id" property="coupleId"/>
+    <collection property="authList" resultMap="authMap"/>
   </resultMap>
   <resultMap id="authMap" type="com.spring.moji.entity.UserAuthEntity">
     <id column="auth_no" property="authNo"/>
@@ -23,7 +25,10 @@
          , birthday
          , gender
          , password
+         , profile_image_url
          , auth
+         , couple_id
+         , created_at
     FROM users u
            JOIN user_auth auth ON u.email = auth.user_email
     WHERE u.email = #{email}
@@ -38,5 +43,11 @@
     insert into user_auth(auth_no, user_email, auth)
     values (user_auth_seq.nextval, #{userEmail}, #{auth})
   </insert>
+
+  <update id="updateProfileImageUrl" parameterType="com.spring.moji.entity.UserEntity">
+    update users
+    set profile_image_url = #{profileImageUrl}
+    where EMAIL = #{email}
+  </update>
 
 </mapper>

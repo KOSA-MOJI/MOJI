@@ -12,5 +12,7 @@ public interface UserMapper {
 
   public int join(UserEntity user) throws Exception;
 
-  public int insertAuth(UserAuthEntity userAuthEntity) throws Exception;
+  public int insertAuth(UserAuthEntity user) throws Exception;
+
+  public int updateProfileImageUrl(UserEntity user) throws Exception;
 }
