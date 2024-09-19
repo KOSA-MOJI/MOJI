@@ -12,4 +12,5 @@ public interface PageMapper {
 	List<Page> findByDuration(PageRequestDTO pageRequestDTO);
 	Page findRecentPage(PageRequestDTO pageRequestDTO);
 	int deleteByPageId(Long pageId);
+	void insertPage(Page page);
 }

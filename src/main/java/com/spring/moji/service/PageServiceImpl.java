@@ -41,4 +41,9 @@ public class PageServiceImpl implements PageService {
 			throw new RuntimeException("No page found with the given ID");
 		}
 	}
+
+	@Override
+	public void insertPage(Page page) {
+		pageMapper.insertPage(page);
+	}
 }

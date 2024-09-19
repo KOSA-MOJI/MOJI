@@ -10,4 +10,5 @@ public interface PageService {
 	List<Page> fetchDiaryPages(Long diaryId, LocalDate startDate, LocalDate endDate);
 	Page findRecentPage(Long diaryId);
 	void deleteByPageId(Long pageId);
+	void insertPage(Page page);
 }

@@ -26,4 +26,9 @@
     <delete id="deleteByPageId" parameterType="java.lang.Long">
         DELETE FROM pages WHERE page_Id = #{pageId}
     </delete>
+
+    <insert id="insertPage" parameterType="com.spring.moji.entity.Page">
+        INSERT INTO pages (page_id, diary_id, created_at, weather, content, public_status, template_id)
+        VALUES (pages_seq.NEXTVAL, #{diaryId}, #{createdAt}, #{weather}, #{content}, #{publicStatus}, #{templateId})
+    </insert>
 </mapper>
