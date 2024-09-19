@@ -22,4 +22,8 @@
         )
         where rownum = 1
     </select>
+
+    <delete id="deleteByPageId" parameterType="java.lang.Long">
+        DELETE FROM pages WHERE page_Id = #{pageId}
+    </delete>
 </mapper>
