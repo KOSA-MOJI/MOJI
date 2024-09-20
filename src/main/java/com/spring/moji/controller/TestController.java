@@ -87,10 +87,4 @@ public class TestController {
     }
 
 
-    //커뮤니티 컴포넌트 제대로 뜨는가
-    @GetMapping("/community")
-    public String readCommunity(Model model) {
-        model.addAttribute("contentURL", "/WEB-INF/jsp/content/community/community-diary.jsp");
-        return "community/community-diary-page";
-    }
 }
