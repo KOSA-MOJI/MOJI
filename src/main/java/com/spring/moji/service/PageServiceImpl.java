@@ -3,13 +3,11 @@ package com.spring.moji.service;
 import com.spring.moji.dto.request.ImageUrlRequestDTO;
 import com.spring.moji.dto.request.LocationRequestDTO;
 import com.spring.moji.dto.request.PageInsertRequestDTO;
-import com.spring.moji.dto.response.ImageUrlResponseDTO;
-import com.spring.moji.dto.response.LocationResponseDTO;
-import com.spring.moji.dto.response.PageInsertResponseDTO;
 import com.spring.moji.entity.ImageUrl;
 import com.spring.moji.entity.Location;
+import com.spring.moji.mapper.ImageUrlMapper;
+import com.spring.moji.mapper.LocationMapper;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PageServiceImpl implements PageService {
 	private final PageMapper pageMapper;
+	private final LocationMapper locationMapper;
+	private final ImageUrlMapper imageUrlMapper;
 
 	@Override
 	public List<Page> fetchDiaryPages(Long diaryId, LocalDate startDate, LocalDate endDate) {
@@ -67,9 +67,8 @@ public class PageServiceImpl implements PageService {
 					.longitude(location.getLongitude())
 					.build();
 			System.out.println(locationRequestDTO.toString());
-			pageMapper.insertLocation(locationRequestDTO);
+			locationMapper.insertLocation(locationRequestDTO);
 			Long locationId = locationRequestDTO.getLocationId();  // 자동 생성된 locationId
-			System.out.println(locationRequestDTO.toString());
 			// 각 지도 위치마다 이미지 URL 삽입
 			for (ImageUrl imageUrl : location.getImageUrls()) {
 				ImageUrlRequestDTO imageUrlRequestDTO = ImageUrlRequestDTO.builder()
@@ -77,8 +76,7 @@ public class PageServiceImpl implements PageService {
 						.mapImage(imageUrl.getMapImage())
 						.build();
 				System.out.println(imageUrlRequestDTO.toString());
-				pageMapper.insertImageUrl(imageUrlRequestDTO);
-				System.out.println(imageUrlRequestDTO.toString());
+				imageUrlMapper.insertImageUrl(imageUrlRequestDTO);
 			}
 		}
 	}
