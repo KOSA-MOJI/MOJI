@@ -9,4 +9,9 @@
           and location_id = #{locationId}
         order by image_url_id
     </select>
+
+    <insert id="insertImageUrl" parameterType="com.spring.moji.dto.request.ImageUrlRequestDTO" useGeneratedKeys="true" keyColumn="image_url_id" keyProperty="imageUrlId">
+        INSERT INTO image_urls (location_id, map_image, created_at)
+        VALUES (#{locationId}, #{mapImage}, sysdate)
+    </insert>
 </mapper>
