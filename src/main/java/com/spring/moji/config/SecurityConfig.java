@@ -7,6 +7,7 @@ import com.spring.moji.security.CustomerDetailService;
 import com.spring.moji.security.SignInSuccessHandler;
 import javax.sql.DataSource;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,13 +24,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-  @Autowired
-  private DataSource dataSource;
-
-  @Autowired
-  private CustomerDetailService customerDetailService;
+  private final CustomerDetailService customerDetailService;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
