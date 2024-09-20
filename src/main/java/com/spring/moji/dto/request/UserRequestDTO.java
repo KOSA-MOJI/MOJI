@@ -1,6 +1,6 @@
 package com.spring.moji.dto.request;
 
-import com.spring.moji.entity.UserEntity;
+import com.spring.moji.entity.User;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -17,9 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 public class UserRequestDTO implements UserDetails {
 
-  private UserEntity user;
+  private User user;
 
-  public UserRequestDTO(UserEntity user) {
+  public UserRequestDTO(User user) {
     this.user = user;
   }
 
@@ -82,7 +82,7 @@ public class UserRequestDTO implements UserDetails {
     log.info("[[  setProfileImageUrl 메서드 호출됨  ]]");
 
     if (this.user == null) {
-      this.user = UserEntity.builder()  // builder를 통해 객체 생성
+      this.user = User.builder()  // builder를 통해 객체 생성
           .profileImageUrl(profileImageUrl)
           .build();
     } else {
@@ -94,7 +94,7 @@ public class UserRequestDTO implements UserDetails {
     log.info("[[  setEmail 메서드 호출됨  ]]");
 
     if (this.user == null) {
-      this.user = UserEntity.builder()  // builder를 통해 객체 생성
+      this.user = User.builder()  // builder를 통해 객체 생성
           .email(email)
           .build();
     } else {

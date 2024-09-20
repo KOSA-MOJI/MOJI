@@ -1,6 +1,6 @@
 package com.spring.moji.controller;
 
-import com.spring.moji.entity.UserEntity;
+import com.spring.moji.entity.User;
 import com.spring.moji.service.UserService;
 import java.security.Principal;
 
@@ -33,7 +33,7 @@ public class HomeController {
   }
 
   @PostMapping("/signup-process")
-  public String signUpProcess(UserEntity user) throws Exception {
+  public String signUpProcess(User user) throws Exception {
     int result = userService.join(user);
 
     if (result > 0) {

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.moji.mapper.UserMapper">
-  <resultMap id="userMap" type="com.spring.moji.entity.UserEntity">
+  <resultMap id="userMap" type="com.spring.moji.entity.User">
     <id column="email" property="email"/>
     <result column="user_name" property="userName"/>
     <result column="birthday" property="birthday"/>
@@ -13,7 +13,7 @@
     <result column="couple_id" property="coupleId"/>
     <collection property="authList" resultMap="authMap"/>
   </resultMap>
-  <resultMap id="authMap" type="com.spring.moji.entity.UserAuthEntity">
+  <resultMap id="authMap" type="com.spring.moji.entity.UserAuth">
     <id column="auth_no" property="authNo"/>
     <result column="user_email" property="userEmail"/>
     <result column="auth" property="auth"/>
@@ -44,7 +44,7 @@
     values (user_auth_seq.nextval, #{userEmail}, #{auth})
   </insert>
 
-  <update id="updateProfileImageUrl" parameterType="com.spring.moji.entity.UserEntity">
+  <update id="updateProfileImageUrl" parameterType="com.spring.moji.entity.User">
     update users
     set profile_image_url = #{profileImageUrl}
     where EMAIL = #{email}

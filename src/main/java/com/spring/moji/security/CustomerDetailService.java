@@ -1,7 +1,7 @@
 package com.spring.moji.security;
 
 import com.spring.moji.dto.request.UserRequestDTO;
-import com.spring.moji.entity.UserEntity;
+import com.spring.moji.entity.User;
 import com.spring.moji.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class CustomerDetailService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-    UserEntity user = userMapper.login(email);
+    User user = userMapper.login(email);
     log.debug("Trying to find user by email: {}", email);
     if (user == null) {
       log.debug("Trying to find user by email: {}", email);

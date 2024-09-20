@@ -15,21 +15,24 @@ public class User {
   private String email;  // 이메일
   private String userName; // 성함
   private LocalDate birthday;
-  private char gender;
+  private String gender;
   private String password;
   private LocalDate createdAt;
-  private int roleId;
+  private String profileImageUrl;
+  private String coupleId;
 
 
   @Builder
-  public User(String email, String userName, LocalDate birthday, char gender, String password,
-      LocalDate createdAt, int roleId) {
+  public User(String email, String userName, LocalDate birthday, String gender,
+      String password,
+      LocalDate createdAt, String profileImageUrl, String coupleId) {
     this.email = email;
     this.userName = userName;
     this.birthday = birthday;
     this.gender = gender;
     this.password = password;
     this.createdAt = createdAt;
-    this.roleId = roleId;
+    this.profileImageUrl = profileImageUrl;
+    this.coupleId = coupleId;
   }
 }
