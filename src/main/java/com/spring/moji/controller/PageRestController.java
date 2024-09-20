@@ -1,5 +1,7 @@
 package com.spring.moji.controller;
 
+import com.spring.moji.dto.request.PageInsertRequestDTO;
+import com.spring.moji.dto.response.PageInsertResponseDTO;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -42,9 +44,20 @@ public class PageRestController {
 		return ResponseEntity.ok("Page deleted successfully");
 	}
 
+	// 다이어리 내의 한 일자의 페이지 생성
 	@PostMapping("/insert")
-	public ResponseEntity<String> createPage(@RequestBody Page page) {
-		pageService.insertPage(page);
-		return ResponseEntity.ok("Page created successfully");
+	public ResponseEntity<String> createPage(@RequestBody PageInsertRequestDTO pageInsertRequestDTO) {
+		pageService.addPageWithDetails(pageInsertRequestDTO);
+		return ResponseEntity.ok("Page and related details created successfully");
 	}
+
+//	@PostMapping("/insert")
+//	public ResponseEntity<PageInsertResponseDTO> createPage(@RequestBody PageInsertRequestDTO pageInsertRequestDTO) {
+//		PageInsertResponseDTO response = pageService.addPageWithDetails(pageInsertRequestDTO);
+//		return ResponseEntity.ok(response);
+//	}
+
+
+
+
 }
