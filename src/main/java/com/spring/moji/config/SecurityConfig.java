@@ -34,8 +34,8 @@ public class SecurityConfig {
 
     http.authorizeHttpRequests(auth -> auth
             .requestMatchers("/user/**").hasAnyRole("USER", "SOLO")
-            .requestMatchers("/couple/**").hasRole("USER")
-            .requestMatchers("/solo/**").hasRole("USER")
+            .requestMatchers("/user/couple/**").hasRole("COUPLE")
+            .requestMatchers("/user/solo/**").hasRole("SOLO")
             .anyRequest().permitAll())
         .formLogin(withDefaults())
         .logout(withDefaults()
@@ -67,6 +67,8 @@ public class SecurityConfig {
         .accessDeniedHandler(accessDeniedHandler())
     );
 
+    // http
+    //   .csrf(csrf -> csrf.disable());  // CSRF 보호 비활성화
     http.userDetailsService(customerDetailService);
 
     return http.build();
