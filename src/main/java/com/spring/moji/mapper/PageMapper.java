@@ -11,4 +11,5 @@ import com.spring.moji.entity.Page;
 public interface PageMapper {
 	List<Page> findByDuration(PageRequestDTO pageRequestDTO);
 	Page findRecentPage(PageRequestDTO pageRequestDTO);
+	int deleteByPageId(Long pageId);
 }

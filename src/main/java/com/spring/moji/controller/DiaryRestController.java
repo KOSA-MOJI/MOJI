@@ -1,9 +1,10 @@
 package com.spring.moji.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.ui.Model;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.moji.entity.Diary;
+import com.spring.moji.entity.Page;
 import com.spring.moji.service.DiaryServiceImpl;
 
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,14 +26,18 @@ import lombok.RequiredArgsConstructor;
 public class DiaryRestController {
 	private final DiaryServiceImpl diaryService;
 
-	@GetMapping("/{diaryId}")
-	public Diary getDiary(@PathVariable Long diaryId) {
-		return diaryService.findByCoupleId(diaryId);
+	@GetMapping("/{coupleId}")
+	public Diary getDiary(@PathVariable Long coupleId) {
+		return diaryService.findByCoupleId(coupleId);
+	}
+	@GetMapping("/page/{diaryId}")
+	public List<Page> getPages(@PathVariable Long diaryId, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate){
+		return diaryService.fetchDiaryPages(diaryId, startDate, endDate);
 	}
 
-	@PostMapping("/coverImage/{diaryId}")
-	public String coverImage(@PathVariable Long diaryId, @RequestParam("diaryCoverImage")MultipartFile diaryCoverImage) throws
+	@PostMapping("/coverImage/{coupleId}")
+	public String coverImage(@PathVariable Long coupleId, @RequestParam("diaryCoverImage")MultipartFile diaryCoverImage) throws
 		IOException {
-		return diaryService.updateCoverImage(diaryId,diaryCoverImage);
+		return diaryService.updateCoverImage(coupleId,diaryCoverImage);
 	}
 }

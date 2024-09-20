@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/imageURL")
 public class ImageUrlRestController {
 	private final ImageUrlService imageUrlService;
-
+	//TODO: 조회 기능 보류;
 	@GetMapping("/{locationId}")
 	public List<ImageUrl> findAllByLocationId(@PathVariable Long locationId) {
 		return imageUrlService.findAllByLocationId(locationId);
