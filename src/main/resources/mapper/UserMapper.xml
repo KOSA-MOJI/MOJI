@@ -2,38 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.moji.mapper.UserMapper">
-  <insert id="join">
-    insert into users(email, user_name, birthday, gender, password)
-    values (#{email}, #{userName}, #{birthday}, #{gender}, #{password})
-  </insert>
-  <insert id="insertAuth">
-    insert into user_auth(auth_no, user_email, auth)
-    values (#{authNo}, #{userEmail}, #{auth})
-  </insert>
-  <resultMap id="userMap" type="com.spring.moji.entity.UserEntity">
+  <resultMap id="userMap" type="com.spring.moji.entity.User">
     <id column="email" property="email"/>
     <result column="user_name" property="userName"/>
     <result column="birthday" property="birthday"/>
     <result column="gender" property="gender"/>
     <result column="password" property="password"/>
     <result column="created_at" property="createdAt"/>
-    <result column="role_id" property="roleId"/>
-    <collection property="authList" resultMap="authMap"></collection>
+    <result column="profile_image_url" property="profileImageUrl"/>
+    <result column="couple_id" property="coupleId"/>
+    <collection property="authList" resultMap="authMap"/>
   </resultMap>
   <resultMap id="authMap" type="com.spring.moji.entity.UserAuth">
     <id column="auth_no" property="authNo"/>
     <result column="user_email" property="userEmail"/>
     <result column="auth" property="auth"/>
   </resultMap>
+
   <select id="login" resultMap="userMap">
     SELECT u.email
          , u.user_name
          , birthday
          , gender
          , password
+         , profile_image_url
          , auth
+         , couple_id
+         , created_at
     FROM users u
            JOIN user_auth auth ON u.email = auth.user_email
     WHERE u.email = #{email}
   </select>
+
+  <insert id="join">
+    INSERT INTO users (email, user_name, birthday, gender, password, created_at)
+    VALUES (#{email}, #{userName}, #{birthday}, #{gender}, #{password}, sysdate)
+  </insert>
+
+  <insert id="insertAuth">
+    insert into user_auth(auth_no, user_email, auth)
+    values (user_auth_seq.nextval, #{userEmail}, #{auth})
+  </insert>
+
+  <update id="updateProfileImageUrl" parameterType="com.spring.moji.entity.User">
+    update users
+    set profile_image_url = #{profileImageUrl}
+    where EMAIL = #{email}
+  </update>
+
 </mapper>

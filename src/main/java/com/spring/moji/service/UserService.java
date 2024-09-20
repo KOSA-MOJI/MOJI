@@ -1,13 +1,11 @@
 package com.spring.moji.service;
 
-import com.spring.moji.entity.UserAuth;
-import com.spring.moji.entity.UserEntity;
+import com.spring.moji.entity.User;
 
 public interface UserService {
 
-  public UserEntity login(String username);
+  public int join(User user) throws Exception;
 
-  public int join(UserEntity user) throws Exception;
+  public void updateProfileImageUrl(String email, String profileImageUrl) throws Exception;
 
-  public int insertAuth(UserAuth userAuth) throws Exception;
 }

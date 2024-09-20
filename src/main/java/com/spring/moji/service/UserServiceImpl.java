@@ -1,33 +1,27 @@
 package com.spring.moji.service;
 
 import com.spring.moji.entity.UserAuth;
-import com.spring.moji.entity.UserEntity;
+import com.spring.moji.entity.User;
 import com.spring.moji.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
-  @Autowired
-  private UserMapper userMapper;
+  private final UserMapper userMapper;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
-  @Override
-  public UserEntity login(String email) {
-    UserEntity user = userMapper.login(email);
-    return user;
-  }
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   @Transactional
-  public int join(UserEntity user) throws Exception {
+  public int join(User user) throws Exception {
     String userPassword = user.getPassword();
     String encodedUserPassword = passwordEncoder.encode(userPassword);
     user.setPassword(encodedUserPassword);
@@ -45,7 +39,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public int insertAuth(UserAuth userAuth) throws Exception {
-    return 0;
+  public void updateProfileImageUrl(String email, String profileImageUrl) throws Exception {
+    userMapper.updateProfileImageUrl(email, profileImageUrl);
   }
 }
