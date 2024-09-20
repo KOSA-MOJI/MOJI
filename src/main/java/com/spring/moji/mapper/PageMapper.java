@@ -17,6 +17,4 @@ public interface PageMapper {
 	Page findRecentPage(PageRequestDTO pageRequestDTO);
 	int deleteByPageId(Long pageId);
 	void insertPage(PageInsertRequestDTO pageInsertRequestDTO);
-	void insertLocation(LocationRequestDTO locationRequestDTO);
-	void insertImageUrl(ImageUrlRequestDTO imageUrlRequestDTO);
 }
