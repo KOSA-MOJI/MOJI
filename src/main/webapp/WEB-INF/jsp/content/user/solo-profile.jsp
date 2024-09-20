@@ -53,6 +53,12 @@
                 </div>
             </div>
             <jsp:include page="/WEB-INF/jsp/component/user-info.jsp"/>
+            <p class="clearfix">
+                <span class="float-start"> 정보 변경 </span>
+                <span class="float-end text-muted">
+        <a href="update-profile">변경 </a>
+        </span>
+            </p>
         </div>
     </div>
 
@@ -75,7 +81,7 @@
                                 />
                             </div>
                         </div>
-                        <p>안녕하세요 jalaluddin muhammad akbar입니다</p>
+                        <p>안녕하세요 인도사람 입니다</p>
                         <div class="btn-container d-flex justify-content-between">
                             <button type="submit" class="btn btn-success">확인</button>
                             <button

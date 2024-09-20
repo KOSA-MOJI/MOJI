@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
       'content');
   const pfpContainer = document.getElementsByClassName("pfp-container")[0];
-
   const soloProfilePicture = document.getElementById("solo-pfp");
   const pfpInput = document.getElementById("solo-pfp-file-input");
   const saveBtn = document.getElementById("save-profile-update-btn");
@@ -13,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   pfpInput.addEventListener("change", function (changeEvent) {
     const file = changeEvent.target.files[0];
-
     if (file) {
       const reader = new FileReader();
       reader.onload = function (loadEvent) {
@@ -23,38 +21,38 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  saveBtn.onclick = function (event) {
+  saveBtn.addEventListener("click", function (event) {
     event.preventDefault();
-    console.log("click");
-    const data = {
-      profileImageUrl: soloProfilePicture.src,
-      email: document.getElementById("email").innerText
+    const formData = new FormData();
+
+    if (pfpInput.files[0]) {
+      formData.append('file', pfpInput.files[0]);
     }
+    formData.append('email', document.getElementById("email").innerText);
+    console.log(formData);
 
     fetch('/api/user/solo/update-profile', {
-      method: 'PUT',
+      method: 'POST',
       headers: {
-        'X-CSRF-TOKEN': csrfToken,
-        'Content-Type': 'application/json; charset=utf-8',
+        'X-CSRF-TOKEN': csrfToken
       },
-      body: JSON.stringify(data)
+      body: formData
     })
     .then(response => {
-      console.log(response);  // 응답 전체를 콘솔에 출력해서 상태 코드와 내용을 확인
+      console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      return response.json();  // 응답이 JSON 형식인지 확인
+      return response.json();
     })
     .then(resp => {
-      console.log(resp);  // 응답 데이터를 콘솔에 출력
+      console.log(resp);
       alert("회원수정이 완료되었습니다.");
       window.location.href = "/user/solo/";
     })
     .catch(error => {
-      console.error("Error: ", error);  // 에러 메시지를 콘솔에 출력
+      console.error("Error: ", error);
       alert("Error: " + error.message);
     });
-  }
-
-})
+  });
+});

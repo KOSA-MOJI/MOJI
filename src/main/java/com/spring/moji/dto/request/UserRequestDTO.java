@@ -45,6 +45,8 @@ public class UserRequestDTO implements UserDetails {
     return user.getEmail();
   }
 
+
+  // jstl에서 user의 정보를 조회하는데 필요한 메서드
   public String getUserName() {
     log.info("[[  getUserName 메서드 호출됨  ]]");
     return user.getUserName();

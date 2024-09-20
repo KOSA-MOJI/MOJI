@@ -14,5 +14,5 @@ public interface UserMapper {
 
   public int insertAuth(UserAuthEntity user) throws Exception;
 
-  public int updateProfileImageUrl(UserEntity user) throws Exception;
+  public int updateProfileImageUrl(String email, String profileImageUrl) throws Exception;
 }
