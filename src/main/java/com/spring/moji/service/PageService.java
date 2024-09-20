@@ -1,7 +1,6 @@
 package com.spring.moji.service;
 
 import com.spring.moji.dto.request.PageInsertRequestDTO;
-import com.spring.moji.dto.response.PageInsertResponseDTO;
 import java.time.LocalDate;
 import java.util.List;
 

@@ -3,13 +3,9 @@ package com.spring.moji.service;
 import com.spring.moji.dto.request.ImageUrlRequestDTO;
 import com.spring.moji.dto.request.LocationRequestDTO;
 import com.spring.moji.dto.request.PageInsertRequestDTO;
-import com.spring.moji.dto.response.ImageUrlResponseDTO;
-import com.spring.moji.dto.response.LocationResponseDTO;
-import com.spring.moji.dto.response.PageInsertResponseDTO;
 import com.spring.moji.entity.ImageUrl;
 import com.spring.moji.entity.Location;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
