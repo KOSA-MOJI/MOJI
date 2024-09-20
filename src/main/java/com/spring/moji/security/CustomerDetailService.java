@@ -3,8 +3,8 @@ package com.spring.moji.security;
 import com.spring.moji.dto.request.UserRequestDTO;
 import com.spring.moji.entity.User;
 import com.spring.moji.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CustomerDetailService implements UserDetailsService {
 
 
-  @Autowired
-  private UserMapper userMapper;
+  private final UserMapper userMapper;
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

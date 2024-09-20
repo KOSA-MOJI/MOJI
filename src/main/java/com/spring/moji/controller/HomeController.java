@@ -4,6 +4,7 @@ import com.spring.moji.entity.User;
 import com.spring.moji.service.UserService;
 import java.security.Principal;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 
-  @Autowired
-  private UserService userService;
+  private final UserService userService;
 
   @GetMapping({"", "/"})
   public String home(Model model, Principal principal) {
