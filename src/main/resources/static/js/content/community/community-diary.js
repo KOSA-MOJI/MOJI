@@ -43,11 +43,12 @@ function loadImages(direction) {
   currentImageIndex = Math.max(0,
       Math.min(currentImageIndex, images.length - 5));
 
+  //시작 위치, 몇개 받아올지
   for (let i = 0; i < imageItems.length; i++) {
     const imageNumber = images[currentImageIndex + i]; //해당 위치에 오는 이미지 idx
-    console.log("imageNumber" + imageNumber)
+    // console.log("imageNumber" + imageNumber)
     imageItems[i].innerText = imageNumber; // 배열의 값을 div에 표시
-    console.log(i + " ImageItems" + imageItems[i])
+    // console.log(i + " ImageItems" + imageItems[i])
     imageItems[i].setAttribute('data-idx', imageNumber); // 고유 값 설정
   }
 
