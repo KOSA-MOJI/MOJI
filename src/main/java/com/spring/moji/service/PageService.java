@@ -1,6 +1,7 @@
 package com.spring.moji.service;
 
-import com.spring.moji.entity.Diary;
+import com.spring.moji.dto.request.PageInsertRequestDTO;
+import com.spring.moji.dto.response.PageInsertResponseDTO;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,4 +11,5 @@ public interface PageService {
 	List<Page> fetchDiaryPages(Long diaryId, LocalDate startDate, LocalDate endDate);
 	Page findRecentPage(Long diaryId);
 	void deleteByPageId(Long pageId);
+	void addPageWithDetails(PageInsertRequestDTO pageInsertRequestDTO);
 }

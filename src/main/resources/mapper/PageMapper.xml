@@ -78,4 +78,22 @@
     <delete id="deleteByPageId" parameterType="java.lang.Long">
         DELETE FROM pages WHERE page_Id = #{pageId}
     </delete>
+
+
+    <insert id="insertPage" parameterType="com.spring.moji.dto.request.PageInsertRequestDTO" useGeneratedKeys="true" keyColumn="page_id" keyProperty="pageId">
+        INSERT INTO pages (diary_id, created_at, weather, content, public_status, template_id)
+        VALUES (#{diaryId}, sysdate, #{weather}, #{content}, #{publicStatus}, #{templateId})
+    </insert>
+
+    <insert id="insertLocation" parameterType="com.spring.moji.dto.request.LocationRequestDTO" useGeneratedKeys="true" keyColumn="location_id" keyProperty="locationId">
+        INSERT INTO locations (page_id, address, latitude, longitude, created_at)
+        VALUES (#{pageId}, #{address}, #{latitude}, #{longitude}, sysdate)
+    </insert>
+
+    <insert id="insertImageUrl" parameterType="com.spring.moji.dto.request.ImageUrlRequestDTO" useGeneratedKeys="true" keyColumn="image_url_id" keyProperty="imageUrlId">
+        INSERT INTO image_urls (location_id, map_image, created_at)
+        VALUES (#{locationId}, #{mapImage}, sysdate)
+    </insert>
+
+
 </mapper>
