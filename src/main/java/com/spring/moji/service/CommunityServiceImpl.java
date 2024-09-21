@@ -53,4 +53,19 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityResponseDTOs;
 	}
 
+	@Override
+	public Page getPublicPage(Long pageId) {
+		return null;
+	}
+
+	@Override
+	public void addScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
+
+	}
+
+	@Override
+	public void removeScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
+
+	}
+
 }
