@@ -12,4 +12,20 @@
 				)
 				AND email = #{email}
 		</select>
+
+		<insert id="createScrap" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO">
+				INSERT INTO scraps (email,page_id,created_at)
+				<foreach item="pageId" collection="pageIds" separator=",">
+						(#{email}, #{pageId}, SYSDATE)
+				</foreach>
+		</insert>
+
+		<delete id="removeScrap" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO">
+				DELETE FROM scraps
+				WHERE 1=1
+				<foreach item="pageId" collection="pageIds" separator=",">
+						AND email = #{email}
+						AND page_id = #{pageId}
+				</foreach>
+		</delete>
 </mapper>
