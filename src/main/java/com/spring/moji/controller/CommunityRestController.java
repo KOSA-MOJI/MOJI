@@ -29,15 +29,14 @@ public class CommunityRestController {
     }
 	@RequestMapping("/page/{pageId}")
 	public Page getCommunityUnderListPage(@PathVariable Long pageId){
-		communityService.getPublicPage(pageId);
-		return null;
+		return communityService.getPublicPage(pageId);
 	}
 	@PostMapping("/scrap")
 	public boolean addScrap(@ModelAttribute CommunityScrapRequestDTO communityScrapRequestDTO) {
 		return communityService.addScrap(communityScrapRequestDTO);
 	}
 	@DeleteMapping("/scrap")
-	public void removeScrap(@ModelAttribute CommunityScrapRequestDTO communityScrapRequestDTO) {
+	public boolean removeScrap(@ModelAttribute CommunityScrapRequestDTO communityScrapRequestDTO) {
 		return communityService.removeScrap(communityScrapRequestDTO);
 	}
 }
