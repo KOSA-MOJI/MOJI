@@ -31,7 +31,7 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
     http.authorizeHttpRequests(auth -> auth
-            .requestMatchers("/user/**").hasAnyRole("USER", "SOLO")
+            .requestMatchers("/user/**").hasAnyRole("SOLO", "COUPLE")
             .requestMatchers("/user/couple/**").hasRole("COUPLE")
             .requestMatchers("/user/solo/**").hasRole("SOLO")
             .anyRequest().permitAll())
