@@ -30,6 +30,34 @@
     </collection>
   </resultMap>
 
+  <select id="findByPageId" parameterType="java.lang.Long" resultMap="PageResultMap">
+			SELECT p.page_id,
+						 p.diary_id    AS page_diary_id,
+						 p.created_at  AS page_created_at,
+						 p.weather,
+						 p.content,
+						 p.public_status,
+						 t.template_id,
+						 t.template_image,
+						 t.created_at  AS template_created_at,
+						 l.location_id,
+						 l.page_id     AS location_page_id,
+						 l.address,
+						 l.latitude,
+						 l.longitude,
+						 l.created_at  AS location_created_at,
+						 i.image_url_id,
+						 i.location_id AS image_location_id,
+						 i.map_image,
+						 i.created_at  AS image_url_created_at
+			FROM pages p
+							 LEFT JOIN templates t ON p.template_id = t.template_id
+							 LEFT JOIN locations l ON p.page_id = l.page_id
+							 LEFT JOIN image_urls i ON l.location_id = i.location_id
+			WHERE p.page_id = #{pageId}
+			AND p.public_status = 'y'
+	</select>
+
   <select id="findByDuration" parameterType="com.spring.moji.dto.request.PageRequestDTO"
     resultMap="PageResultMap">
     SELECT p.page_id,
