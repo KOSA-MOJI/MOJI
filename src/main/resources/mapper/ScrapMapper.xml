@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.moji.mapper.ScrapMapper">
+		<select id="findAllByPageIds" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO" resultType="Scrap">
+				SELECT *
+				FROM scraps
+				WHERE page_id IN (
+				<foreach item="pageId" collection="pageIds" separator=",">
+						#{pageId}
+				</foreach>
+				)
+				AND email = #{email}
+		</select>
+</mapper>
