@@ -55,17 +55,20 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public Page getPublicPage(Long pageId) {
-		return null;
+		System.out.println(pageId);
+		return pageMapper.findByPageId(pageId);
 	}
 
 	@Override
-	public void addScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
-
+	@Transactional
+	public boolean addScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
+		return false;
 	}
 
 	@Override
-	public void removeScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
-
+	@Transactional
+	public boolean removeScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
+		return false;
 	}
 
 }
