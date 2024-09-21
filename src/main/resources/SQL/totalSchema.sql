@@ -63,13 +63,16 @@ CREATE TABLE diaries
 -- 5. pages 테이블 생성
 CREATE TABLE pages
 (
-    page_id       NUMBER               NOT NULL,
-    diary_id      NUMBER               NOT NULL,
-    created_at    DATE DEFAULT sysdate NOT NULL,
-    weather       VARCHAR2(50)         NOT NULL,
-    content       CLOB                 NOT NULL,
-    public_status CHAR(1)              NOT NULL,
-    template_id   NUMBER               NOT NULL,
+    page_id         NUMBER               NOT NULL,
+    diary_id        NUMBER               NOT NULL,
+    created_at      DATE DEFAULT sysdate NOT NULL,
+    weather         VARCHAR2(50)         NOT NULL,
+    content         CLOB                 NOT NULL,
+    font_size       NUMBER               NOT NULL,
+    font_color      VARCHAR2(50)         NOT NULL,
+    text_alignment  VARCHAR2(50)         NOT NULL,
+    public_status   CHAR(1)              NOT NULL,
+    template_id     NUMBER               NOT NULL,
     PRIMARY KEY (page_id)
 );
 
