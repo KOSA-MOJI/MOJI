@@ -6,7 +6,8 @@ CREATE TABLE users
     birthday   DATE          NOT NULL,
     gender     CHAR(1)       NOT NULL,
     password   VARCHAR2(150) NOT NULL,
-    created_at DATE DEFAULT SYSDATE
+    created_at DATE DEFAULT SYSDATE,
+    couple_id  number(1)     NOT NULL
 );
 
 CREATE TABLE user_auth

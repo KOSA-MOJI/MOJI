@@ -3,6 +3,8 @@ package com.spring.moji.service;
 import com.spring.moji.entity.UserAuth;
 import com.spring.moji.entity.User;
 import com.spring.moji.mapper.UserMapper;
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,16 +32,22 @@ public class UserServiceImpl implements UserService {
     int result = userMapper.join(user);
 
     if (result > 0) {
-      UserAuth userAuth = new UserAuth();
-      userAuth.setUserEmail(user.getEmail());
-      userAuth.setAuth("ROLE_USER");
-      result += userMapper.insertAuth(userAuth);
+      List<String> roles = Arrays.asList("ROLE_USER", "ROLE_SOLO"); // Example roles
+
+      for (String role : roles) {
+        UserAuth userAuth = new UserAuth();
+        userAuth.setUserEmail(user.getEmail());
+        userAuth.setAuth(role);
+        result += userMapper.insertAuth(userAuth);
+      }
     }
     return result;
   }
 
   @Override
-  public void updateProfileImageUrl(String email, String profileImageUrl) throws Exception {
-    userMapper.updateProfileImageUrl(email, profileImageUrl);
+  public int updateProfileImageUrl(String email, String profileImageUrl) throws Exception {
+    int result = userMapper.updateProfileImageUrl(email, profileImageUrl);
+
+    return result;
   }
 }

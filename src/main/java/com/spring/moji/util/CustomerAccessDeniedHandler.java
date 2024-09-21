@@ -1,4 +1,4 @@
-package com.spring.moji.security;
+package com.spring.moji.util;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

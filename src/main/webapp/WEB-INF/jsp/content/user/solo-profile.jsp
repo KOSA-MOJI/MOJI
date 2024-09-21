@@ -9,18 +9,9 @@
 <!-- css -->
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/user/profile-style.css"/>
-<link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous"
-/>
+
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/user/profile-modal-style.css"/>
-<link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
-/>
 
 <!-- jsp -->
 <div class="main-panel">
@@ -56,7 +47,7 @@
             <p class="clearfix">
                 <span class="float-start"> 정보 변경 </span>
                 <span class="float-end text-muted">
-        <a href="update-profile">변경 </a>
+        <a href="profile/update">변경 </a>
         </span>
             </p>
         </div>
@@ -141,6 +132,6 @@
     </div>
 
     <!-- js -->
-    <script src="${pageContext.request.contextPath}/js/content/user/solo-profile.js"></script>
+    <script src="${pageContext.request.contextPath}/js/user/solo-profile.js"></script>
 
 

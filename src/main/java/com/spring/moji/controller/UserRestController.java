@@ -33,7 +33,7 @@ public class UserRestController {
       HttpSession session)
       throws Exception {
     String profileImageUrl = s3Util.uploadFile(file);
-    userService.updateProfileImageUrl(email, profileImageUrl);
+    int result = userService.updateProfileImageUrl(email, profileImageUrl);
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

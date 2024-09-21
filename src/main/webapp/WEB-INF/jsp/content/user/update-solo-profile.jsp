@@ -71,6 +71,6 @@
 </div>
 </div>
 <!-- js -->
-<script src="${pageContext.request.contextPath}/js/content/user/update-solo-profile.js"></script>
+<script src="${pageContext.request.contextPath}/js/user/update-solo-profile.js"></script>
 
 

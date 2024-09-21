@@ -2,13 +2,11 @@ package com.spring.moji.config;
 
 import static org.springframework.security.config.Customizer.*;
 
-import com.spring.moji.security.CustomerAccessDeniedHandler;
-import com.spring.moji.security.CustomerDetailService;
-import com.spring.moji.security.SignInSuccessHandler;
-import javax.sql.DataSource;
+import com.spring.moji.util.CustomerAccessDeniedHandler;
+import com.spring.moji.service.CustomerDetailService;
+import com.spring.moji.util.SignInSuccessHandler;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

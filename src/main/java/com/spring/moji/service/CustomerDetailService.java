@@ -1,4 +1,4 @@
-package com.spring.moji.security;
+package com.spring.moji.service;
 
 import com.spring.moji.dto.request.UserRequestDTO;
 import com.spring.moji.entity.User;

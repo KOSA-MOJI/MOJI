@@ -19,13 +19,13 @@ public class User {
   private String password;
   private LocalDate createdAt;
   private String profileImageUrl;
-  private String coupleId;
+  private Long coupleId;
 
 
   @Builder
   public User(String email, String userName, LocalDate birthday, String gender,
       String password,
-      LocalDate createdAt, String profileImageUrl, String coupleId) {
+      LocalDate createdAt, String profileImageUrl, Long coupleId) {
     this.email = email;
     this.userName = userName;
     this.birthday = birthday;

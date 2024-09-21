@@ -1,0 +1,25 @@
+.nickname-input {
+  width: 300px;
+}
+
+#nickname-form-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+#upload-btn {
+  width: 80px;
+  border-radius: 0 6px 6px 0;
+}
+
+.input-group .form-control,
+.input-group .file-upload-browse {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.file-upload-browse {
+  height: 100%; /* 버튼이 input 필드의 높이에 맞춰지도록 설정 */
+}

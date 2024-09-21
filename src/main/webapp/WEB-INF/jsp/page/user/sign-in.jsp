@@ -56,7 +56,5 @@
 
 
 <script src="${pageContext.request.contextPath}/js/user/setting.js"></script>
-<script src="${pageContext.request.contextPath}/js/user/test.js"></script>
-
 </body>
 </html>
