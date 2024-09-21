@@ -113,49 +113,49 @@
 
   <select id="findPublicByDistance" parameterType="com.spring.moji.dto.request.CommunityRequestDTO"
     resultMap="CommunityPageResultMap">
-    <![CDATA[
-    SELECT p.page_id,
-           MAX(d.diary_id)                          AS page_diary_id,
-           MAX(p.created_at)                        AS page_created_at,
-           MAX(p.weather)                           AS page_weather,
-           MAX(DBMS_LOB.SUBSTR(p.content, 4000, 1)) AS page_content,
-           MAX(p.public_status)                     AS public_status,
-           MAX(t.template_id)                       AS template_id,
-           MAX(t.template_image)                    AS temp_image,
-           MAX(t.created_at)                        AS temp_created_at,
-           MAX(l.location_id)                       AS location_id,
-           MAX(l.page_id)                           AS loc_page_id,
-           MAX(l.address)                           AS loc_address,
-           MAX(l.latitude)                          AS loc_latitude,
-           MAX(l.longitude)                         AS loc_longitude,
-           MAX(l.created_at)                        AS loc_created_at,
-           MAX(i.image_url_id)                      AS img_url_id,
-           MAX(i.location_id)                       AS img_location_id,
-           MAX(i.map_image)                         AS img_map_image,
-           MAX(i.created_at)                        AS img_url_created_at
-    FROM pages p
-           LEFT JOIN locations l ON p.page_id = l.page_id
-           LEFT JOIN image_urls i ON l.location_id = i.location_id
-           LEFT JOIN templates t ON p.template_id = t.template_id
-           LEFT JOIN diaries d ON p.diary_id = d.diary_id
-    WHERE p.public_status = 'y'
-      AND p.page_id IN (SELECT l2.page_id
-                        FROM locations l2
-                        WHERE l2.location_id = (SELECT MIN(l3.location_id)
-                                                FROM locations l3
-                                                WHERE l3.page_id = l2.page_id)
-                          AND (
-                                6371 * ACOS(
-                                  COS(#{latitude} * 3.141592653589793 / 180) *
-                                  COS(l2.latitude * 3.141592653589793 / 180) *
-                                  COS(l2.longitude * 3.141592653589793 / 180 -
-                                      #{longitude} * 3.141592653589793 / 180) +
-                                  SIN(#{latitude} * 3.141592653589793 / 180) *
-                                  SIN(l2.latitude * 3.141592653589793 / 180))
-                                ) <= #{radius})
-    GROUP BY p.page_id
-    --      LIMIT #{offset}, #{limit}
-    ]]>
+			SELECT *
+			FROM (SELECT result.*, rownum as rn
+						FROM (SELECT p.page_id,
+												 MAX(d.diary_id)                          AS page_diary_id,
+												 MAX(p.created_at)                        AS page_created_at,
+												 MAX(p.weather)                           AS page_weather,
+												 MAX(DBMS_LOB.SUBSTR(p.content, 4000, 1)) AS page_content,
+												 MAX(p.public_status)                     AS public_status,
+												 MAX(t.template_id)                       AS template_id,
+												 MAX(t.template_image)                    AS temp_image,
+												 MAX(t.created_at)                        AS temp_created_at,
+												 MAX(l.location_id)                       AS location_id,
+												 MAX(l.page_id)                           AS loc_page_id,
+												 MAX(l.address)                           AS loc_address,
+												 MAX(l.latitude)                          AS loc_latitude,
+												 MAX(l.longitude)                         AS loc_longitude,
+												 MAX(l.created_at)                        AS loc_created_at,
+												 MAX(i.image_url_id)                      AS img_url_id,
+												 MAX(i.location_id)                       AS img_location_id,
+												 MAX(i.map_image)                         AS img_map_image,
+												 MAX(i.created_at)                        AS img_url_created_at
+									FROM pages p
+													 LEFT JOIN locations l ON p.page_id = l.page_id
+													 LEFT JOIN image_urls i ON l.location_id = i.location_id
+													 LEFT JOIN templates t ON p.template_id = t.template_id
+													 LEFT JOIN diaries d ON p.diary_id = d.diary_id
+									WHERE p.public_status = 'y'
+										AND p.page_id IN (SELECT l2.page_id
+																			FROM locations l2
+																			WHERE l2.location_id = (SELECT MIN(l3.location_id)
+																															FROM locations l3
+																															WHERE l3.page_id = l2.page_id)
+																				AND (
+																								6371 * ACOS(
+																												COS(#{latitude} * 3.141592653589793 / 180) *
+																												COS(l2.latitude * 3.141592653589793 / 180) *
+																												COS(l2.longitude * 3.141592653589793 / 180 -
+																														#{longitude} * 3.141592653589793 / 180) +
+																												SIN(#{latitude} * 3.141592653589793 / 180) *
+																												SIN(l2.latitude * 3.141592653589793 / 180))
+																								) <![CDATA[<=]]> #{radius})
+									GROUP BY p.page_id) result
+					 )
+			WHERE rn <![CDATA[>=]]>#{offset} and rn <![CDATA[<=]]>(#{offset}+#{limit})
   </select>
-
 </mapper>
