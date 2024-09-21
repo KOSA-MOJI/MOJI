@@ -1,3 +1,16 @@
+-- 테이블 삭제
+--DROP TABLE users CASCADE CONSTRAINTS;
+--DROP TABLE user_auth CASCADE CONSTRAINTS;
+--DROP TABLE couples CASCADE CONSTRAINTS;
+--DROP TABLE requests CASCADE CONSTRAINTS;
+--DROP TABLE breakups CASCADE CONSTRAINTS;
+--DROP TABLE diaries CASCADE CONSTRAINTS;
+--DROP TABLE pages CASCADE CONSTRAINTS;
+--DROP TABLE templates CASCADE CONSTRAINTS;
+--DROP TABLE locations CASCADE CONSTRAINTS;
+--DROP TABLE image_urls CASCADE CONSTRAINTS;
+--DROP TABLE scraps CASCADE CONSTRAINTS;
+
 -- 1. users 테이블 생성
 CREATE TABLE users
 (
@@ -51,13 +64,16 @@ CREATE TABLE diaries
 -- 5. pages 테이블 생성
 CREATE TABLE pages
 (
-    page_id       NUMBER               NOT NULL,
-    diary_id      NUMBER               NOT NULL,
-    created_at    DATE DEFAULT sysdate NOT NULL,
-    weather       VARCHAR2(50)         NOT NULL,
-    content       CLOB                 NOT NULL,
-    public_status CHAR(1)              NOT NULL,
-    template_id   NUMBER               NOT NULL,
+    page_id         NUMBER               NOT NULL,
+    diary_id        NUMBER               NOT NULL,
+    created_at      DATE DEFAULT sysdate NOT NULL,
+    weather         VARCHAR2(50)         NOT NULL,
+    content         CLOB                 NOT NULL,
+    font_size       NUMBER               NOT NULL,
+    font_color      VARCHAR2(50)         NOT NULL,
+    text_alignment  VARCHAR2(50)         NOT NULL,
+    public_status   CHAR(1)              NOT NULL,
+    template_id     NUMBER               NOT NULL,
     PRIMARY KEY (page_id)
 );
 
