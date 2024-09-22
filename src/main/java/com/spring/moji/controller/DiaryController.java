@@ -21,6 +21,7 @@ public class DiaryController {
 	@GetMapping()
 	public String diary(Model model) {
 		model.addAttribute("kakaoApiKey", kakaoApiKey);
-		return "diary/test";
+		model.addAttribute("contentURL","/WEB-INF/jsp/content/diary/diary-read.jsp");
+		return "diary/diary-read-page";
 	}
 }
