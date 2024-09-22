@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.moji.entity.Diary;
 import com.spring.moji.entity.Page;
+import com.spring.moji.entity.Template;
 import com.spring.moji.service.DiaryServiceImpl;
 
 import jakarta.websocket.server.PathParam;
@@ -34,7 +35,10 @@ public class DiaryRestController {
 	public List<Page> getPages(@PathVariable Long diaryId, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate){
 		return diaryService.fetchDiaryPages(diaryId, startDate, endDate);
 	}
-
+	@GetMapping("/template")
+	public List<Template> getTemplates() {
+		return diaryService.findAllTemplates();
+	}
 	@PostMapping("/coverImage/{coupleId}")
 	public String coverImage(@PathVariable Long coupleId, @RequestParam("diaryCoverImage")MultipartFile diaryCoverImage) throws
 		IOException {

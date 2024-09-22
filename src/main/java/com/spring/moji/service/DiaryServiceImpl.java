@@ -12,8 +12,10 @@ import com.spring.moji.dto.request.DiaryRequestDTO;
 import com.spring.moji.dto.request.PageRequestDTO;
 import com.spring.moji.entity.Diary;
 import com.spring.moji.entity.Page;
+import com.spring.moji.entity.Template;
 import com.spring.moji.mapper.DiaryMapper;
 import com.spring.moji.mapper.PageMapper;
+import com.spring.moji.mapper.TemplateMapper;
 import com.spring.moji.util.S3Util;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class DiaryServiceImpl implements DiaryService {
 
 	private final DiaryMapper diaryMapper;
 	private final PageMapper pageMapper;
+	private final TemplateMapper templateMapper;
 	private final S3Util s3Util;
 
 	@Override
@@ -46,5 +49,10 @@ public class DiaryServiceImpl implements DiaryService {
 		DiaryRequestDTO diaryRequestDTO = DiaryRequestDTO.builder().diaryId(diaryId).coverImage(imageURL).build();
 		diaryMapper.updateCoverImage(diaryRequestDTO);
 		return imageURL;
+	}
+
+	@Override
+	public List<Template> findAllTemplates() {
+		return templateMapper.findAll();
 	}
 }
