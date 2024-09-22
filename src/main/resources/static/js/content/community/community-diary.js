@@ -22,7 +22,7 @@ function getCurrentLocation() {
       // 현재 위치를 콘솔에 출력
       console.log(
           `현재 위치: 위도 ${currentLocation.latitude}, 경도 ${currentLocation.longitude}`);
-      fetchCommunityData(currentRadius); //초기 api 호출
+      fetchCommunityData(currentRadius, 20); //초기 api 호출
 
     }, (error) => {
       console.error('위치 정보 가져오기 에러:', error);
@@ -33,11 +33,9 @@ function getCurrentLocation() {
 }
 
 /*TODO : 현재 radius를 받아와 -> 공개 페이지 목록조회 API*/
-function fetchCommunityData(radius) {
+function fetchCommunityData(radius, limit) {
   const email = "wjdekqls1@example.com"; // 예시 이메일-> 세션으로해야함
-  const offset = 2; // 오프셋
-  const limit = 5; // 제한
-
+  const offset = communityData.length;// 현재 데이터 길이로 오프셋 설정
   const apiUrl = `/api/community?email=${email}&longitude=${currentLocation.longitude}&latitude=${currentLocation.latitude}&radius=${radius}&offset=${offset}&limit=${limit}`;
 
   fetch(apiUrl)
@@ -48,32 +46,50 @@ function fetchCommunityData(radius) {
     return response.json();
   })
   .then(data => {
-    console.log("진짜 값들은 " + data); // API로부터 받은 데이터 처리
-    displayCommunityData(data); // 데이터를 화면에 표시-> 함수 호출
+    console.log("API로부터 받은 데이터: ", data);
+    addCommunityData(data); // 데이터를 추가하는 함수 호출
+    // loadImages('left');
+    // displayCommunityData(data);
+    loadImages('left');
   })
+
   .catch(error => console.error('Error fetching data:', error));
 }
 
+function addCommunityData(newData) {
+  newData.forEach(item => {
+    // 중복된 pageId가 있는지 확인
+    if (!communityData.some(
+        existingItem => existingItem.pageId === item.pageId)) {
+      communityData.push(item); // 중복이 없으면 추가
+    }
+  });
+}
+
 /*이미지 갤러리에 삽입*/
+
 function loadImages(direction) {
   const imageContainer = document.getElementById('imageContainer');
   const leftButton = document.getElementById('leftButton');
   const rightButton = document.getElementById('rightButton');
 
+  console.log("loadImages", direction)
+
   if (direction === 'right') {
     currentImageIndex += limit; // 오른쪽 화살표 클릭
-  } else {
+  } else if (direction === 'left') {
     currentImageIndex -= limit; // 왼쪽 화살표 클릭
   }
 
-  // 버튼 방향에 따른 현재 0번 이미지 위치에 놓인 -> 실제 이미지 idx
+  console.log("현재 인덱스" + currentImageIndex, limit);
+// 버튼 방향에 따른 현재 0번 이미지 위치에 놓인 -> 실제 이미지 idx
   currentImageIndex = Math.max(0,
       Math.min(currentImageIndex, communityData.length - limit));
-
-  // 이미지 항목 초기화
+  console.log("이거로 인덱스" + currentImageIndex);
+// 이미지 항목 초기화
   imageContainer.innerHTML = '';
 
-  // 시작 위치, 몇 개 받아올지
+// 시작 위치, 몇 개 받아올지
   for (let i = 0; i < limit; i++) {
     if (currentImageIndex + i < communityData.length) {
       const imageItem = document.createElement('div');
@@ -93,26 +109,37 @@ function loadImages(direction) {
     }
   }
 
-  // 버튼 활성화/비활성화 설정
+// 버튼 활성화/비활성화 설정
   leftButton.classList.toggle('disabled', currentImageIndex === 0);
   rightButton.classList.toggle('disabled',
       currentImageIndex >= communityData.length - limit);
 }
 
-/* TODO: data 값을 지정된 곳에 뿌려줌 */
-function displayCommunityData(data) {
-  communityData = [...communityData, ...data]; // 받아온 데이터를 기존 데이터에 추가
-  communityData.forEach((item, index) => {
-    console.log(`객체 ${index}:`, item);
-  });
-  loadImages('left'); // 초기 로드 시 왼쪽으로 이동하여 첫 이미지를 표시
+// 2.오른쪽 버튼 클릭 시 추가 데이터 요청
+function onRightButtonClick() {
+  if (currentImageIndex >= communityData.length - limit) {
+    console.log("추가로 10개 주시오", currentImageIndex);
+    fetchCommunityData(currentRadius, 10); // 추가로 10개 요청
+  } else {
+    console.log("onRightButtonClick else문")
+    loadImages('right');
+  }
 }
 
-/*Radius 변경 될 때마다 다시 API 호출하기 위해 _ 값 변환*/
-function updateDistanceValues() {
-  const updateRange = document.getElementById('distanceRange').value;
-  console.log("New 바뀐 반경 값: " + updateRange);
-  fetchCommunityData(updateRange); // 새로운 반경 값-> API 호출
+// 1. 오른쪽 버튼 클릭 이벤트 리스너 추가
+const rightButton = document.getElementById('rightButton');
+rightButton.addEventListener('click', () => {
+  console.log("오른쪽 클릭", currentImageIndex);
+  onRightButtonClick(); // 오른쪽 버튼 클릭 시 추가 데이터 요청
+  loadImages(null);
+
+});
+
+// 선택된 이미지 번호 표시
+function updateDiaryContent(element) {
+  const imageNumber = element.getAttribute('data-idx'); // 클릭한 아이템의 고유 값 가져오기
+  const diaryContent = document.getElementById('diaryContent');
+  diaryContent.innerText = '선택된 이미지: ' + imageNumber;
 }
 
 /*이미지 갤러리.js*/
@@ -169,7 +196,7 @@ let isFavorited = false; // 찜 상태를 저장할 변수
 
 // API로부터 스크랩 상태를 가져오는 함수 (true 또는 false를 반환)
 function getScrapStatusFromAPI() {
-  // 실제 API 호출 로직을 여기에 추가
+// 실제 API 호출 로직을 여기에 추가
   return true; // 예시로 false를 반환
 }
 
@@ -216,12 +243,12 @@ function toggleFilter() {
 
 function updateDistanceValues() {
   const rangeValue = document.getElementById('distanceRange').value;
-  // document.getElementById('minValue').innerText = `${rangeValue}km`;
-  // document.getElementById('maxValue').innerText = `50km`; // 최대값은 항상 50km로 고정
+// document.getElementById('minValue').innerText = ${rangeValue}km;
+// document.getElementById('maxValue').innerText = 50km; // 최대값은 항상 50km로 고정
 
   console.log("필터 값은" + rangeValue);
-  // 슬라이더 값이 변경될 때마다 API 호출
-  //fetchFilteredData(rangeValue);
+// 슬라이더 값이 변경될 때마다 API 호출
+//fetchFilteredData(rangeValue);
 }
 
 function fetchFilteredData(minDistance) {
@@ -233,12 +260,7 @@ function fetchFilteredData(minDistance) {
   .then(response => response.json())
   .then(data => {
     console.log(data); // API로부터 받은 데이터 처리
-    // 필요에 따라 데이터 처리 로직 추가
+// 필요에 따라 데이터 처리 로직 추가
   })
   .catch(error => console.error('Error fetching data:', error));
 }
-
-
-
-
-
