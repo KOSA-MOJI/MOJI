@@ -170,4 +170,8 @@
 					 )
 			WHERE rn <![CDATA[>=]]>#{offset} and rn <![CDATA[<=]]>(#{offset}+#{limit})
   </select>
+
+		<update id="updatePublicStatusByPageId" parameterType="com.spring.moji.dto.request.PageRequestDTO">
+			UPDATE pages SET public_status = #{publicStatus} WHERE page_id = #{pageId}
+		</update>
 </mapper>
