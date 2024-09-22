@@ -74,6 +74,7 @@ CREATE TABLE pages
     public_status   CHAR(1)              NOT NULL,
     template_id     NUMBER               NOT NULL,
     PRIMARY KEY (page_id)
+    FOREIGN KEY (diary_id) REFERENCES diaries(diary_id) ON DELETE CASCADE
 );
 
 -- 6. breakups 테이블 생성
@@ -94,6 +95,7 @@ CREATE TABLE image_urls
     map_image    VARCHAR2(255)        NOT NULL,
     created_at   DATE DEFAULT sysdate NOT NULL,
     PRIMARY KEY (image_url_id)
+    FOREIGN KEY (location_id) REFERENCES locations(location_id) ON DELETE CASCADE
 );
 
 -- 8. locations 테이블 생성
@@ -106,6 +108,7 @@ CREATE TABLE locations
     longitude   NUMBER(9, 6)         NOT NULL,
     created_at  DATE DEFAULT sysdate NOT NULL,
     PRIMARY KEY (location_id)
+    FOREIGN KEY (page_id) REFERENCES pages(page_id) ON DELETE CASCADE
 );
 
 -- 9. scraps 테이블 생성
