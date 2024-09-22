@@ -10,8 +10,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 15px;
+  margin-top: 25px;
+  margin-bottom: 15px;
   width: 100%; /* 전체 너비 사용 */
+  background: linear-gradient(to bottom, #fbf8e1, #fffdb7, #eee696) /* 노란색 그라데이션 */
 }
 
 .images {

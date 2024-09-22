@@ -1,3 +1,10 @@
+window.onload = function () {
+  getCurrentLocation(); // 현재 위치 가져오기
+  isFavorited = getScrapStatusFromAPI(); // API에서 상태 가져오기
+  updateFavoriteButton(); // 초기 상태에 따라 이미지 설정
+//loadImages('left'); // 초기 상태에서 1부터 5까지 보여주도록 왼쪽으로 이동
+};
+
 //TO DO: 현재 내 위치 받아오기
 function getCurrentLocation() {
   if (navigator.geolocation) {
@@ -18,9 +25,6 @@ function getCurrentLocation() {
     console.error('이 브라우저는 Geolocation을 지원하지 않습니다.');
   }
 }
-
-// 페이지 로드 시 현재 위치 가져오기
-window.onload = getCurrentLocation;
 
 let currentImageIndex = 0;
 const images = Array.from({length: 13}, (_, i) => i + 1); // 1부터 13까지의 배열
@@ -68,3 +72,82 @@ function updateDiaryContent(element) {
 // 초기 이미지 로드
 currentImageIndex = 0; // 초기 인덱스를 0으로 설정하여 1부터 시작하도록
 loadImages('left'); // 초기 상태에서 1부터 5까지 보여주도록 왼쪽으로 이동
+
+/*스크랩(찜버튼)*/
+let isFavorited = false; // 찜 상태를 저장할 변수
+
+// API로부터 스크랩 상태를 가져오는 함수 (true 또는 false를 반환)
+function getScrapStatusFromAPI() {
+  // 실제 API 호출 로직을 여기에 추가
+  return true; // 예시로 false를 반환
+}
+
+//클릭시, 스크랩 이미지 업데이트1
+function toggleFavorite() {
+  isFavorited = !isFavorited; // 찜 상태 토글
+  updateFavoriteButton(); // 이미지 업데이트
+}
+
+//클릭시, 스크랩 이미지 업데이트2
+function updateFavoriteButton() {
+  const img = document.getElementById('uploadButton');
+  if (isFavorited) {
+    img.src = `${imagePath}full-heart.png`; // 찜된 이미지
+
+  } else {
+    img.src = `${imagePath}gray-heart.png`; // 회색 이미지
+  }
+}
+
+//호버시 , 스크랩 이미지 업데이트
+function hoverFavorite(isHovering) {
+  const img = document.getElementById('uploadButton');
+  if (isHovering) {
+    img.src = isFavorited
+        ? `${imagePath}gray-heart.png`
+        : `${imagePath}full-heart.png`; // 반대 이미지
+  } else {
+    updateFavoriteButton(); // 원래 상태로 되돌리기
+  }
+}
+
+/*필터 클릭시 - 슬라이더 표시*/
+
+function toggleFilter() {
+  const filterContainer = document.getElementById('filterContainer');
+  filterContainer.style.display = filterContainer.style.display === 'none'
+  || filterContainer.style.display === '' ? 'flex' : 'none';
+}
+
+/*필터(반경거리) range*/
+
+//const imagePath = "${pageContext.request.contextPath}/image/content/community/";
+
+function updateDistanceValues() {
+  const rangeValue = document.getElementById('distanceRange').value;
+  // document.getElementById('minValue').innerText = `${rangeValue}km`;
+  // document.getElementById('maxValue').innerText = `50km`; // 최대값은 항상 50km로 고정
+
+  console.log("필터 값은" + rangeValue);
+  // 슬라이더 값이 변경될 때마다 API 호출
+  //fetchFilteredData(rangeValue);
+}
+
+function fetchFilteredData(minDistance) {
+  const maxDistance = 50; // 최대값 고정
+
+  const apiUrl = `${pageContext.request.contextPath}/api/filter?minDistance=${minDistance}&maxDistance=${maxDistance}`; // API URL 수정
+
+  fetch(apiUrl)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data); // API로부터 받은 데이터 처리
+    // 필요에 따라 데이터 처리 로직 추가
+  })
+  .catch(error => console.error('Error fetching data:', error));
+}
+
+
+
+
+
