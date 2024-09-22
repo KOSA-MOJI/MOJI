@@ -16,8 +16,10 @@ public class PageInsertRequestDTO {
   private LocalDate createdAt;
   private String weather;
   private String content;
+  private Long fontSize;
+  private String fontColor;
+  private String textAlignment;
   private Character publicStatus;
   private Long templateId;
   private List<Location> locations;
-
 }

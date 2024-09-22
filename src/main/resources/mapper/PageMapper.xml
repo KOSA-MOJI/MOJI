@@ -7,7 +7,10 @@
     <result property="diaryId" column="page_diary_id"/>
     <result property="createdAt" column="page_created_at"/>
     <result property="weather" column="weather"/>
-    <result property="content" column="content"/>
+	  <result property="content" column="content"/>
+	  <result property="fontSize" column="font_size"/>
+	  <result property="fontColor" column="font_color"/>
+	  <result property="textAlignment" column="text_alignment"/>
     <result property="publicStatus" column="public_status"/>
     <association property="template" javaType="com.spring.moji.entity.Template">
       <id property="templateId" column="template_id"/>
@@ -36,6 +39,9 @@
 						 p.created_at  AS page_created_at,
 						 p.weather,
 						 p.content,
+						 p.font_size,
+						 p.font_color,
+						 p.text_alignment,
 						 p.public_status,
 						 t.template_id,
 						 t.template_image,
@@ -65,6 +71,9 @@
            p.created_at  AS page_created_at,
            p.weather,
            p.content,
+					 p.font_size,
+					 p.font_color,
+					 p.text_alignment,
            p.public_status,
            t.template_id,
            t.template_image,
@@ -107,61 +116,36 @@
 
   <insert id="insertPage" parameterType="com.spring.moji.dto.request.PageInsertRequestDTO"
     useGeneratedKeys="true" keyColumn="page_id" keyProperty="pageId">
-    INSERT INTO pages (diary_id, created_at, weather, content, public_status, template_id)
-    VALUES (#{diaryId}, sysdate, #{weather}, #{content}, #{publicStatus}, #{templateId})
+    INSERT INTO pages (diary_id, created_at, weather, content, font_size, font_color, text_alignment, public_status, template_id)
+    VALUES (#{diaryId}, sysdate, #{weather}, #{content}, #{fontSize}, #{fontColor}, #{textAlignment}, #{publicStatus}, #{templateId})
   </insert>
 
-  <resultMap id="CommunityPageResultMap" type="com.spring.moji.entity.Page">
-    <id property="pageId" column="page_id"/>
-    <result property="diaryId" column="page_diary_id"/>
-    <result property="createdAt" column="page_created_at"/>
-    <result property="weather" column="page_weather"/>
-    <result property="content" column="page_content"/>
-    <result property="publicStatus" column="public_status"/>
-    <association property="template" javaType="com.spring.moji.entity.Template">
-      <id property="templateId" column="template_id"/>
-      <result property="templateImage" column="temp_image"/>
-      <result property="createdAt" column="temp_created_at"/>
-    </association>
-    <collection property="locations" ofType="com.spring.moji.entity.Location">
-      <id property="locationId" column="location_id"/>
-      <result property="pageId" column="loc_page_id"/>
-      <result property="address" column="loc_address"/>
-      <result property="latitude" column="loc_latitude"/>
-      <result property="longitude" column="loc_longitude"/>
-      <result property="createdAt" column="loc_created_at"/>
-      <collection property="imageUrls" ofType="com.spring.moji.entity.ImageUrl">
-        <id property="imageUrlId" column="img_url_id"/>
-        <result property="locationId" column="img_location_id"/>
-        <result property="mapImage" column="img_map_image"/>
-        <result property="createdAt" column="image_url_created_at"/>
-      </collection>
-    </collection>
-  </resultMap>
-
   <select id="findPublicByDistance" parameterType="com.spring.moji.dto.request.CommunityRequestDTO"
-    resultMap="CommunityPageResultMap">
+    resultMap="PageResultMap">
 			SELECT *
 			FROM (SELECT result.*, rownum as rn
 						FROM (SELECT p.page_id,
 												 MAX(d.diary_id)                          AS page_diary_id,
 												 MAX(p.created_at)                        AS page_created_at,
-												 MAX(p.weather)                           AS page_weather,
-												 MAX(DBMS_LOB.SUBSTR(p.content, 4000, 1)) AS page_content,
+												 MAX(p.weather)                           AS weather,
+												 MAX(DBMS_LOB.SUBSTR(p.content, 4000, 1)) AS content,
+												 MAX(p.font_size)                     		AS font_size,
+												 MAX(p.font_color)                     		AS font_color,
+												 MAX(p.text_alignment)                    AS text_alignment,
 												 MAX(p.public_status)                     AS public_status,
 												 MAX(t.template_id)                       AS template_id,
-												 MAX(t.template_image)                    AS temp_image,
-												 MAX(t.created_at)                        AS temp_created_at,
+												 MAX(t.template_image)                    AS template_image,
+												 MAX(t.created_at)                        AS template_created_at,
 												 MAX(l.location_id)                       AS location_id,
-												 MAX(l.page_id)                           AS loc_page_id,
-												 MAX(l.address)                           AS loc_address,
-												 MAX(l.latitude)                          AS loc_latitude,
-												 MAX(l.longitude)                         AS loc_longitude,
-												 MAX(l.created_at)                        AS loc_created_at,
-												 MAX(i.image_url_id)                      AS img_url_id,
-												 MAX(i.location_id)                       AS img_location_id,
-												 MAX(i.map_image)                         AS img_map_image,
-												 MAX(i.created_at)                        AS img_url_created_at
+												 MAX(l.page_id)                           AS location_page_id,
+												 MAX(l.address)                           AS address,
+												 MAX(l.latitude)                          AS latitude,
+												 MAX(l.longitude)                         AS longitude,
+												 MAX(l.created_at)                        AS location_created_at,
+												 MAX(i.image_url_id)                      AS image_url_id,
+												 MAX(i.location_id)                       AS image_location_id,
+												 MAX(i.map_image)                         AS map_image,
+												 MAX(i.created_at)                        AS image_url_created_at
 									FROM pages p
 													 LEFT JOIN locations l ON p.page_id = l.page_id
 													 LEFT JOIN image_urls i ON l.location_id = i.location_id
