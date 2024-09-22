@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.moji.mapper.ScrapMapper">
-		<select id="findAllByPageIds" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO" resultType="Scrap">
+		<select id="findAllByPageIds" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO" resultType="com.spring.moji.entity.Scrap">
 				SELECT *
 				FROM scraps
 				WHERE page_id IN (
