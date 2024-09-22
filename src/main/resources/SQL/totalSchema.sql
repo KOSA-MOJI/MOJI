@@ -66,7 +66,7 @@ CREATE TABLE pages
     page_id         NUMBER               NOT NULL,
     diary_id        NUMBER               NOT NULL,
     created_at      DATE DEFAULT sysdate NOT NULL,
-    weather         VARCHAR2(50)         NOT NULL,
+    weather         VARCHAR2(150)         NOT NULL,
     content         CLOB                 NOT NULL,
     font_size       NUMBER               NOT NULL,
     font_color      VARCHAR2(50)         NOT NULL,
