@@ -7,7 +7,11 @@
         <id property="diaryId" column="diary_id"/>
         <result property="coupleId" column="couple_id"/>
         <result property="coverImage" column="cover_image"/>
-        <result property="bookmarkId" column="bookmark_id"/>
+				<association property="bookmark" javaType="com.spring.moji.entity.Bookmark">
+						<id property="bookmarkId" column="bookmark_id"/>
+						<result property="bookmarkImage" column="bookmark_image"/>
+						<result property="createdAt" column="bookmark_created_at"/>
+				</association>
         <collection property="pages" ofType="com.spring.moji.entity.Page">
             <id property="pageId" column="page_id"/>
             <result property="diaryId" column="page_diary_id"/>
@@ -42,7 +46,9 @@
             d.diary_id,
             d.couple_id,
             d.cover_image,
-            d.bookmark_id,
+            b.bookmark_id,
+            b.bookmark_image,
+            b.created_at AS bookmark_created_at,
             p.page_id,
             p.diary_id AS page_diary_id,
             p.created_at AS page_created_at,
@@ -64,6 +70,7 @@
             i.created_at AS image_url_created_at
         FROM
             diaries d
+								LEFT JOIN bookmarks b ON d.bookmark_id = b.bookmark_id
                 LEFT JOIN pages p ON d.diary_id = p.diary_id
                 LEFT JOIN locations l ON p.page_id = l.page_id
                 LEFT JOIN image_urls i ON l.location_id = i.location_id
