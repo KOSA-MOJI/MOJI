@@ -31,14 +31,23 @@ public class DiaryRestController {
 	public Diary getDiary(@PathVariable Long coupleId) {
 		return diaryService.findByCoupleId(coupleId);
 	}
+
 	@GetMapping("/page/{diaryId}")
 	public List<Page> getPages(@PathVariable Long diaryId, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate){
 		return diaryService.fetchDiaryPages(diaryId, startDate, endDate);
 	}
+
+	@PostMapping("/public/{pageId}")
+	public boolean setPagePublicStatus(@PathVariable Long pageId, @RequestParam boolean publicStatus){
+		diaryService.setPagePublicStatus(pageId,publicStatus);
+		return true;
+	}
+
 	@GetMapping("/template")
 	public List<Template> getTemplates() {
 		return diaryService.findAllTemplates();
 	}
+
 	@PostMapping("/coverImage/{coupleId}")
 	public String coverImage(@PathVariable Long coupleId, @RequestParam("diaryCoverImage")MultipartFile diaryCoverImage) throws
 		IOException {
