@@ -6,17 +6,17 @@ window.onload = function () {
 };
 
 //TO DO: 현재 내 위치 받아오기
+// _ 공개 페이지 목록 조회 API연동
 function getCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+      currentLocation.latitude = position.coords.latitude;
+      currentLocation.longitude = position.coords.longitude;
 
       // 현재 위치를 콘솔에 출력
-      console.log(`현재 위치: 위도 ${latitude}, 경도 ${longitude}`);
-
-      // 필요에 따라 여기서 추가 작업 수행 가능
-      // 예: KakaoMap에 현재 위치 표시 등
+      console.log(
+          `현재 위치: 위도 ${currentLocation.latitude}, 경도 ${currentLocation.longitude}`);
+      fetchCommunityData()
 
     }, (error) => {
       console.error('위치 정보 가져오기 에러:', error);
@@ -26,6 +26,29 @@ function getCurrentLocation() {
   }
 }
 
+function fetchCommunityData() {
+  const email = "hello@hello.com"; // 예시 이메일
+  const radius = 10000; // 반경
+  const offset = 2; // 오프셋
+  const limit = 5; // 제한
+
+  const apiUrl = `/api/community?email=${email}&longitude=${currentLocation.longitude}&latitude=${currentLocation.latitude}&radius=${radius}&offset=${offset}&limit=${limit}`;
+
+  fetch(apiUrl)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data); // API로부터 받은 데이터 처리
+    displayCommunityData(data); // 데이터를 화면에 표시하는 함수 호출
+  })
+  .catch(error => console.error('Error fetching data:', error));
+}
+
+/*이미지 갤러리.js*/
 let currentImageIndex = 0;
 const images = Array.from({length: 13}, (_, i) => i + 1); // 1부터 13까지의 배열
 
