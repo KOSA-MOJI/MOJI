@@ -117,7 +117,7 @@
   <insert id="insertPage" parameterType="com.spring.moji.dto.request.PageInsertRequestDTO"
     useGeneratedKeys="true" keyColumn="page_id" keyProperty="pageId">
     INSERT INTO pages (diary_id, created_at, weather, content, font_size, font_color, text_alignment, public_status, template_id)
-    VALUES (#{diaryId}, sysdate, #{weather}, #{content}, #{fontSize}, #{fontColor}, #{textAlignment}, #{publicStatus}, #{templateId})
+    VALUES (#{diaryId}, #{createdAt}, #{weather}, #{content}, #{fontSize}, #{fontColor}, #{textAlignment}, #{publicStatus}, #{templateId})
   </insert>
 
   <select id="findPublicByDistance" parameterType="com.spring.moji.dto.request.CommunityRequestDTO"

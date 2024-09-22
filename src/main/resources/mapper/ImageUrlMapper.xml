@@ -10,7 +10,18 @@
         order by image_url_id
     </select>
 
-    <insert id="insertImageUrl" parameterType="com.spring.moji.dto.request.ImageUrlRequestDTO" useGeneratedKeys="true" keyColumn="image_url_id" keyProperty="imageUrlId">
+		<select id="findAllByPageId" parameterType="java.lang.Long" resultType="com.spring.moji.entity.ImageUrl">
+				SELECT
+				    i.image_url_id,
+				    i.location_id,
+				    i.map_image,
+				    i.created_at
+				FROM locations l
+								 LEFT JOIN image_urls i ON l.location_id = i.location_id
+				WHERE l.page_id = #{pageId}
+		</select>
+		
+    <insert id="insertImageUrl" parameterType="com.spring.moji.dto.request.ImageUrlInsertRequestDTO">
         INSERT INTO image_urls (location_id, map_image, created_at)
         VALUES (#{locationId}, #{mapImage}, sysdate)
     </insert>

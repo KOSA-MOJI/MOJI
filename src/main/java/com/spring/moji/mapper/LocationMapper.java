@@ -1,5 +1,6 @@
 package com.spring.moji.mapper;
 
+import com.spring.moji.dto.request.LocationInsertRequestDTO;
 import com.spring.moji.dto.request.LocationRequestDTO;
 import java.util.List;
 
@@ -10,5 +11,5 @@ import com.spring.moji.entity.Location;
 @Mapper
 public interface LocationMapper {
 	List<Location> findAllByPageId(Long pageId);
-	void insertLocation(LocationRequestDTO locationRequestDTO);
+	void insertLocation(LocationInsertRequestDTO locationInsertRequestDTO);
 }
