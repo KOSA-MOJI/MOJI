@@ -26,33 +26,27 @@ import lombok.RequiredArgsConstructor;
 public class PageRestController {
 	private final PageService pageService;
 
-	@GetMapping("/recent/{diaryId}")
-	public Page findRecentPage(@PathVariable Long diaryId) {
-		return pageService.findRecentPage(diaryId);
-	}
-
-	@GetMapping("/prefetch/{diaryId}")
-	public List<Page> fetchDiaryPages(@PathVariable Long diaryId, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate startDate, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate) {
-		return pageService.fetchDiaryPages(diaryId, startDate, endDate);
-	}
-
-	//다이어리 내의 한 일자의 페이지 삭제
-	@DeleteMapping("/delete/{pageId}")
-	public ResponseEntity<String> deletePage(@PathVariable Long pageId) {
-		pageService.deleteByPageId(pageId);
-		return ResponseEntity.ok("Page deleted successfully");
-	}
-
-	// 다이어리 내의 한 일자의 페이지 생성
-	@PostMapping("/insert")
-	public ResponseEntity<String> createPage(@RequestBody PageInsertRequestDTO pageInsertRequestDTO) {
-		pageService.addPageWithDetails(pageInsertRequestDTO);
-		return ResponseEntity.ok("Page and related details created successfully");
-	}
-
-
-
-
-
-
+	// @GetMapping("/recent/{diaryId}")
+	// public Page findRecentPage(@PathVariable Long diaryId) {
+	// 	return pageService.findRecentPage(diaryId);
+	// }
+	//
+	// @GetMapping("/prefetch/{diaryId}")
+	// public List<Page> fetchDiaryPages(@PathVariable Long diaryId, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate startDate, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate) {
+	// 	return pageService.fetchDiaryPages(diaryId, startDate, endDate);
+	// }
+	//
+	// //다이어리 내의 한 일자의 페이지 삭제
+	// @DeleteMapping("/delete/{pageId}")
+	// public ResponseEntity<String> deletePage(@PathVariable Long pageId) {
+	// 	pageService.deleteByPageId(pageId);
+	// 	return ResponseEntity.ok("Page deleted successfully");
+	// }
+	//
+	// // 다이어리 내의 한 일자의 페이지 생성
+	// @PostMapping("/insert")
+	// public ResponseEntity<String> createPage(@RequestBody PageInsertRequestDTO pageInsertRequestDTO) {
+	// 	pageService.addPageWithDetails(pageInsertRequestDTO);
+	// 	return ResponseEntity.ok("Page and related details created successfully");
+	// }
 }
