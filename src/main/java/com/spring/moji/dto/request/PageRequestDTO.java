@@ -9,6 +9,8 @@ import lombok.Data;
 @Builder
 public class PageRequestDTO {
 	private Long diaryId;
+	private Long pageId;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private char publicStatus;
 }

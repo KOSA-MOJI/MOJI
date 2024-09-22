@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
@@ -35,9 +36,18 @@ public class S3Util {
 		file.delete();
 		return s3Client.getUrl(bucketName, fileName).toString();
 	}
-	public void deleteFile(String fileName) {
-		s3Client.deleteObject(bucketName, fileName);
+	public void deleteFile(String fileUrl) {
+		try {
+			String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+			s3Client.deleteObject(bucketName, fileName);
+			System.out.println("File deleted successfully: " + fileName);
+		} catch (AmazonS3Exception e) {
+			System.err.println("Error deleting file: " + e.getErrorMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
 	private File convertMultiPartToFile(MultipartFile file) throws IOException {
 		File convFile = new File(file.getOriginalFilename());
 		FileOutputStream fos = new FileOutputStream(convFile);
