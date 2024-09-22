@@ -5,6 +5,12 @@ window.onload = function () {
 //loadImages('left'); // 초기 상태에서 1부터 5까지 보여주도록 왼쪽으로 이동
 };
 
+let currentLocation = {latitude: null, longitude: null};
+let currentRadius = 1500; // 기본 반경 값
+let currentImageIndex = 0;
+const limit = 5; // 한 번에 불러올 데이터 수
+let communityData = []; // 받아온 데이터 저장 배열
+
 //TO DO: 현재 내 위치 받아오기
 // _ 공개 페이지 목록 조회 API연동
 function getCurrentLocation() {
@@ -16,7 +22,7 @@ function getCurrentLocation() {
       // 현재 위치를 콘솔에 출력
       console.log(
           `현재 위치: 위도 ${currentLocation.latitude}, 경도 ${currentLocation.longitude}`);
-      fetchCommunityData()
+      fetchCommunityData(currentRadius); //초기 api 호출
 
     }, (error) => {
       console.error('위치 정보 가져오기 에러:', error);
@@ -26,9 +32,9 @@ function getCurrentLocation() {
   }
 }
 
-function fetchCommunityData() {
-  const email = "hello@hello.com"; // 예시 이메일
-  const radius = 10000; // 반경
+/*TODO : 현재 radius를 받아와 -> 공개 페이지 목록조회 API*/
+function fetchCommunityData(radius) {
+  const email = "wjdekqls1@example.com"; // 예시 이메일-> 세션으로해야함
   const offset = 2; // 오프셋
   const limit = 5; // 제한
 
@@ -42,49 +48,110 @@ function fetchCommunityData() {
     return response.json();
   })
   .then(data => {
-    console.log(data); // API로부터 받은 데이터 처리
-    displayCommunityData(data); // 데이터를 화면에 표시하는 함수 호출
+    console.log("진짜 값들은 " + data); // API로부터 받은 데이터 처리
+    displayCommunityData(data); // 데이터를 화면에 표시-> 함수 호출
   })
   .catch(error => console.error('Error fetching data:', error));
 }
 
-/*이미지 갤러리.js*/
-let currentImageIndex = 0;
-const images = Array.from({length: 13}, (_, i) => i + 1); // 1부터 13까지의 배열
-
+/*이미지 갤러리에 삽입*/
 function loadImages(direction) {
   const imageContainer = document.getElementById('imageContainer');
-  const imageItems = imageContainer.getElementsByClassName('image-item');
   const leftButton = document.getElementById('leftButton');
   const rightButton = document.getElementById('rightButton');
 
-  console.log(imageItems);
-
   if (direction === 'right') {
-    currentImageIndex += 5; // 오른쪽 화살표 클릭
+    currentImageIndex += limit; // 오른쪽 화살표 클릭
   } else {
-    currentImageIndex -= 5; // 왼쪽 화살표 클릭
+    currentImageIndex -= limit; // 왼쪽 화살표 클릭
   }
 
   // 버튼 방향에 따른 현재 0번 이미지 위치에 놓인 -> 실제 이미지 idx
   currentImageIndex = Math.max(0,
-      Math.min(currentImageIndex, images.length - 5));
+      Math.min(currentImageIndex, communityData.length - limit));
 
-  //시작 위치, 몇개 받아올지
-  for (let i = 0; i < imageItems.length; i++) {
-    const imageNumber = images[currentImageIndex + i]; //해당 위치에 오는 이미지 idx
-    // console.log("imageNumber" + imageNumber)
-    imageItems[i].innerText = imageNumber; // 배열의 값을 div에 표시
-    // console.log(i + " ImageItems" + imageItems[i])
-    imageItems[i].setAttribute('data-idx', imageNumber); // 고유 값 설정
+  // 이미지 항목 초기화
+  imageContainer.innerHTML = '';
+
+  // 시작 위치, 몇 개 받아올지
+  for (let i = 0; i < limit; i++) {
+    if (currentImageIndex + i < communityData.length) {
+      const imageItem = document.createElement('div');
+      imageItem.className = 'image-item';
+      imageItem.setAttribute('data-idx',
+          communityData[currentImageIndex + i].pageId); // 페이지 ID 설정
+
+      // 배경 이미지 설정
+      imageItem.style.backgroundImage = `url(${communityData[currentImageIndex
+      + i].imageUrl})`;
+      imageItem.style.backgroundSize = 'cover'; // 배경 이미지 크기 조정
+      imageItem.style.backgroundPosition = 'center'; // 중앙 정렬
+
+      imageItem.onclick = () => updateDiaryContent(imageItem); // 클릭 이벤트 설정
+      imageContainer.appendChild(imageItem);
+
+    }
   }
 
   // 버튼 활성화/비활성화 설정
   leftButton.classList.toggle('disabled', currentImageIndex === 0);
   rightButton.classList.toggle('disabled',
-      currentImageIndex >= images.length - 5);
+      currentImageIndex >= communityData.length - limit);
 }
 
+/* TODO: data 값을 지정된 곳에 뿌려줌 */
+function displayCommunityData(data) {
+  communityData = [...communityData, ...data]; // 받아온 데이터를 기존 데이터에 추가
+  communityData.forEach((item, index) => {
+    console.log(`객체 ${index}:`, item);
+  });
+  loadImages('left'); // 초기 로드 시 왼쪽으로 이동하여 첫 이미지를 표시
+}
+
+/*Radius 변경 될 때마다 다시 API 호출하기 위해 _ 값 변환*/
+function updateDistanceValues() {
+  const updateRange = document.getElementById('distanceRange').value;
+  console.log("New 바뀐 반경 값: " + updateRange);
+  fetchCommunityData(updateRange); // 새로운 반경 값-> API 호출
+}
+
+/*이미지 갤러리.js*/
+// let currentImageIndex = 0;
+// const images = Array.from({length: 13}, (_, i) => i + 1); // 1부터 13까지의 배열
+//
+// function loadImages(direction) {
+//   const imageContainer = document.getElementById('imageContainer');
+//   const imageItems = imageContainer.getElementsByClassName('image-item');
+//   const leftButton = document.getElementById('leftButton');
+//   const rightButton = document.getElementById('rightButton');
+//
+//   console.log(imageItems);
+//
+//   if (direction === 'right') {
+//     currentImageIndex += 5; // 오른쪽 화살표 클릭
+//   } else {
+//     currentImageIndex -= 5; // 왼쪽 화살표 클릭
+//   }
+//
+//   // 버튼 방향에 따른 현재 0번 이미지 위치에 놓인 -> 실제 이미지 idx
+//   currentImageIndex = Math.max(0,
+//       Math.min(currentImageIndex, images.length - 5));
+//
+//   //시작 위치, 몇개 받아올지
+//   for (let i = 0; i < imageItems.length; i++) {
+//     const imageNumber = images[currentImageIndex + i]; //해당 위치에 오는 이미지 idx
+//     // console.log("imageNumber" + imageNumber)
+//     imageItems[i].innerText = imageNumber; // 배열의 값을 div에 표시
+//     // console.log(i + " ImageItems" + imageItems[i])
+//     imageItems[i].setAttribute('data-idx', imageNumber); // 고유 값 설정
+//   }
+//
+//   // 버튼 활성화/비활성화 설정
+//   leftButton.classList.toggle('disabled', currentImageIndex === 0);
+//   rightButton.classList.toggle('disabled',
+//       currentImageIndex >= images.length - 5);
+// }
+//
 //To DO : 페이지에 선택된 번호 표시
 function updateDiaryContent(element) {
   const imageNumber = element.getAttribute('data-idx'); // 클릭한 아이템의 고유 값 가져오기
@@ -92,9 +159,10 @@ function updateDiaryContent(element) {
   diaryContent.innerText = '선택된 이미지: ' + imageNumber;
 }
 
-// 초기 이미지 로드
-currentImageIndex = 0; // 초기 인덱스를 0으로 설정하여 1부터 시작하도록
-loadImages('left'); // 초기 상태에서 1부터 5까지 보여주도록 왼쪽으로 이동
+//
+// // 초기 이미지 로드
+// currentImageIndex = 0; // 초기 인덱스를 0으로 설정하여 1부터 시작하도록
+// loadImages('left'); // 초기 상태에서 1부터 5까지 보여주도록 왼쪽으로 이동
 
 /*스크랩(찜버튼)*/
 let isFavorited = false; // 찜 상태를 저장할 변수
