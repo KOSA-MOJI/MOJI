@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 @Builder
 public class CommunityRequestDTO {
-
-    private double longitude;
-    private double latitude;
-    private int radius;
-    private int offset;
-    private int limit;
+    private String email;
+    private Double longitude;
+    private Double latitude;
+    private Long radius;
+    private Long offset;
+    private Long limit;
 }
