@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.moji.mapper.ScrapMapper">
+		<select id="findAllByPageIds" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO" resultType="Scrap">
+				SELECT *
+				FROM scraps
+				WHERE page_id IN (
+				<foreach item="pageId" collection="pageIds" separator=",">
+						#{pageId}
+				</foreach>
+				)
+				AND email = #{email}
+		</select>
+
+		<insert id="createScrap" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO">
+				INSERT INTO scraps (email,page_id,created_at)
+				<foreach item="pageId" collection="pageIds" separator=",">
+						(#{email}, #{pageId}, SYSDATE)
+				</foreach>
+		</insert>
+
+		<delete id="removeScrap" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO">
+				DELETE FROM scraps
+				WHERE 1=1
+				<foreach item="pageId" collection="pageIds" separator=",">
+						AND email = #{email}
+						AND page_id = #{pageId}
+				</foreach>
+		</delete>
+</mapper>
