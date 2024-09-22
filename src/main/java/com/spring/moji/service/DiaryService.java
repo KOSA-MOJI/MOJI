@@ -15,4 +15,5 @@ public interface DiaryService {
 	List<Page> fetchDiaryPages(Long diaryId, LocalDate startDate, LocalDate endDate);
 	String updateCoverImage(Long diaryId, MultipartFile diaryCoverImage) throws IOException;
 	List<Template> findAllTemplates();
+	boolean setPagePublicStatus(Long pageId, boolean publicStatus);
 }

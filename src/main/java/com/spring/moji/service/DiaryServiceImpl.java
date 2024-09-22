@@ -55,4 +55,13 @@ public class DiaryServiceImpl implements DiaryService {
 	public List<Template> findAllTemplates() {
 		return templateMapper.findAll();
 	}
+
+	@Override
+	@Transactional
+	public boolean setPagePublicStatus(Long pageId, boolean publicStatus) {
+		PageRequestDTO pageRequestDTO = PageRequestDTO.builder().pageId(pageId).publicStatus(publicStatus?'y':'n').build();
+		pageMapper.updatePublicStatusByPageId(pageRequestDTO);
+		return false;
+	}
+
 }
