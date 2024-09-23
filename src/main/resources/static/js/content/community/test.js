@@ -54,7 +54,6 @@ function updateDiaryContent(element) {
       updatePageContent(pageData)
     }).then(()=>{
     const scrapButton= document.getElementById('scrapButton')
-    console.log(communityData[curDataIndex + selectedIndex - 1])
     scrapButton.src = communityData[curDataIndex + selectedIndex - 1].scrapped
       ?`${imagePath}full-heart.png`
       :`${imagePath}gray-heart.png`
@@ -112,7 +111,7 @@ function fetchCommunityData(offset, limit, isInit) {
   }).catch(err => console.log(err))
 }
 
-// TODO : 페이지 화면 구현
+// 페이지 화면 구현
 function createPagesData(data){
     let leftData = {
         pageId : data.pageId,
@@ -128,7 +127,6 @@ function createPagesData(data){
     let rightData ={
         locations : data.locations
     }
-    console.log(rightData)
     return {
         left : leftData,
         right : rightData
@@ -314,7 +312,7 @@ function closeModal() {
 function applyFilter() {
   const updateRadius = document.getElementById('distanceRange').value;
 
-  console.log("필터 값은" + updateRadius);
+  // console.log("필터 값은" + updateRadius);
 
   //radius 지정 및 초기화
   resetDefaultData(updateRadius);
@@ -363,7 +361,6 @@ function toggleScrap(){
   }).then(()=>{
     const scrapButton= document.getElementById('scrapButton')
     curPage.scrapped=!curPage.scrapped
-    console.log(`${curPage.pageId}번 페이지 스크랩 ${curPage.scrapped?"추가":"삭제"} 성공!`)
     scrapButton.src = curPage.scrapped
       ?`${imagePath}full-heart.png`
       :`${imagePath}gray-heart.png`
