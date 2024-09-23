@@ -238,17 +238,12 @@ function toggleFilter() {
 }
 
 /*필터(반경거리) range*/
-
-//const imagePath = "${pageContext.request.contextPath}/image/content/community/";
-
 function updateDistanceValues() {
   const rangeValue = document.getElementById('distanceRange').value;
-// document.getElementById('minValue').innerText = ${rangeValue}km;
-// document.getElementById('maxValue').innerText = 50km; // 최대값은 항상 50km로 고정
 
   console.log("필터 값은" + rangeValue);
-// 슬라이더 값이 변경될 때마다 API 호출
-//fetchFilteredData(rangeValue);
+  currentRadius = rangeValue;
+  getCurrentLocation();// 슬라이더 값이 변경될 때마다 API 호출
 }
 
 function fetchFilteredData(minDistance) {
