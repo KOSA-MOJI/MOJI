@@ -10,7 +10,7 @@
     <result column="password" property="password"/>
     <result column="created_at" property="createdAt"/>
     <result column="profile_image_url" property="profileImageUrl"/>
-    <result column="couple_id" property="coupleId"/>
+    <result column="couple_id" property="coupleStatus"/>
     <collection property="authList" resultMap="authMap"/>
   </resultMap>
   <resultMap id="authMap" type="com.spring.moji.entity.UserAuth">
@@ -18,7 +18,7 @@
     <result column="user_email" property="userEmail"/>
     <result column="auth" property="auth"/>
   </resultMap>
-
+  <!--로그인-->
   <select id="login" resultMap="userMap">
     SELECT u.email
          , u.user_name
@@ -27,13 +27,13 @@
          , password
          , profile_image_url
          , auth
-         , couple_id
+         , couple_status
          , created_at
     FROM users u
            JOIN user_auth auth ON u.email = auth.user_email
     WHERE u.email = #{email}
   </select>
-
+  <!--회원가입-->
   <insert id="join">
     INSERT INTO users (email, user_name, birthday, gender, password, created_at)
     VALUES (#{email}, #{userName}, #{birthday}, #{gender}, #{password}, sysdate)
@@ -43,11 +43,25 @@
     insert into user_auth(auth_no, user_email, auth)
     values (user_auth_seq.nextval, #{userEmail}, #{auth})
   </insert>
-
-  <update id="updateProfileImageUrl" parameterType="com.spring.moji.entity.User">
+  <!--개인프로필 사진 수정-->
+  <update id="updateProfileImageUrl">
     update users
     set profile_image_url = #{profileImageUrl}
     where EMAIL = #{email}
   </update>
+  <!--  이메일로 유저 조회 -->
+  <select id="findUserByEmail" resultMap="userMap">
+    SELECT email
+         , user_name
+         , birthday
+         , gender
+         , password
+         , profile_image_url
+         , couple_status
+         , created_at
+    FROM users
+    WHERE email = #{email}
+  </select>
 
+  <!--  -->
 </mapper>

@@ -11,16 +11,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class Request {
 
-  private Long RequestId;
-  private String RequestEmail;
-  private String ReceiverEmail;
+  private Long requestId;
+  private String requestEmail;
+  private String receiverEmail;
   private LocalDate createdAt;
 
   @Builder
-  public Request(Long RequestId, String RequestEmail, String ReceiverEmail, LocalDate createdAt) {
-    this.RequestId = RequestId;
-    this.RequestEmail = RequestEmail;
-    this.ReceiverEmail = ReceiverEmail;
+  public Request(Long requestId, String requestEmail, String receiverEmail, LocalDate createdAt) {
+    this.requestId = requestId;
+    this.requestEmail = requestEmail;
+    this.receiverEmail = receiverEmail;
     this.createdAt = createdAt;
 
   }

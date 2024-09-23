@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.moji.mapper.RequestMapper">
+  <resultMap id="requestMap" type="com.spring.moji.entity.Request">
+    <id column="request_id" property="requestId"/>
+    <result column="request_email" property="requestEmail"/>
+    <result column="receiver_email" property="receiverEmail"/>
+    <result column="created_at" property="createdAt"/>
+  </resultMap>
+
+  <resultMap id="authMap" type="com.spring.moji.entity.UserAuth">
+    <id column="auth_no" property="authNo"/>
+    <result column="user_email" property="userEmail"/>
+    <result column="auth" property="auth"/>
+  </resultMap>
+  <!--  커플 신청 -->
+  <insert id="requestCouple">
+    insert into requests(REQUEST_ID, REQUEST_EMAIL, RECEIVER_EMAIL, CREATED_AT)
+    values (REQUESTS_SEQ.nextval, #{requestEmail}, #{receiverEmail}, sysdate)
+  </insert>
+
+  <!--  커플신청 확인 -->
+  <select id="checkRequest">
+    select REQUEST_EMAIL
+    from REQUESTS
+    where RECEIVER_EMAIL = #{receiverEmail}
+  </select>
+  <!--  커플 신청 수락-->
+  <insert id="addCouple">
+    insert into COUPLES(couple_id, user1_email, user2_email, couple_name, couple_profile_image)
+    values (COUPLES_SEQ.nextval, #{user1Email}, #{user2Email}, '커플',
+            '/image/content/user/default-avatar.avif')
+  </insert>
+
+  <update id="updateAuth">
+    insert into user_auth(auth_no, user_email, auth)
+    values (user_auth_seq.nextval, #{userEmail}, 'ROLE_COUPLE')
+  </update>
+
+  <delete id="deleteRequest">
+    delete
+    from REQUESTS
+    where RECEIVER_EMAIL = #{email}
+  </delete>
+</mapper>
