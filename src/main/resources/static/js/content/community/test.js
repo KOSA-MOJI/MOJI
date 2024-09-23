@@ -214,11 +214,6 @@ function createRightChild(pageData){
     let map = new kakao.maps.Map(mapContainer, mapOption);
     container.appendChild(mapContainer);
 
-    // setTimeout(() => {
-    //     map.relayout();
-    //     map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
-    // }, 0);
-
     window.addEventListener('resize', () => {
         map.relayout();
     });
@@ -235,6 +230,8 @@ function createRightChild(pageData){
         "width:90%; height:40%;"+
         "display: inline-block;" +
         "align-items: center;")
+    
+    // 만들어진 위치 마커와 이미지연결
     data.locations.forEach((location,idx) => {
         let marker = new kakao.maps.Marker({
             map: map,
@@ -249,6 +246,7 @@ function createRightChild(pageData){
         markers.push(marker)
     });
 
+    // 모여진 마커들을 기반으로 맵의 바운드 설정
     if (markers.length > 0) {
       let bounds = new kakao.maps.LatLngBounds();
 
