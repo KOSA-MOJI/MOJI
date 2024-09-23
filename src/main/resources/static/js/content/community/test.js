@@ -128,13 +128,26 @@ function closeModal() {
 }
 
 /*필터(반경거리) range*/
-function updateDistanceValues() {
-  const rangeValue = document.getElementById('distanceRange').value;
+function applyFilter() {
+  const updateRadius = document.getElementById('distanceRange').value;
 
-  console.log("필터 값은" + rangeValue);
-  currentRadius = rangeValue;
-  communityData = []; //offset 초기화
-  getCurrentLocation();// 슬라이더 값이 변경될 때마다 API 호출
+  console.log("필터 값은" + updateRadius);
+
+  //radius 지정 및 초기화
+  resetDefaultData(updateRadius);
+
+  getCurrentLocation().then(() => {
+    fetchCommunityData(0, 20, true)
+  });// 슬라이더 값이 변경될 때마다 API 호출
+
+}
+
+//변수 초기화 함수
+function resetDefaultData(radius) {
+  currentRadius = radius;
+  communityData = [];
+  curDataIndex = 0;
+  selectedIndex = 1;
 }
 
 /*스크랩(찜버튼)*/
