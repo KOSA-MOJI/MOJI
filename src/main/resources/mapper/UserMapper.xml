@@ -10,7 +10,7 @@
     <result column="password" property="password"/>
     <result column="created_at" property="createdAt"/>
     <result column="profile_image_url" property="profileImageUrl"/>
-    <result column="couple_id" property="coupleStatus"/>
+    <result column="couple_status" property="coupleStatus"/>
     <collection property="authList" resultMap="authMap"/>
   </resultMap>
   <resultMap id="authMap" type="com.spring.moji.entity.UserAuth">

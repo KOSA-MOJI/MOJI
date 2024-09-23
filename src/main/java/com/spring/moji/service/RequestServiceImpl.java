@@ -20,17 +20,20 @@ public class RequestServiceImpl implements RequestService {
   public int requestCouple(String requestEmail, String receiverEmail) throws Exception {
     int result;
     User receiver = userMapper.findUserByEmail(receiverEmail);
-    if (receiver != null) {
-      String existingRequestEmail = requestMapper.checkRequest(receiverEmail);
-      if (existingRequestEmail == null) {
-        result = requestMapper.requestCouple(requestEmail, receiverEmail);
+
+    if (receiver != null) { // 해당 유저가 존재하면
+      if (receiver.getCoupleStatus().equals(1L)) {
+        return -1;
+      }
+      String existingRequestEmail = requestMapper.checkRequest(receiverEmail); // 요청이 있는 지 확인
+      if (existingRequestEmail == null) { // 요청이 없으면
+        return requestMapper.requestCouple(requestEmail, receiverEmail); // 요청 보내고 1을 반환
       } else {
-        result = 0;
+        return 0;  // 요청이 있으면 0을 반환
       }
     } else {
-      result = -1;
+      return -1; // 해당 유저가 존재하지 않거나 커플이면 -1을 반환
     }
-    return result;
   }
 
   @Override

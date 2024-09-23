@@ -72,7 +72,7 @@ public class UserRequestDTO implements UserDetails {
     return user.getProfileImageUrl();
   }
 
-  public String getCoupleStatus() {
+  public Long getCoupleStatus() {
     log.info("[[  getCoupleStatus 메서드 호출됨  ]]");
     return user.getCoupleStatus();
   }

@@ -24,7 +24,11 @@ public class SignInSuccessHandler implements AuthenticationSuccessHandler {
     log.info("아이디 :" + user.getUsername());
     log.info("패스워드 :" + user.getPassword());
     log.info("권한 :" + user.getAuthorities());
+    response.setStatus(HttpServletResponse.SC_OK);
 
+    response.setContentType("application/json");
     response.sendRedirect("/user/solo/");
+    response.getWriter().write("{\"message\": \"Login successful\", \"status\": \"success\"}");
+
   }
 }

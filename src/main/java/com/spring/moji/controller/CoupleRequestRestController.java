@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/user/solo")
+@RequestMapping("api/user/solo/request")
 public class CoupleRequestRestController {
 
   private final RequestServiceImpl requestService;
 
-  @PostMapping("/request")
+  @PostMapping({"/", ""})
   public ResponseEntity<?> requestCouple(@AuthenticationPrincipal UserRequestDTO user,
       @RequestParam("receiverEmail") String receiverEmail) throws Exception {
     String requestEmail = user.getEmail();
@@ -39,6 +39,24 @@ public class CoupleRequestRestController {
     if (result == -1) {
       return ResponseEntity.ok()
           .body(Map.of("message", "해당 이메일의 사용자는 존재하지 않습니다.", "alert", true));
+    } else if (result == 0) {
+      return ResponseEntity.ok()
+          .body(Map.of("message", "해당 사용자는 이미 커플 신청을 받아서 신청을 보낼 수 없습니다.", "alert", true));
+    }
+    return ResponseEntity.ok()
+        .body(Map.of("message", "커플 신청이 성공적으로 완료됐습니다."));
+  }
+
+
+  @PostMapping("/accept")
+  public ResponseEntity<?> acceptRequest(@AuthenticationPrincipal UserRequestDTO user,
+      @RequestParam("receiverEmail") String receiverEmail) throws Exception {
+    String requestEmail = user.getEmail();
+    int result = requestService.requestCouple(requestEmail, receiverEmail);
+
+    if (result == -1) {
+      return ResponseEntity.ok()
+          .body(Map.of("message", "해당 이메일의 사용자가 존재하지 않거나 이미 커플입니다.", "alert", true));
     } else if (result == 0) {
       return ResponseEntity.ok()
           .body(Map.of("message", "해당 사용자는 이미 커플 신청을 받아서 신청을 보낼 수 없습니다.", "alert", true));
