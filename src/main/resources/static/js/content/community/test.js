@@ -162,18 +162,31 @@ function createLeftChild(pageData){
     let fontColor = data.fontColor;
     let fontSize = data.fontSize;
     let textAlignment = data.textAlignment;
-
+    let templateUrl = data.template.templateImage;
     let container = document.createElement("div")
     let dateDiv=document.createElement("div")
     let weatherDiv = document.createElement("div")
+    let dateWeatherDiv = document.createElement("div")
     let contentDiv=document.createElement("div")
+    let templateImg = document.createElement("img")
+
+    templateImg.src=templateUrl;
+    templateImg.setAttribute("style","position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
+    container.appendChild(templateImg)
 
     dateDiv.innerText=data.createdAt;
     weatherDiv.innerText=data.weather;
+    dateDiv.setAttribute("style","position: absolute; left: 10%;")
+    weatherDiv.setAttribute("style","position: absolute; right: 10%;")
+    dateWeatherDiv.appendChild(dateDiv)
+    dateWeatherDiv.appendChild(weatherDiv)
+    dateWeatherDiv.setAttribute("style","display: flex; flex-direction: row; width: 100%;")
+    container.appendChild(dateWeatherDiv)
+
     contentDiv.innerText=data.content;
-    container.appendChild(dateDiv)
-    container.appendChild(weatherDiv)
+    contentDiv.setAttribute("style",`font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`)
     container.appendChild(contentDiv)
+
     container.setAttribute("style",
         "width:100%; height:100%;"+
         "display: flex;" +
@@ -186,6 +199,10 @@ function createLeftChild(pageData){
 function createRightChild(pageData){
     let data = pageData.right
     let container = document.createElement("div")
+    let templateImg = document.createElement("img")
+    templateImg.src=pageData.left.template.templateImage;
+    templateImg.setAttribute("style","position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
+    container.appendChild(templateImg)
 
     let mapContainer = document.createElement("div");
     mapContainer.id = "map";
@@ -197,10 +214,11 @@ function createRightChild(pageData){
     let map = new kakao.maps.Map(mapContainer, mapOption);
     container.appendChild(mapContainer);
 
-    setTimeout(() => {
-        map.relayout();
-        map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
-    }, 0);
+    // setTimeout(() => {
+    //     map.relayout();
+    //     map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
+    // }, 0);
+
     window.addEventListener('resize', () => {
         map.relayout();
     });
@@ -230,6 +248,22 @@ function createRightChild(pageData){
         })
         markers.push(marker)
     });
+
+    if (markers.length > 0) {
+      let bounds = new kakao.maps.LatLngBounds();
+
+      // 각 마커의 위치를 bounds에 추가
+      for (let i = 0; i < markers.length; i++) {
+        bounds.extend(markers[i].getPosition());
+      }
+
+      // 약간의 지연을 두고 setBounds 호출
+      setTimeout(() => {
+        map.relayout(); // 지도 크기를 재설정
+        map.setBounds(bounds); // bounds에 맞게 지도를 설정
+      }, 100); // 지연 시간 100ms (필요에 따라 조정 가능)
+    }
+
     cur_img_list=img_lists
     img_box.src=cur_img_list[cur_img_pointer]
 
@@ -266,13 +300,7 @@ function createRightChild(pageData){
     img_container.appendChild(img_next_btn)
     container.appendChild(img_container)
 
-    if(markers.length>0){
-        let bounds = new kakao.maps.LatLngBounds();
-        for (let i = 0; i < markers.length; i++) {
-            bounds.extend(markers[i].getPosition());
-        }
-        map.setBounds(bounds);
-    }
+
 
     container.setAttribute("style",
         "width: 100%; " +
