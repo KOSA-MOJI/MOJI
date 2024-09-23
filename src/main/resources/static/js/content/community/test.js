@@ -140,6 +140,9 @@ function applyFilter() {
     fetchCommunityData(0, 20, true)
   });// 슬라이더 값이 변경될 때마다 API 호출
 
+  const modal = document.getElementById('filterModal');
+  modal.style.display = 'none'; // 모달을 닫음
+
 }
 
 //변수 초기화 함수
