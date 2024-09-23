@@ -79,4 +79,4 @@
 <script>
   const imagePath = "${pageContext.request.contextPath}/image/content/community/";
 </script>
-<script src="${pageContext.request.contextPath}/js/content/community/test.js"></script>
+<script src="${pageContext.request.contextPath}/js/content/community/community-diary.js"></script>
