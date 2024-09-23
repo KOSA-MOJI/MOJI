@@ -196,7 +196,6 @@
 
 /*슬라이더 적용*/
 .slider-container {
-  display: none; /* 기본적으로 숨김 */
   position: relative; /* 필터와 같은 위치에 배치 */
   margin-top: 5px; /* 필터와의 간격 설정 */
   flex-direction: column; /* 세로 방향으로 배치 */
