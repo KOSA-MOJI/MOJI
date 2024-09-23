@@ -10,7 +10,7 @@
        order by location_id
    </select>
 
-  <insert id="insertLocation" parameterType="com.spring.moji.dto.request.LocationRequestDTO" useGeneratedKeys="true" keyColumn="location_id" keyProperty="locationId">
+  <insert id="insertLocation" parameterType="com.spring.moji.dto.request.LocationInsertRequestDTO" useGeneratedKeys="true" keyColumn="location_id" keyProperty="locationId">
     INSERT INTO locations (page_id, address, latitude, longitude, created_at)
     VALUES (#{pageId}, #{address}, #{latitude}, #{longitude}, sysdate)
   </insert>

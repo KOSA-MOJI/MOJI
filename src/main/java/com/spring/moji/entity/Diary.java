@@ -13,14 +13,14 @@ public class Diary {
 	private Long diaryId;
 	private Long coupleId;
 	private String coverImage;
-	private Long bookmarkId;
+	private Bookmark bookmark;
 	private List<Page> pages;
 
 	@Builder
-	public Diary(Long coupleId, Long bookmarkId, String coverImage, Long diaryId) {
+	public Diary(Long coupleId, Bookmark bookmark, String coverImage, Long diaryId) {
 		this.diaryId = diaryId;
 		this.coupleId = coupleId;
-		this.bookmarkId = bookmarkId;
+		this.bookmark = bookmark;
 		this.coverImage = coverImage;
 	}
 }
