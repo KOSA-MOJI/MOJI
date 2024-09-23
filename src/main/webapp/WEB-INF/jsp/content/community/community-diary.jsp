@@ -49,11 +49,10 @@
                     </div>
                 </div>
             </div>
-            <div class="scrap-component" id="favoriteButton" onmouseover="hoverFavorite(true)"
-                 onmouseout="hoverFavorite(false)" onclick="toggleFavorite()">
+            <div class="scrap-component" id="favoriteButton" onclick="toggleScrap()">
                 <div class="circle-background">
                     <img src="${pageContext.request.contextPath}/image/content/community/gray-heart.png"
-                         alt="찜하기" class="scrap-button" id="uploadButton"
+                         alt="찜하기" class="scrap-button" id="scrapButton"
                     >
                 </div>
             </div>
@@ -76,7 +75,8 @@
 <%--</div>--%>
 
 <!-- js -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApiKey}"></script>
 <script>
   const imagePath = "${pageContext.request.contextPath}/image/content/community/";
 </script>
-<script src="${pageContext.request.contextPath}/js/content/community/test.js"></script>
+<script src="${pageContext.request.contextPath}/js/content/community/community-diary.js"></script>

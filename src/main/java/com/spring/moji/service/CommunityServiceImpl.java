@@ -32,25 +32,27 @@ public class CommunityServiceImpl implements CommunityService {
 		List<Long> pageIds = pages.stream().map(Page::getPageId).toList();
 		CommunityScrapRequestDTO communityScrapRequestDTO = CommunityScrapRequestDTO.builder().email(communityRequestDTO.getEmail()).pageIds(pageIds).build();
 
-		List<Scrap> scraps = scrapMapper.findAllByPageIds(communityScrapRequestDTO);
-
-		List<CommunityResponseDTO> communityResponseDTOs = new ArrayList<>();
-		for(Page page : pages) {
-			String imageUrl = null;
-			if (page.getLocations() != null && !page.getLocations().isEmpty()) {
-				Location location = page.getLocations().getFirst();
-				if (location.getImageUrls() != null && !location.getImageUrls().isEmpty()) {
-					imageUrl = location.getImageUrls().getFirst().getMapImage();
+		if(!pageIds.isEmpty()) {
+			List<Scrap> scraps = scrapMapper.findAllByPageIds(communityScrapRequestDTO);
+			List<CommunityResponseDTO> communityResponseDTOs = new ArrayList<>();
+			for(Page page : pages) {
+				String imageUrl = null;
+				if (page.getLocations() != null && !page.getLocations().isEmpty()) {
+					Location location = page.getLocations().getFirst();
+					if (location.getImageUrls() != null && !location.getImageUrls().isEmpty()) {
+						imageUrl = location.getImageUrls().getFirst().getMapImage();
+					}
 				}
+				communityResponseDTOs.add(
+					CommunityResponseDTO.builder()
+						.pageId(page.getPageId())
+						.imageUrl(imageUrl)
+						.isScrapped(scraps.stream().anyMatch(scrap ->scrap.getPageId().equals(page.getPageId())))
+						.build());
 			}
-			communityResponseDTOs.add(
-				CommunityResponseDTO.builder()
-					.pageId(page.getPageId())
-					.imageUrl(imageUrl)
-					.isScrapped(scraps.stream().anyMatch(scrap ->scrap.getPageId().equals(page.getPageId())))
-					.build());
+			return communityResponseDTOs;
 		}
-		return communityResponseDTOs;
+		return null;
 	}
 
 	@Override
