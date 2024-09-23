@@ -15,9 +15,7 @@
 
 		<insert id="createScrap" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO">
 				INSERT INTO scraps (email,page_id,created_at)
-				<foreach item="pageId" collection="pageIds" separator=",">
-						(#{email}, #{pageId}, SYSDATE)
-				</foreach>
+				VALUES (#{email}, #{pageIds[0]}, SYSDATE)
 		</insert>
 
 		<delete id="removeScrap" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO">

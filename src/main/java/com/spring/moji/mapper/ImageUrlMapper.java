@@ -1,5 +1,6 @@
 package com.spring.moji.mapper;
 
+import com.spring.moji.dto.request.ImageUrlInsertRequestDTO;
 import com.spring.moji.dto.request.ImageUrlRequestDTO;
 import java.util.List;
 
@@ -10,5 +11,6 @@ import com.spring.moji.entity.ImageUrl;
 @Mapper
 public interface ImageUrlMapper {
 	List<ImageUrl> findAllByLocationId(Long locationId);
-	void insertImageUrl(ImageUrlRequestDTO imageUrlRequestDTO);
+	List<ImageUrl> findAllByPageId(Long imageId);
+	void insertImageUrl(ImageUrlInsertRequestDTO imageUrlInsertRequestDTO);
 }

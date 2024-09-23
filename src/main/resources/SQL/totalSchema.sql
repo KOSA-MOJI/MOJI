@@ -66,7 +66,7 @@ CREATE TABLE pages
     page_id         NUMBER               NOT NULL,
     diary_id        NUMBER               NOT NULL,
     created_at      DATE DEFAULT sysdate NOT NULL,
-    weather         VARCHAR2(50)         NOT NULL,
+    weather         VARCHAR2(150)         NOT NULL,
     content         CLOB                 NOT NULL,
     font_size       NUMBER               NOT NULL,
     font_color      VARCHAR2(50)         NOT NULL,
@@ -260,11 +260,11 @@ ALTER TABLE couples
 ALTER TABLE couples
     ADD CONSTRAINT fk_couples_user2_email FOREIGN KEY (user2_email) REFERENCES users (email);
 ALTER TABLE diaries
-    ADD CONSTRAINT fk_diaries_couple_id FOREIGN KEY (couple_id) REFERENCES couples (couple_id);
+    ADD CONSTRAINT fk_diaries_couple_id FOREIGN KEY (couple_id) REFERENCES couples (couple_id) ON DELETE CASCADE;
 ALTER TABLE pages
-    ADD CONSTRAINT fk_pages_diary_id FOREIGN KEY (diary_id) REFERENCES diaries (diary_id);
+    ADD CONSTRAINT fk_pages_diary_id FOREIGN KEY (diary_id) REFERENCES diaries (diary_id) ON DELETE CASCADE;
 ALTER TABLE pages
     ADD CONSTRAINT fk_pages_template_id FOREIGN KEY (template_id) REFERENCES templates (template_id);
 ALTER TABLE diaries
-    ADD CONSTRAINT fk_diaries_bookmark_id FOREIGN KEY (bookmark_id) REFERENCES bookmarks (bookmark_id);
+    ADD CONSTRAINT fk_diaries_bookmark_id FOREIGN KEY (bookmark_id) REFERENCES bookmarks (bookmark_id) ON DELETE CASCADE;
 
