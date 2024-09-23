@@ -12,7 +12,7 @@ const limit = 5; // 한 번에 불러올 데이터 수
 let communityData = []; // 받아온 데이터 저장 배열
 let lastDirection = 'left'; // 마지막으로 눌린 방향 저장
 let previousImageIndex = 0; // 이전 인덱스 저장
-let isFirstLoad = true; // 첫 번째 로드 여부 체크
+let isFirstLoad = false; // 첫 번째 로드 여부 체크
 
 //TO DO: 현재 내 위치 받아오기
 // _ 공개 페이지 목록 조회 API연동
@@ -71,9 +71,7 @@ function addCommunityData(newData) {
 /*이미지 갤러리에 삽입*/
 
 function loadImages(direction) {
-  if (isFirstLoad) {
-    return; // 첫 번째 로드 시에는 loadImages 호출을 방지
-  }
+
   const imageContainer = document.getElementById('imageContainer');
   const leftButton = document.getElementById('leftButton');
   const rightButton = document.getElementById('rightButton');
