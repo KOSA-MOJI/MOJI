@@ -10,6 +10,9 @@ let currentRadius = 1500; // 기본 반경 값
 let currentImageIndex = 0;
 const limit = 5; // 한 번에 불러올 데이터 수
 let communityData = []; // 받아온 데이터 저장 배열
+let lastDirection = 'left'; // 마지막으로 눌린 방향 저장
+let previousImageIndex = 0; // 이전 인덱스 저장
+let isFirstLoad = false; // 첫 번째 로드 여부 체크
 
 //TO DO: 현재 내 위치 받아오기
 // _ 공개 페이지 목록 조회 API연동
@@ -41,15 +44,14 @@ function fetchCommunityData(radius, limit) {
   fetch(apiUrl)
   .then(response => {
     if (!response.ok) {
+      loadImages()
       throw new Error('Network response was not ok');
     }
     return response.json();
   })
   .then(data => {
-    console.log("API로부터 받은 데이터: ", data);
+    console.log("[비동기]API로부터 받은 데이터: ", data);
     addCommunityData(data); // 데이터를 추가하는 함수 호출
-    // loadImages('left');
-    // displayCommunityData(data);
     loadImages('left');
   })
 
@@ -69,6 +71,7 @@ function addCommunityData(newData) {
 /*이미지 갤러리에 삽입*/
 
 function loadImages(direction) {
+
   const imageContainer = document.getElementById('imageContainer');
   const leftButton = document.getElementById('leftButton');
   const rightButton = document.getElementById('rightButton');
@@ -77,6 +80,7 @@ function loadImages(direction) {
 
   if (direction === 'right') {
     currentImageIndex += limit; // 오른쪽 화살표 클릭
+
   } else if (direction === 'left') {
     currentImageIndex -= limit; // 왼쪽 화살표 클릭
   }
@@ -86,19 +90,30 @@ function loadImages(direction) {
   currentImageIndex = Math.max(0,
       Math.min(currentImageIndex, communityData.length - limit));
   console.log("이거로 인덱스" + currentImageIndex);
+
+  // 첫 번째 호출일 때만 이전 인덱스 저장
+  if (isFirstLoad && (direction === 'right' || direction === 'left')) {
+    previousImageIndex = currentImageIndex;
+    console.log("1회차")
+    isFirstLoad = false;
+  } else {
+    isFirstLoad = true; // 첫 번째 로드 완료
+  }
 // 이미지 항목 초기화
   imageContainer.innerHTML = '';
 
+  let needsMoreData = false; // 추가 데이터 필요 여부
+
 // 시작 위치, 몇 개 받아올지
   for (let i = 0; i < limit; i++) {
-    if (currentImageIndex + i < communityData.length) {
+    if (previousImageIndex + i < communityData.length) {
       const imageItem = document.createElement('div');
       imageItem.className = 'image-item';
       imageItem.setAttribute('data-idx',
-          communityData[currentImageIndex + i].pageId); // 페이지 ID 설정
+          communityData[previousImageIndex + i].pageId); // 페이지 ID 설정
 
       // 배경 이미지 설정
-      imageItem.style.backgroundImage = `url(${communityData[currentImageIndex
+      imageItem.style.backgroundImage = `url(${communityData[previousImageIndex
       + i].imageUrl})`;
       imageItem.style.backgroundSize = 'cover'; // 배경 이미지 크기 조정
       imageItem.style.backgroundPosition = 'center'; // 중앙 정렬
@@ -106,7 +121,16 @@ function loadImages(direction) {
       imageItem.onclick = () => updateDiaryContent(imageItem); // 클릭 이벤트 설정
       imageContainer.appendChild(imageItem);
 
+    } else {
+      // 데이터가 부족할 경우 플래그 설정
+      needsMoreData = true;
     }
+  }
+
+  // 추가 데이터 요청
+  if (needsMoreData) {
+    console.log("추가로 10개 주시오", previousImageIndex);
+    fetchCommunityData(currentRadius, 10); // 추가로 10개 요청
   }
 
 // 버튼 활성화/비활성화 설정
@@ -115,24 +139,21 @@ function loadImages(direction) {
       currentImageIndex >= communityData.length - limit);
 }
 
-// 2.오른쪽 버튼 클릭 시 추가 데이터 요청
-function onRightButtonClick() {
-  if (currentImageIndex >= communityData.length - limit) {
-    console.log("추가로 10개 주시오", currentImageIndex);
-    fetchCommunityData(currentRadius, 10); // 추가로 10개 요청
-  } else {
-    console.log("onRightButtonClick else문")
-    loadImages('right');
-  }
-}
-
 // 1. 오른쪽 버튼 클릭 이벤트 리스너 추가
 const rightButton = document.getElementById('rightButton');
 rightButton.addEventListener('click', () => {
+  lastDirection = 'right'; // 마지막으로 눌린 방향 저장
   console.log("오른쪽 클릭", currentImageIndex);
-  onRightButtonClick(); // 오른쪽 버튼 클릭 시 추가 데이터 요청
-  loadImages(null);
+  loadImages('right');
 
+});
+
+// 왼쪽 버튼 클릭 이벤트 리스너 추가
+const leftButton = document.getElementById('leftButton');
+leftButton.addEventListener('click', () => {
+  lastDirection = 'left'; // 왼쪽 버튼 클릭 시 방향 저장
+  console.log("왼쪽 클릭", currentImageIndex);
+  loadImages('left'); // 왼쪽 버튼 클릭 시 이미지 로드
 });
 
 // 선택된 이미지 번호 표시
@@ -141,55 +162,6 @@ function updateDiaryContent(element) {
   const diaryContent = document.getElementById('diaryContent');
   diaryContent.innerText = '선택된 이미지: ' + imageNumber;
 }
-
-/*이미지 갤러리.js*/
-// let currentImageIndex = 0;
-// const images = Array.from({length: 13}, (_, i) => i + 1); // 1부터 13까지의 배열
-//
-// function loadImages(direction) {
-//   const imageContainer = document.getElementById('imageContainer');
-//   const imageItems = imageContainer.getElementsByClassName('image-item');
-//   const leftButton = document.getElementById('leftButton');
-//   const rightButton = document.getElementById('rightButton');
-//
-//   console.log(imageItems);
-//
-//   if (direction === 'right') {
-//     currentImageIndex += 5; // 오른쪽 화살표 클릭
-//   } else {
-//     currentImageIndex -= 5; // 왼쪽 화살표 클릭
-//   }
-//
-//   // 버튼 방향에 따른 현재 0번 이미지 위치에 놓인 -> 실제 이미지 idx
-//   currentImageIndex = Math.max(0,
-//       Math.min(currentImageIndex, images.length - 5));
-//
-//   //시작 위치, 몇개 받아올지
-//   for (let i = 0; i < imageItems.length; i++) {
-//     const imageNumber = images[currentImageIndex + i]; //해당 위치에 오는 이미지 idx
-//     // console.log("imageNumber" + imageNumber)
-//     imageItems[i].innerText = imageNumber; // 배열의 값을 div에 표시
-//     // console.log(i + " ImageItems" + imageItems[i])
-//     imageItems[i].setAttribute('data-idx', imageNumber); // 고유 값 설정
-//   }
-//
-//   // 버튼 활성화/비활성화 설정
-//   leftButton.classList.toggle('disabled', currentImageIndex === 0);
-//   rightButton.classList.toggle('disabled',
-//       currentImageIndex >= images.length - 5);
-// }
-//
-//To DO : 페이지에 선택된 번호 표시
-function updateDiaryContent(element) {
-  const imageNumber = element.getAttribute('data-idx'); // 클릭한 아이템의 고유 값 가져오기
-  const diaryContent = document.getElementById('diaryContent');
-  diaryContent.innerText = '선택된 이미지: ' + imageNumber;
-}
-
-//
-// // 초기 이미지 로드
-// currentImageIndex = 0; // 초기 인덱스를 0으로 설정하여 1부터 시작하도록
-// loadImages('left'); // 초기 상태에서 1부터 5까지 보여주도록 왼쪽으로 이동
 
 /*스크랩(찜버튼)*/
 let isFavorited = false; // 찜 상태를 저장할 변수
@@ -238,17 +210,13 @@ function toggleFilter() {
 }
 
 /*필터(반경거리) range*/
-
-//const imagePath = "${pageContext.request.contextPath}/image/content/community/";
-
 function updateDistanceValues() {
   const rangeValue = document.getElementById('distanceRange').value;
-// document.getElementById('minValue').innerText = ${rangeValue}km;
-// document.getElementById('maxValue').innerText = 50km; // 최대값은 항상 50km로 고정
 
   console.log("필터 값은" + rangeValue);
-// 슬라이더 값이 변경될 때마다 API 호출
-//fetchFilteredData(rangeValue);
+  currentRadius = rangeValue;
+  communityData = []; //offset 초기화
+  getCurrentLocation();// 슬라이더 값이 변경될 때마다 API 호출
 }
 
 function fetchFilteredData(minDistance) {
