@@ -3,32 +3,52 @@
       href="${pageContext.request.contextPath}/css/content/community/open-diary.css">
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/community/diary-gallery.css">
+<link rel="stylesheet" type="text/css"
+      href="${pageContext.request.contextPath}/css/component/login-modal.css">
+
 
 <div class="community-content">
-    <div class="filter-div" id="filterDiv" onclick="toggleFilter()">
+
+    <div class="filter-div" onclick="showModal()">
         <img src="${pageContext.request.contextPath}/image/content/community/filter-icon.png"
              alt="필터 아이콘"
              class="filter-icon">
         <span>필터</span>
     </div>
-    <%-- 거리 슬라이더 --%>
-    <div class="slider-container" id="filterContainer">
-        <input type="range" id="distanceRange" min="5" max="50" value="5" step="5"
-               onchange="updateDistanceValues()">
-        <div class="km-labels">
-            <span>5km</span>
-            <span>25km</span>
-            <span>50km</span>
+    <div id="filterModal" style="display: none">
+        <div class="modal-content" style="z-index: 100">
+            <div class="auth-form">
+                <span id="closeModal" class="close" onclick="toggleFilter()">&times;</span>
+                <h1>필터</h1>
+                <form>
+                    <%--                        &lt;%&ndash; 거리 슬라이더 &ndash;%&gt;--%>
+                    <%--                        <div class="slider-container" id="filterContainer">--%>
+                    <%--                            <input type="range" id="distanceRange" min="5" max="50" value="5" step="5"--%>
+                    <%--                                   onchange="updateDistanceValues()">--%>
+                    <%--                            <div class="km-labels">--%>
+                    <%--                                <span>5km</span>--%>
+                    <%--                                <span>25km</span>--%>
+                    <%--                                <span>50km</span>--%>
+                    <%--                            </div>--%>
+                    <%--                        </div>--%>
+                    <button type="submit" class="btn btn-primary btn-block">적용</button>
+                </form>
+            </div>
         </div>
+        <div class="modal" onclick="closeModal()"></div>
     </div>
 
 
     <div class="content-middle">
         <div class="content-diary">
-            <div class="diary-component">
-                <div class="diary-entry">
-                    <h2 id="diaryTitle">2022년 8월 소풍</h2>
-                    <div id="diaryContent">선택된 이미지: 없음</div> <!-- 다이어리 내용 표시 부분 -->
+            <div id="book-container">
+                <div id="book-content" class="book-content">
+                    <div id="left-side" class="side">
+                        <!-- Left side content will be populated by JavaScript -->
+                    </div>
+                    <div id="right-side" class="side">
+                        <!-- Right side content will be populated by JavaScript -->
+                    </div>
                 </div>
             </div>
             <div class="scrap-component" id="favoriteButton" onmouseover="hoverFavorite(true)"
@@ -43,15 +63,16 @@
     </div>
 
     <div class="gallery-component">
-        <button class="arrow left-arrow" id="leftButton" onclick="loadImages('left')">◀</button>
+        <img src=""/>
+        <button class="arrow left-arrow" id="leftButton" onclick="prevBtn()">◀</button>
         <div class="images" id="imageContainer">
-            <div class="image-item" data-idx="1" onclick="updateDiaryContent(this)">1</div>
-            <div class="image-item" data-idx="2" onclick="updateDiaryContent(this)">2</div>
-            <div class="image-item" data-idx="3" onclick="updateDiaryContent(this)">3</div>
-            <div class="image-item" data-idx="4" onclick="updateDiaryContent(this)">4</div>
-            <div class="image-item" data-idx="5" onclick="updateDiaryContent(this)">5</div>
+            <div class="image-item" id="image-item-1" onclick="updateDiaryContent(this)">1</div>
+            <div class="image-item" id="image-item-2" onclick="updateDiaryContent(this)">2</div>
+            <div class="image-item" id="image-item-3" onclick="updateDiaryContent(this)">3</div>
+            <div class="image-item" id="image-item-4" onclick="updateDiaryContent(this)">4</div>
+            <div class="image-item" id="image-item-5" onclick="updateDiaryContent(this)">5</div>
         </div>
-        <button class="arrow right-arrow" id="rightButton" onclick="loadImages('right')">▶</button>
+        <button class="arrow right-arrow" id="rightButton" onclick="nextBtn()">▶</button>
     </div>
 </div>
 <%--</div>--%>
@@ -60,4 +81,4 @@
 <script>
   const imagePath = "${pageContext.request.contextPath}/image/content/community/";
 </script>
-<script src="${pageContext.request.contextPath}/js/content/community/community-diary.js"></script>
+<script src="${pageContext.request.contextPath}/js/content/community/test.js"></script>
