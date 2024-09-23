@@ -41,6 +41,7 @@ function fetchCommunityData(radius, limit) {
   fetch(apiUrl)
   .then(response => {
     if (!response.ok) {
+      loadImages()
       throw new Error('Network response was not ok');
     }
     return response.json();
@@ -48,8 +49,6 @@ function fetchCommunityData(radius, limit) {
   .then(data => {
     console.log("API로부터 받은 데이터: ", data);
     addCommunityData(data); // 데이터를 추가하는 함수 호출
-    // loadImages('left');
-    // displayCommunityData(data);
     loadImages('left');
   })
 
@@ -77,6 +76,7 @@ function loadImages(direction) {
 
   if (direction === 'right') {
     currentImageIndex += limit; // 오른쪽 화살표 클릭
+
   } else if (direction === 'left') {
     currentImageIndex -= limit; // 왼쪽 화살표 클릭
   }
@@ -133,6 +133,14 @@ rightButton.addEventListener('click', () => {
   onRightButtonClick(); // 오른쪽 버튼 클릭 시 추가 데이터 요청
   loadImages(null);
 
+});
+
+// 왼쪽 버튼 클릭 이벤트 리스너 추가
+const leftButton = document.getElementById('leftButton');
+leftButton.addEventListener('click', () => {
+  lastDirection = 'left'; // 왼쪽 버튼 클릭 시 방향 저장
+  console.log("왼쪽 클릭", currentImageIndex);
+  loadImages('left'); // 왼쪽 버튼 클릭 시 이미지 로드
 });
 
 // 선택된 이미지 번호 표시
