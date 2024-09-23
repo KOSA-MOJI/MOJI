@@ -43,18 +43,23 @@ function updateListImage() {
 
 function updateDiaryContent(element) {
   selectedIndex = Number(element.getAttribute("id").split("-")[2])
-  // console.log(`${curDataIndex+selectedIndex - 1} 번째 요소여야함`)
-  // console.log(communityData)
-  // console.log(communityData[curDataIndex+selectedIndex - 1])
-  fetch(`/api/community/page/${communityData[curDataIndex + selectedIndex
-  - 1].pageId}`).then((res) => {
-    if (res.ok) {
-      return res.json()
-    }
-    throw Error("page data not found!")
-  }).then((data) => {
-    console.log(data)
-  }).catch(err => console.log(err))
+  fetch(`/api/community/page/${communityData[curDataIndex + selectedIndex - 1].pageId}`)
+    .then((res) => {
+      if (res.ok) {
+        return res.json()
+      }
+      throw Error("page data not found!")
+    }).then((data) => {
+      let pageData = createPagesData(data)
+      updatePageContent(pageData)
+    }).then(()=>{
+    const scrapButton= document.getElementById('scrapButton')
+    console.log(communityData[curDataIndex + selectedIndex - 1])
+    scrapButton.src = communityData[curDataIndex + selectedIndex - 1].scrapped
+      ?`${imagePath}full-heart.png`
+      :`${imagePath}gray-heart.png`
+    })
+      .catch(err => console.log(err))
 }
 
 function prevBtn() {
@@ -102,9 +107,187 @@ function fetchCommunityData(offset, limit, isInit) {
     if (isInit) {
       updateListImage()
     }
-  })
-  .catch(err => console.log(err))
+  }).then(() => {
+    if (isInit) updateDiaryContent(document.querySelector("#image-item-1"))
+  }).catch(err => console.log(err))
 }
+
+// TODO : 페이지 화면 구현
+function createPagesData(data){
+    let leftData = {
+        pageId : data.pageId,
+        createdAt : data.createdAt,
+        weather : data.weather,
+        content : data.content,
+        fontSize : data.fontSize,
+        fontColor : data.fontColor,
+        textAlignment : data.textAlignment,
+        publicStatus : data.publicStatus,
+        template : data.template
+    }
+    let rightData ={
+        locations : data.locations
+    }
+    console.log(rightData)
+    return {
+        left : leftData,
+        right : rightData
+    }
+}
+
+function updatePageContent(data) {
+    resetSideChild()
+    const leftSide = document.getElementById('left-side');
+    const rightSide = document.getElementById('right-side');
+    leftSide.appendChild(createLeftChild(data))
+    rightSide.appendChild(createRightChild(data))
+}
+
+function resetLeftSideChild(){
+    const leftSide = document.getElementById('left-side');
+    while (leftSide.firstChild) {
+        leftSide.removeChild(leftSide.firstChild);
+    }
+}
+function resetRightSideChild(){
+    const rightSide = document.getElementById('right-side');
+    while (rightSide.firstChild) {
+        rightSide.removeChild(rightSide.firstChild);
+    }
+}
+function resetSideChild(){
+    resetLeftSideChild()
+    resetRightSideChild()
+}
+function createLeftChild(pageData){
+    let data = pageData.left
+    let fontColor = data.fontColor;
+    let fontSize = data.fontSize;
+    let textAlignment = data.textAlignment;
+
+    let container = document.createElement("div")
+    let dateDiv=document.createElement("div")
+    let weatherDiv = document.createElement("div")
+    let contentDiv=document.createElement("div")
+
+    dateDiv.innerText=data.createdAt;
+    weatherDiv.innerText=data.weather;
+    contentDiv.innerText=data.content;
+    container.appendChild(dateDiv)
+    container.appendChild(weatherDiv)
+    container.appendChild(contentDiv)
+    container.setAttribute("style",
+        "width:100%; height:100%;"+
+        "display: flex;" +
+        "flex-direction: column;" +
+        "align-items: center;"+
+        "gap: 10%;")
+    return container
+}
+
+function createRightChild(pageData){
+    let data = pageData.right
+    let container = document.createElement("div")
+
+    let mapContainer = document.createElement("div");
+    mapContainer.id = "map";
+    mapContainer.setAttribute("style", "width:80%; height:40%; position : relative");
+    let mapOption = {
+        center: new kakao.maps.LatLng(37.5665, 126.9780),
+        level: 3
+    };
+    let map = new kakao.maps.Map(mapContainer, mapOption);
+    container.appendChild(mapContainer);
+
+    setTimeout(() => {
+        map.relayout();
+        map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
+    }, 0);
+    window.addEventListener('resize', () => {
+        map.relayout();
+    });
+
+    let markers = [];
+    let img_lists = [];
+    let cur_img_list=[]
+    let cur_img_pointer=0;
+    let img_container = document.createElement("div")
+    let img_next_btn = document.createElement("button")
+    let img_prev_btn = document.createElement("button")
+    let img_box = document.createElement("img")
+    img_container.setAttribute("style",
+        "width:90%; height:40%;"+
+        "display: inline-block;" +
+        "align-items: center;")
+    data.locations.forEach((location,idx) => {
+        let marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(location.latitude, location.longitude),
+        });
+        img_lists.push(location.imageUrls.length>0?location.imageUrls.map(data=>data.mapImage):["https://placehold.co/400"])
+        kakao.maps.event.addListener(marker,'click',function (){
+            cur_img_list=img_lists[idx]
+            cur_img_pointer=0
+            img_box.src=cur_img_list[cur_img_pointer]
+        })
+        markers.push(marker)
+    });
+    cur_img_list=img_lists
+    img_box.src=cur_img_list[cur_img_pointer]
+
+    img_next_btn.innerText="다음"
+    img_next_btn.addEventListener("click",function (){
+        if(cur_img_pointer<cur_img_list.length-1){
+            cur_img_pointer++;
+            img_box.src=cur_img_list[cur_img_pointer]
+        }
+    })
+    img_next_btn.setAttribute("style","right:0")
+
+    img_prev_btn.innerText="이전"
+    img_prev_btn.addEventListener("click",function (){
+        if(0<cur_img_pointer){
+            cur_img_pointer--;
+            img_box.src=cur_img_list[cur_img_pointer]
+        }
+    })
+    img_prev_btn.setAttribute("style","left:0")
+
+    img_box.setAttribute("style",
+        "width:80%;" +
+        "height:80%;"+
+        "vertical-align: middle;"+
+        "object-fit:cover"+
+        "background-color: lightgray;"+
+        "visibility: visible;"
+    )
+    img_box.setAttribute("onerror","this.style.visibility='hidden';")
+
+    img_container.appendChild(img_prev_btn)
+    img_container.appendChild(img_box)
+    img_container.appendChild(img_next_btn)
+    container.appendChild(img_container)
+
+    if(markers.length>0){
+        let bounds = new kakao.maps.LatLngBounds();
+        for (let i = 0; i < markers.length; i++) {
+            bounds.extend(markers[i].getPosition());
+        }
+        map.setBounds(bounds);
+    }
+
+    container.setAttribute("style",
+        "width: 100%; " +
+        "height: 100%;" +
+        "display: flex;" +
+        "flex-direction: column;"+
+        "align-items: center;"+
+        "gap: 10%;"
+
+    )
+    return container
+}
+
 
 document.addEventListener("DOMContentLoaded", function () {
   getCurrentLocation().then(() => {
@@ -153,15 +336,6 @@ function resetDefaultData(radius) {
   selectedIndex = 1;
 }
 
-/*스크랩(찜버튼)*/
-let isFavorited = false; // 찜 상태를 저장할 변수
-
-// API로부터 스크랩 상태를 가져오는 함수 (true 또는 false를 반환)
-function getScrapStatusFromAPI() {
-// 실제 API 호출 로직을 여기에 추가
-  return true; // 예시로 false를 반환
-}
-
 //클릭시, 스크랩 이미지 업데이트1
 function toggleFavorite() {
   isFavorited = !isFavorited; // 찜 상태 토글
@@ -179,14 +353,19 @@ function updateFavoriteButton() {
   }
 }
 
-//호버시 , 스크랩 이미지 업데이트
-function hoverFavorite(isHovering) {
-  const img = document.getElementById('uploadButton');
-  if (isHovering) {
-    img.src = isFavorited
-        ? `${imagePath}gray-heart.png`
-        : `${imagePath}full-heart.png`; // 반대 이미지
-  } else {
-    updateFavoriteButton(); // 원래 상태로 되돌리기
-  }
+function toggleScrap(){
+  let curPage = communityData[curDataIndex+selectedIndex-1]
+  fetch(`/api/community/scrap?email=${email}&pageId=${curPage.pageId}`,{
+    method:`${curPage.scrapped?"DELETE":"POST"}`
+  }).then((res)=>{
+    if(res.ok) return null
+    throw Error("cannot scrap this page!")
+  }).then(()=>{
+    const scrapButton= document.getElementById('scrapButton')
+    curPage.scrapped=!curPage.scrapped
+    console.log(`${curPage.pageId}번 페이지 스크랩 ${curPage.scrapped?"추가":"삭제"} 성공!`)
+    scrapButton.src = curPage.scrapped
+      ?`${imagePath}full-heart.png`
+      :`${imagePath}gray-heart.png`
+  }).catch(err=>console.log(err))
 }
