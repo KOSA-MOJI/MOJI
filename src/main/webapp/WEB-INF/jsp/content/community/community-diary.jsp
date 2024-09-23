@@ -20,19 +20,17 @@
             <div class="auth-form">
                 <span id="closeModal" class="close" onclick="toggleFilter()">&times;</span>
                 <h1>필터</h1>
-                <form>
-                    <%--                        &lt;%&ndash; 거리 슬라이더 &ndash;%&gt;--%>
-                    <%--                        <div class="slider-container" id="filterContainer">--%>
-                    <%--                            <input type="range" id="distanceRange" min="5" max="50" value="5" step="5"--%>
-                    <%--                                   onchange="updateDistanceValues()">--%>
-                    <%--                            <div class="km-labels">--%>
-                    <%--                                <span>5km</span>--%>
-                    <%--                                <span>25km</span>--%>
-                    <%--                                <span>50km</span>--%>
-                    <%--                            </div>--%>
-                    <%--                        </div>--%>
-                    <button type="submit" class="btn btn-primary btn-block">적용</button>
-                </form>
+                <%-- 거리 슬라이더 --%>
+                <div class="slider-container" id="filterContainer">
+                    <input type="range" id="distanceRange" min="5" max="50" value="5" step="5"
+                    >
+                    <div class="km-labels">
+                        <span>5km</span>
+                        <span>25km</span>
+                        <span>50km</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="applyFilter()">적용</button>
             </div>
         </div>
         <div class="modal" onclick="closeModal()"></div>
