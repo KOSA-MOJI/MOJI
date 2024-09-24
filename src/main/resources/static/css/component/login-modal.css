@@ -77,6 +77,8 @@ label {
 
 .btn-base {
   font-family: "KyoboHand";
+  width: calc(100% - 2px); /* border 두께를 고려한 width */
+  box-sizing: border-box;
   padding: 10px;
   background-color: #ffe898;
   border: none;
@@ -86,7 +88,7 @@ label {
   transition: background-color 0.3s;
 }
 
-.btn:hover {
+.btn-base:hover {
   background-color: #ddb347;
 }
 
