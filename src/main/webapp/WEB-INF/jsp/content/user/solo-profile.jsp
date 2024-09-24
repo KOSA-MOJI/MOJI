@@ -146,5 +146,5 @@
 
     <!-- js -->
     <script src="${pageContext.request.contextPath}/js/content/user/solo-profile.js"></script>
-
+</div>
 

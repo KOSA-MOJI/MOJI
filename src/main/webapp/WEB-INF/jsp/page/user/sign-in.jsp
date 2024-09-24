@@ -22,7 +22,7 @@
         <div class="auth-form">
             <span class="close">&times;</span>
             <h1>로그인</h1>
-            <form action="/login-process" method="post">
+            <form action="/signin-process" method="post">
                 <input name="${_csrf.parameterName}" value="${_csrf.token}">
                 <div class="form-group">
                     <label for="email">이메일</label>
