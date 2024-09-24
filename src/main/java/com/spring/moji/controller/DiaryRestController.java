@@ -51,10 +51,10 @@ public class DiaryRestController {
 		return diaryService.findAllTemplates();
 	}
 
-	@PostMapping("/coverImage/{coupleId}")
-	public String coverImage(@PathVariable Long coupleId, @RequestParam("diaryCoverImage")MultipartFile diaryCoverImage) throws
+	@PostMapping("/coverImage/{diaryId}")
+	public String coverImage(@PathVariable Long diaryId, @RequestParam("diaryCoverImage")MultipartFile diaryCoverImage) throws
 		IOException {
-		return diaryService.updateCoverImage(coupleId,diaryCoverImage);
+		return diaryService.updateCoverImage(diaryId,diaryCoverImage);
 	}
 
 	@PostMapping("/page")
