@@ -298,8 +298,6 @@ function createRightChild(pageData){
   img_container.appendChild(img_next_btn)
   container.appendChild(img_container)
 
-
-
   container.setAttribute("style",
     "width: 100%; " +
     "height: 100%;" +
