@@ -1,10 +1,11 @@
-let coupleId=12;
-let coupleName = "광환커플2"
+const coupleId = document.getElementById("log-in-couple-id").value
+// const coupleName = document.getElementById("log-in-couple-id").value
+const coupleName = "광환커플2"
 let currentPage = 0;
 let diaryId;
 const lazyLoadLimit = 2;
 const lazyLoadNum = 5;
-let pages=[]
+let pages = []
 
 function updatePageContent() {
   resetSideChild()
@@ -155,6 +156,7 @@ function createRightChild(idx){
     let mapContainer = document.createElement("div");
     mapContainer.id = "map";
     mapContainer.setAttribute("style", "width:80%; height:40%; position : relative");
+
     let mapOption = {
       center: new kakao.maps.LatLng(37.5665, 126.9780),
       level: 3
@@ -242,7 +244,6 @@ function createRightChild(idx){
       "visibility: visible;"
     )
     img_box.setAttribute("onerror","this.style.visibility='hidden';")
-
     img_container.appendChild(img_prev_btn)
     img_container.appendChild(img_box)
     img_container.appendChild(img_next_btn)

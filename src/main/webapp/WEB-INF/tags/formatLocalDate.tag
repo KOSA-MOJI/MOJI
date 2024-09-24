@@ -8,4 +8,4 @@
         pattern = "yyyy-MM-dd";
     }
 %>
-<%= DateTimeFormatter.ofPattern(pattern).format(date) %>
+<%= date != null ? DateTimeFormatter.ofPattern(pattern).format(date) : "N/A" %>

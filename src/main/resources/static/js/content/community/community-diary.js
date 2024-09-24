@@ -1,10 +1,11 @@
 let currentLocation = {latitude: null, longitude: null};
-let currentRadius = 1500; // 기본 반경 값
+let currentRadius = 5; // 기본 반경 값
 const email = "wjdekqls1@example.com"
 const listLimit = 5; // 한 번에 불러올 데이터 수
 let communityData = []; // 받아온 데이터 저장 배열
 let curDataIndex = 0; //실제 가리키는 보여줄 데이터의 시작 위치
 let selectedIndex = 1; //1~limit
+let selectedDistanceValue = 5; //현재
 
 // 위치정보 가져오기
 function getCurrentLocation() {
@@ -14,7 +15,7 @@ function getCurrentLocation() {
         currentLocation.latitude = position.coords.latitude;
         currentLocation.longitude = position.coords.longitude;
         console.log(
-          `현재 위치: 위도 ${currentLocation.latitude}, 경도 ${currentLocation.longitude}`);
+            `현재 위치: 위도 ${currentLocation.latitude}, 경도 ${currentLocation.longitude}`);
         resolve(); // 작업이 성공적으로 끝난 경우
       }, (error) => {
         console.error('위치 정보 가져오기 에러:', error);
@@ -38,27 +39,47 @@ function updateListImage() {
     imgTag.setAttribute("style", "width:100%;height:100%")
     imgTag.src = communityData[curDataIndex + i].imageUrl
     imageItemDiv.appendChild(imgTag)
+
+    // 기존 존재하는 클릭 이벤트 제거 (중복 방지)
+    imageItemDiv.onclick = null;
+
+    if (!communityData[curDataIndex + i].pageId) {
+      ////pageId가 undefined이면-> 클릭 이벤트를 막기 위해 더미 함수 사용
+      imageItemDiv.onclick = function (event) {
+        event.preventDefault(); // 기본 동작 막기
+      };
+      imageItemDiv.style.cursor = "not-allowed";
+      imageItemDiv.title = "존재하지 않는 페이지 입니다.";
+    } else {
+      // pageId가 있을 경우 클릭 이벤트 설정
+      imageItemDiv.onclick = function () {
+        updateDiaryContent(this);
+      };
+      imageItemDiv.style.cursor = "pointer";
+      imageItemDiv.removeAttribute('title');
+    }
   }
 }
 
 function updateDiaryContent(element) {
   selectedIndex = Number(element.getAttribute("id").split("-")[2])
-  fetch(`/api/community/page/${communityData[curDataIndex + selectedIndex - 1].pageId}`)
-    .then((res) => {
-      if (res.ok) {
-        return res.json()
-      }
-      throw Error("page data not found!")
-    }).then((data) => {
+  fetch(`/api/community/page/${communityData[curDataIndex + selectedIndex
+  - 1].pageId}`)
+  .then((res) => {
+    if (res.ok) {
+      return res.json()
+    }
+    throw Error("page data not found!")
+  }).then((data) => {
     let pageData = createPagesData(data)
     updatePageContent(pageData)
-  }).then(()=>{
-    const scrapButton= document.getElementById('scrapButton')
+  }).then(() => {
+    const scrapButton = document.getElementById('scrapButton')
     scrapButton.src = communityData[curDataIndex + selectedIndex - 1].scrapped
-      ?`${imagePath}full-heart.png`
-      :`${imagePath}gray-heart.png`
+        ? `${imagePath}full-heart.png`
+        : `${imagePath}gray-heart.png`
   })
-    .catch(err => console.log(err))
+  .catch(err => console.log(err))
 }
 
 function prevBtn() {
@@ -73,9 +94,9 @@ async function nextBtn() {
     //false를 하는 이유-> 끌고 온 데이터를 바탕으로 curDataIndex를 수정 후, updateListImage()
   }
   curDataIndex = (communityData.length - 5) >= (Math.floor(curDataIndex / 5)
-    + 1) * 5
-    ? (Math.floor(curDataIndex / 5) + 1) * 5
-    : communityData.length - 5;
+      + 1) * 5
+      ? (Math.floor(curDataIndex / 5) + 1) * 5
+      : communityData.length - 5;
   selectedIndex = 1;
   updateListImage();
 }
@@ -83,53 +104,66 @@ async function nextBtn() {
 // 커뮤니티 하단 리스트 비동기 불러오기
 function fetchCommunityData(offset, limit, isInit) {
   fetch(
-    `/api/community?email=${email}&longitude=${currentLocation.longitude}&latitude=${currentLocation.latitude}&radius=${currentRadius}&offset=${offset}&limit=${limit}`)
-    .then((res) => {
-      if (res.ok) {
-        return res.json()
-      }
-      throw Error("data not found")
-    })
-    .then((data) => {
-      if (data.length === 0) {
-        return
-      }
-      let pageIds = communityData.map(elem => elem.pageId)
-      data.forEach((singleData) => { //기존 communityData에 새로 온 singleData와 중복을 확인
-        if (!pageIds.includes(singleData.pageId)) {
-          singleData.imageUrl = singleData.imageUrl ? singleData.imageUrl
+      `/api/community?email=${email}&longitude=${currentLocation.longitude}&latitude=${currentLocation.latitude}&radius=${currentRadius}&offset=${offset}&limit=${limit}`)
+  .then((res) => {
+    if (res.ok) {
+      return res.json()
+    }
+    throw Error("data not found")
+  })
+  .then((data) => {
+    if (data.length === 0) {
+      return
+    }
+    console.log("radius" + currentRadius);
+    let pageIds = communityData.map(elem => elem.pageId)
+    data.forEach((singleData) => { //기존 communityData에 새로 온 singleData와 중복을 확인
+      if (!pageIds.includes(singleData.pageId)) {
+        singleData.imageUrl = singleData.imageUrl ? singleData.imageUrl
             : "https://placehold.co/600x400"
-          communityData.push(singleData)
-        }
-      })
-    }).then(() => {
+        communityData.push(singleData)
+      }
+    })
+    // 5개 미만일 경우
+    if (communityData.length < 5) {
+      const missingCount = 5 - communityData.length; // 5개까지 채우기 위해 필요한 개수
+      for (let i = 0; i < missingCount; i++) {
+        // 기본(대체) 이미지를 추가
+        communityData.push({
+          imageUrl: "https://placehold.co/600x400" // 기본 이미지 URL
+        });
+      }
+    }
+  }).then(() => {
     if (isInit) {
       updateListImage()
     }
   }).then(() => {
-    if (isInit) updateDiaryContent(document.querySelector("#image-item-1"))
+    if (isInit) {
+      updateDiaryContent(document.querySelector("#image-item-1"))
+    }
   }).catch(err => console.log(err))
 }
 
 // 페이지 화면 구현
-function createPagesData(data){
+function createPagesData(data) {
   let leftData = {
-    pageId : data.pageId,
-    createdAt : data.createdAt,
-    weather : data.weather,
-    content : data.content,
-    fontSize : data.fontSize,
-    fontColor : data.fontColor,
-    textAlignment : data.textAlignment,
-    publicStatus : data.publicStatus,
-    template : data.template
+    pageId: data.pageId,
+    createdAt: data.createdAt,
+    weather: data.weather,
+    content: data.content,
+    fontSize: data.fontSize,
+    fontColor: data.fontColor,
+    textAlignment: data.textAlignment,
+    publicStatus: data.publicStatus,
+    template: data.template
   }
-  let rightData ={
-    locations : data.locations
+  let rightData = {
+    locations: data.locations
   }
   return {
-    left : leftData,
-    right : rightData
+    left: leftData,
+    right: rightData
   }
 }
 
@@ -141,72 +175,80 @@ function updatePageContent(data) {
   rightSide.appendChild(createRightChild(data))
 }
 
-function resetLeftSideChild(){
+function resetLeftSideChild() {
   const leftSide = document.getElementById('left-side');
   while (leftSide.firstChild) {
     leftSide.removeChild(leftSide.firstChild);
   }
 }
-function resetRightSideChild(){
+
+function resetRightSideChild() {
   const rightSide = document.getElementById('right-side');
   while (rightSide.firstChild) {
     rightSide.removeChild(rightSide.firstChild);
   }
 }
-function resetSideChild(){
+
+function resetSideChild() {
   resetLeftSideChild()
   resetRightSideChild()
 }
-function createLeftChild(pageData){
+
+function createLeftChild(pageData) {
   let data = pageData.left
   let fontColor = data.fontColor;
   let fontSize = data.fontSize;
   let textAlignment = data.textAlignment;
   let templateUrl = data.template.templateImage;
   let container = document.createElement("div")
-  let dateDiv=document.createElement("div")
+  let dateDiv = document.createElement("div")
   let weatherDiv = document.createElement("div")
   let dateWeatherDiv = document.createElement("div")
-  let contentDiv=document.createElement("div")
+  let contentDiv = document.createElement("div")
   let templateImg = document.createElement("img")
 
-  templateImg.src=templateUrl;
-  templateImg.setAttribute("style","position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
+  templateImg.src = templateUrl;
+  templateImg.setAttribute("style",
+      "position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
   container.appendChild(templateImg)
 
-  dateDiv.innerText=data.createdAt;
-  weatherDiv.innerText=data.weather;
-  dateDiv.setAttribute("style","position: absolute; left: 10%;")
-  weatherDiv.setAttribute("style","position: absolute; right: 10%;")
+  dateDiv.innerText = data.createdAt;
+  weatherDiv.innerText = data.weather;
+  dateDiv.setAttribute("style", "position: absolute; left: 10%;")
+  weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
   dateWeatherDiv.appendChild(dateDiv)
   dateWeatherDiv.appendChild(weatherDiv)
-  dateWeatherDiv.setAttribute("style","display: flex; flex-direction: row; width: 100%;")
+  dateWeatherDiv.setAttribute("style",
+      "display: flex; flex-direction: row; width: 100%;")
   container.appendChild(dateWeatherDiv)
 
-  contentDiv.innerText=data.content;
-  contentDiv.setAttribute("style",`font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`)
+  contentDiv.innerText = data.content;
+  contentDiv.setAttribute("style",
+      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`)
   container.appendChild(contentDiv)
 
   container.setAttribute("style",
-    "width:100%; height:100%;"+
-    "display: flex;" +
-    "flex-direction: column;" +
-    "align-items: center;"+
-    "gap: 10%;")
+      "width:100%; height:100%;" +
+      "display: flex;" +
+      "flex-direction: column;" +
+      "align-items: center;" +
+      "gap: 10%;")
   return container
 }
 
-function createRightChild(pageData){
+function createRightChild(pageData) {
   let data = pageData.right
   let container = document.createElement("div")
   let templateImg = document.createElement("img")
-  templateImg.src=pageData.left.template.templateImage;
-  templateImg.setAttribute("style","position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
+  templateImg.src = pageData.left.template.templateImage;
+  templateImg.setAttribute("style",
+      "position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
   container.appendChild(templateImg)
 
   let mapContainer = document.createElement("div");
   mapContainer.id = "map";
-  mapContainer.setAttribute("style", "width:80%; height:40%; position : relative");
+  mapContainer.setAttribute("style",
+      "width:80%; height:40%; position : relative");
   let mapOption = {
     center: new kakao.maps.LatLng(37.5665, 126.9780),
     level: 3
@@ -220,28 +262,29 @@ function createRightChild(pageData){
 
   let markers = [];
   let img_lists = [];
-  let cur_img_list=[]
-  let cur_img_pointer=0;
+  let cur_img_list = []
+  let cur_img_pointer = 0;
   let img_container = document.createElement("div")
   let img_next_btn = document.createElement("button")
   let img_prev_btn = document.createElement("button")
   let img_box = document.createElement("img")
   img_container.setAttribute("style",
-    "width:90%; height:40%;"+
-    "display: inline-block;" +
-    "align-items: center;")
+      "width:90%; height:40%;" +
+      "display: inline-block;" +
+      "align-items: center;")
 
   // 만들어진 위치 마커와 이미지연결
-  data.locations.forEach((location,idx) => {
+  data.locations.forEach((location, idx) => {
     let marker = new kakao.maps.Marker({
       map: map,
       position: new kakao.maps.LatLng(location.latitude, location.longitude),
     });
-    img_lists.push(location.imageUrls.length>0?location.imageUrls.map(data=>data.mapImage):["https://placehold.co/400"])
-    kakao.maps.event.addListener(marker,'click',function (){
-      cur_img_list=img_lists[idx]
-      cur_img_pointer=0
-      img_box.src=cur_img_list[cur_img_pointer]
+    img_lists.push(location.imageUrls.length > 0 ? location.imageUrls.map(
+        data => data.mapImage) : ["https://placehold.co/400"])
+    kakao.maps.event.addListener(marker, 'click', function () {
+      cur_img_list = img_lists[idx]
+      cur_img_pointer = 0
+      img_box.src = cur_img_list[cur_img_pointer]
     })
     markers.push(marker)
   });
@@ -262,36 +305,36 @@ function createRightChild(pageData){
     }, 100); // 지연 시간 100ms (필요에 따라 조정 가능)
   }
 
-  cur_img_list=img_lists
-  img_box.src=cur_img_list[cur_img_pointer]
+  cur_img_list = img_lists
+  img_box.src = cur_img_list[cur_img_pointer]
 
-  img_next_btn.innerText="다음"
-  img_next_btn.addEventListener("click",function (){
-    if(cur_img_pointer<cur_img_list.length-1){
+  img_next_btn.innerText = "다음"
+  img_next_btn.addEventListener("click", function () {
+    if (cur_img_pointer < cur_img_list.length - 1) {
       cur_img_pointer++;
-      img_box.src=cur_img_list[cur_img_pointer]
+      img_box.src = cur_img_list[cur_img_pointer]
     }
   })
-  img_next_btn.setAttribute("style","right:0")
+  img_next_btn.setAttribute("style", "right:0")
 
-  img_prev_btn.innerText="이전"
-  img_prev_btn.addEventListener("click",function (){
-    if(0<cur_img_pointer){
+  img_prev_btn.innerText = "이전"
+  img_prev_btn.addEventListener("click", function () {
+    if (0 < cur_img_pointer) {
       cur_img_pointer--;
-      img_box.src=cur_img_list[cur_img_pointer]
+      img_box.src = cur_img_list[cur_img_pointer]
     }
   })
-  img_prev_btn.setAttribute("style","left:0")
+  img_prev_btn.setAttribute("style", "left:0")
 
   img_box.setAttribute("style",
-    "width:80%;" +
-    "height:80%;"+
-    "vertical-align: middle;"+
-    "object-fit:cover"+
-    "background-color: lightgray;"+
-    "visibility: visible;"
+      "width:80%;" +
+      "height:80%;" +
+      "vertical-align: middle;" +
+      "object-fit:cover" +
+      "background-color: lightgray;" +
+      "visibility: visible;"
   )
-  img_box.setAttribute("onerror","this.style.visibility='hidden';")
+  img_box.setAttribute("onerror", "this.style.visibility='hidden';")
 
   img_container.appendChild(img_prev_btn)
   img_container.appendChild(img_box)
@@ -299,17 +342,15 @@ function createRightChild(pageData){
   container.appendChild(img_container)
 
   container.setAttribute("style",
-    "width: 100%; " +
-    "height: 100%;" +
-    "display: flex;" +
-    "flex-direction: column;"+
-    "align-items: center;"+
-    "gap: 10%;"
-
+      "width: 100%; " +
+      "height: 100%;" +
+      "display: flex;" +
+      "flex-direction: column;" +
+      "align-items: center;" +
+      "gap: 10%;"
   )
   return container
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
   getCurrentLocation().then(() => {
@@ -319,7 +360,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function toggleFilter() {
   const modal = document.getElementById("filterModal");
-  modal.style.display = modal.style.display === "block" ? "none" : "block"; // 모달을 토글
+  if (modal.style.display === 'none') {
+    modal.style.display = 'block';
+
+    // 저장된 거리 값을 슬라이더와 input에 반영
+    document.getElementById('distanceRange').value = selectedDistanceValue;
+    document.getElementById('selectedDistance').value = selectedDistanceValue;
+  } else {
+    modal.style.display = 'none';
+  }
 }
 
 function showModal() {
@@ -332,14 +381,39 @@ function closeModal() {
   modal.style.display = "none";
 }
 
+// 슬라이더 값이 변경될 때마다 input 업데이트
+document.getElementById('distanceRange')
+.addEventListener('input', function () {
+  const inputRange = this.value;
+  document.getElementById('selectedDistance').value = inputRange; // input에 값 반영
+});
+
+//input이 입력되었을 때마다 슬라이더 값 업데이트
+document.getElementById('selectedDistance')
+.addEventListener('blur', function () {
+  //문자열 -> 정수처리
+  let inputValue = parseInt(this.value, 10);
+
+  if (inputValue < 5) {
+    alert("검색 가능한 최소 반경은 5km 입니다.");
+    inputValue = 5;
+  }
+  if (inputValue > 50) {
+    alert("검색 가능한 최대/ 반경은 50km 입니다.");
+    inputValue = 50;
+  }
+
+  this.value = inputValue;
+  document.getElementById('distanceRange').value = inputValue;
+});
+
 /*필터(반경거리) range*/
 function applyFilter() {
-  const updateRadius = document.getElementById('distanceRange').value;
-
-  // console.log("필터 값은" + updateRadius);
+  //슬라이더->input 안의 현재 값을 저장
+  selectedDistanceValue = document.getElementById('selectedDistance').value;
 
   //radius 지정 및 초기화
-  resetDefaultData(updateRadius);
+  resetDefaultData(selectedDistanceValue);
 
   getCurrentLocation().then(() => {
     fetchCommunityData(0, 20, true)
@@ -375,18 +449,20 @@ function updateFavoriteButton() {
   }
 }
 
-function toggleScrap(){
-  let curPage = communityData[curDataIndex+selectedIndex-1]
-  fetch(`/api/community/scrap?email=${email}&pageId=${curPage.pageId}`,{
-    method:`${curPage.scrapped?"DELETE":"POST"}`
-  }).then((res)=>{
-    if(res.ok) return null
+function toggleScrap() {
+  let curPage = communityData[curDataIndex + selectedIndex - 1]
+  fetch(`/api/community/scrap?email=${email}&pageId=${curPage.pageId}`, {
+    method: `${curPage.scrapped ? "DELETE" : "POST"}`
+  }).then((res) => {
+    if (res.ok) {
+      return null
+    }
     throw Error("cannot scrap this page!")
-  }).then(()=>{
-    const scrapButton= document.getElementById('scrapButton')
-    curPage.scrapped=!curPage.scrapped
+  }).then(() => {
+    const scrapButton = document.getElementById('scrapButton')
+    curPage.scrapped = !curPage.scrapped
     scrapButton.src = curPage.scrapped
-      ?`${imagePath}full-heart.png`
-      :`${imagePath}gray-heart.png`
-  }).catch(err=>console.log(err))
+        ? `${imagePath}full-heart.png`
+        : `${imagePath}gray-heart.png`
+  }).catch(err => console.log(err))
 }

@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,6 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -33,9 +37,9 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
     http.authorizeHttpRequests(auth -> auth
-            .requestMatchers("/user/**").hasAnyRole("USER", "SOLO")
-            .requestMatchers("/couple/**").hasRole("USER")
-            .requestMatchers("/solo/**").hasRole("USER")
+            .requestMatchers("/user/couple/diary").hasRole("COUPLE")
+            .requestMatchers("/user/solo/**").hasRole("SOLO")
+            .requestMatchers("/").hasAnyRole("COUPLE", "SOLO")
             .anyRequest().permitAll())
         .formLogin(withDefaults())
         .logout(withDefaults()
@@ -43,8 +47,8 @@ public class SecurityConfig {
 
     http.formLogin(form -> form
         .loginPage("/signin")  // 커스텀 로그인 페이지 요청 경로
-        .loginProcessingUrl("/login-process")  // 커스텀 로그인 처리 경로 지정
-        .defaultSuccessUrl("/")  // 로그인 성공 시 이동할 경로
+        .loginProcessingUrl("/signin-process")  // 커스텀 로그인 처리 경로 지정
+        .defaultSuccessUrl("/user/solo", true)  // 로그인 성공 시 이동할 경로
         .usernameParameter("email")  // 사용자 이름 파라미터 설정
         .passwordParameter("password")  // 패스워드 파라미터 설정
         .successHandler(authenticationSuccessHandler())  // 성공 시 핸들러 설정
@@ -56,12 +60,11 @@ public class SecurityConfig {
         .maximumSessions(1)
         .maxSessionsPreventsLogin(true)
     );
-
-    http.logout(logout -> logout
-        .logoutUrl("/logout")
-        .logoutSuccessUrl("/")
-        .deleteCookies("JSESSIONID")
-        .invalidateHttpSession(true));
+    http.logout((logout) -> logout
+        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+        .logoutSuccessUrl("/signin")
+        .invalidateHttpSession(true))
+    ;
 
     http.exceptionHandling(exceptions -> exceptions
         .accessDeniedHandler(accessDeniedHandler())
@@ -94,5 +97,17 @@ public class SecurityConfig {
   @Bean
   public AccessDeniedHandler accessDeniedHandler() {
     return new CustomerAccessDeniedHandler();
+  }
+
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      public void addCoresMappings(CorsRegistry registry) {
+
+        registry.addMapping("/**")
+            .allowedMethods("*")
+            .allowedOrigins("http://localhost:3000");
+      }
+    };
   }
 }
