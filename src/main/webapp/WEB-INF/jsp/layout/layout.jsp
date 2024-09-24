@@ -26,7 +26,8 @@
 <div class="main-content" id="mainContent">
     <header class="header">
         <span class="header-left">
-            <img src="${pageContext.request.contextPath}/image/common/diaryLogo.png" class="menu-bar" alt="Menu Bar">
+            <img src="${pageContext.request.contextPath}/image/common/diaryLogo.png"
+                 class="menu-bar" alt="Menu Bar">
             <h1>Moji</h1>
         </span>
         <div class="header-right">
@@ -34,14 +35,13 @@
                 <img src="${principal.profileImageUrl}" alt="Profile Image" class="profile-img">
                 <span>${principal.userName}</span>
                 <div class="dropdown">
-                    <button class="btn dropdown-toggle custom-dropdown" type="button" id="Btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <button class="btn dropdown-toggle custom-dropdown" type="button" id="Btn"
+                            data-bs-toggle="dropdown" aria-expanded="false"></button>
                     <ul class="dropdown-menu">
                         <li security:authorize="isAuthenticated()">
                             <a class="dropdown-item" href="/user/logout">로그아웃</a>
                         </li>
-                        <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
-                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                        <li><a class="dropdown-item" href="#">MyPage</a></li>
+                        <li><a class="dropdown-item" href="/user/solo">MyPage</a></li>
                     </ul>
                 </div>
             </div>
@@ -53,7 +53,7 @@
     </header>
 
     <div class="content">
-        <jsp:include page="${contentURL}" />
+        <jsp:include page="${contentURL}"/>
     </div>
 
     <footer class="footer">
@@ -74,8 +74,9 @@
             <li><a href="/user/couple/diary"><img
                     src="${pageContext.request.contextPath}/image/common/diary.png"
                     alt="Diary"><span> Diary</span></a></li>
-            <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/community.png"
-                                 alt="Community"><span> Community</span></a>
+            <li><a href="/user/community"><img
+                    src="${pageContext.request.contextPath}/image/common/community.png"
+                    alt="Community"><span> Community</span></a>
             </li>
             <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/map.png"
                                  alt="Map"><span> Map</span></a></li>
