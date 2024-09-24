@@ -21,8 +21,8 @@
   </insert>
 
   <!--  커플신청 확인 -->
-  <select id="checkRequest">
-    select REQUEST_EMAIL
+  <select id="checkRequest" resultMap="requestMap">
+    select REQUEST_ID, REQUEST_EMAIL, RECEIVER_EMAIL, CREATED_AT
     from REQUESTS
     where RECEIVER_EMAIL = #{receiverEmail}
   </select>
