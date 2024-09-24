@@ -22,31 +22,21 @@ public class RequestServiceImpl implements RequestService {
   @Override
   @Transactional
   public int requestCouple(String requestEmail, String receiverEmail) throws Exception {
-    log.info("요청을 보낸 이메일 {}", receiverEmail);
 
     User receiver = userMapper.findUserByEmail(receiverEmail);
-    log.info("요청을 보낸 이메일 {}", receiverEmail);
 
     if (receiver == null) {  // 유저가 존재하지 않는 경우
       return -1;
     }
-    log.info("요청을 보낸 이메일 {}", receiverEmail);
 
     if (!receiver.getCoupleStatus().equals(0L)) {  // 유저가 커플인 경우
       return 0;
     }
-    log.info("요청을 보낸 이메일 {}", receiverEmail);
 
     Request existingRequest = requestMapper.checkRequest(receiverEmail);
-    log.info("existingRequest {}", existingRequest.getRequestEmail());
-    log.info("existingRequest {}", existingRequest.getCreatedAt());
- 
     if (existingRequest == null) { // 이미 커플 신청을 받았을 경우
       return requestMapper.requestCouple(requestEmail, receiverEmail);
     }
-    log.info("현재 진행중인 리퀘스트 {}", existingRequest);
-    log.info("요청값이 null로 들어옴");
-
     return 2;
   }
 
