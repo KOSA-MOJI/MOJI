@@ -9,7 +9,7 @@ body {
 
 /* 헤더 스타일 */
 header {
-  background-color: #ffffff;
+  background-color: #ffeeb3;
   padding: 5px;
   display: flex;
   justify-content: space-between; /* h1이 menu-bar 옆에 위치하도록 설정 */
@@ -27,6 +27,7 @@ header h1 {
   cursor: pointer;
   margin-right: 10px;
   flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 방지 */
+
 }
 
 /* 사이드바 스타일 */

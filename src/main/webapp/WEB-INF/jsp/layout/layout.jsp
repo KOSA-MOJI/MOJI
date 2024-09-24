@@ -16,8 +16,8 @@
       <span class="header-left" style="display: flex; align-items: center;">
         <span class="menu-bar" style="margin-right: 10px;">
           <img src="${pageContext.request.contextPath}/image/common/menubar.png" class="menu-bar" alt="Menu Bar" width="40" height="40" onclick="toggleSidebar()">
+          <img src="${pageContext.request.contextPath}/image/common/logo.jpg" class="logo" alt="Logo" width="100" height="100" onclick="toggleSidebar()">
         </span>
-        <h1>Moji</h1>
       </span>
         <span class="header-right" style="display: flex; align-items: center;">
         <!-- 프로필 영역 -->
