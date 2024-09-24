@@ -27,7 +27,7 @@
     width: 50%;
     height: 100%;
     display: flex;
-    margin-top:25px;
+    /*margin-top:25px;*/
     align-items: center;
     justify-content: center;
     cursor: pointer;
