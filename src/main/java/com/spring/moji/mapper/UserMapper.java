@@ -8,11 +8,13 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
 
-  public User login(String email);
+  User login(String email);
 
-  public int join(User user) throws Exception;
+  int join(User user) throws Exception;
 
-  public int insertAuth(UserAuth user) throws Exception;
+  int insertAuth(UserAuth user) throws Exception;
 
-  public int updateProfileImageUrl(String email, String profileImageUrl) throws Exception;
+  int updateProfileImageUrl(String email, String profileImageUrl) throws Exception;
+
+  User findUserByEmail(String email) throws Exception;
 }
