@@ -388,6 +388,25 @@ document.getElementById('distanceRange')
   document.getElementById('selectedDistance').value = inputRange; // input에 값 반영
 });
 
+//input이 입력되었을 때마다 슬라이더 값 업데이트
+document.getElementById('selectedDistance')
+.addEventListener('blur', function () {
+  //문자열 -> 정수처리
+  let inputValue = parseInt(this.value, 10);
+
+  if (inputValue < 5) {
+    alert("검색 가능한 최소 반경은 5km 입니다.");
+    inputValue = 5;
+  }
+  if (inputValue > 50) {
+    alert("검색 가능한 최대/ 반경은 50km 입니다.");
+    inputValue = 50;
+  }
+
+  this.value = inputValue;
+  document.getElementById('distanceRange').value = inputValue;
+});
+
 /*필터(반경거리) range*/
 function applyFilter() {
   //슬라이더->input 안의 현재 값을 저장
