@@ -36,7 +36,7 @@ public class SecurityConfig {
     http.authorizeHttpRequests(auth -> auth
             .requestMatchers("/user/couple/diary").hasRole("COUPLE")
             .requestMatchers("/user/solo/**").hasRole("SOLO")
-//            .requestMatchers("/user/**").hasAnyRole("COUPLE", "SOLO")
+            .requestMatchers("/").hasAnyRole("COUPLE", "SOLO")
             .anyRequest().permitAll())
         .formLogin(withDefaults())
         .logout(withDefaults()

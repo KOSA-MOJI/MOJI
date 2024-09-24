@@ -12,16 +12,16 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/diary")
+@RequestMapping("/user/couple/diary")
 public class DiaryController {
 
-	@Value("${kakao.api-key}")
-	private String kakaoApiKey;
+  @Value("${kakao.api-key}")
+  private String kakaoApiKey;
 
-	@GetMapping()
-	public String diary(Model model) {
-		model.addAttribute("kakaoApiKey", kakaoApiKey);
-		model.addAttribute("contentURL","/WEB-INF/jsp/content/diary/diary-read.jsp");
-		return "diary/diary-read-page";
-	}
+  @GetMapping()
+  public String diary(Model model) {
+    model.addAttribute("kakaoApiKey", kakaoApiKey);
+    model.addAttribute("contentURL", "/WEB-INF/jsp/content/diary/diary-read.jsp");
+    return "diary/diary-read-page";
+  }
 }
