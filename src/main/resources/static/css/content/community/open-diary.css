@@ -123,19 +123,6 @@
 }
 
 
-/*!* 반응형 스타일 *!*/
-/*@media (max-width: 768px) {*/
-/*  .diary-component {*/
-/*    padding: 15px; !* 내부 여백 조정 *!*/
-/*    max-width: 90%; !* 작은 화면에서 너비 조정 *!*/
-/*    height: auto; !* 높이를 자동으로 조정 *!*/
-/*  }*/
-
-/*  .diary-content {*/
-/*    height: auto; !* 내용에 따라 높이 조정 *!*/
-/*  }*/
-/*}*/
-
 /*스크랩 css*/
 .scrap-component {
   display: flex;
@@ -193,29 +180,93 @@
   margin-right: 5px; /* 텍스트와의 간격 */
 }
 
+.modal-header {
+  width: 100%;
+  height: auto;
+  justify-content: center; /* 자식 요소를 양쪽에 배치 */
+  margin-bottom: 1.5rem;
+  border-bottom: 0.1rem solid #ede7e7;
+}
+
+.header-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+}
+
+.filter-modal-title {
+  /*text-align: left;*/
+  /*margin-bottom: 1.3rem;*/
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-right: 1rem; /* 제목과 인풋 필드 사이에 여백 추가 */
+
+}
+
+/*필터 모달 틀*/
+.filter-modal-frame {
+  background-color: #fff;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0;
+}
+
+.filter-modal-hd {
+  display: flex; /* flex를 사용하여 가로 배치 */
+  justify-content: space-between; /* 두 요소 사이의 간격 조정 */
+  align-items: center; /* 세로 중앙 정렬 */
+
+}
+
+.filter-radius {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 인풋 필드와 레이블을 수직으로 정렬 */
+  flex-grow: 1; /* 남은 공간을 차지 */
+}
+
+.filter-radius label {
+  font-size: 1rem;
+  font-weight: 400;
+  /*position: absolute;*/
+  /*top: .8rem;*/
+  /*left: 1rem;*/
+  margin-bottom: .5rem;
+  color: #6d6d6d;
+}
+
+.filter-radius input {
+  font-size: 1.2rem;
+  font-weight: 350;
+  /*position: relative;*/
+  width: 100%;
+  padding: .9rem 1rem .59rem; /*2.2rem 1rem .8rem;*/
+  border: .1rem solid #e6e6e6;
+  border-radius: .8rem;
+  background: transparent;
+}
+
 
 /*슬라이더 적용*/
 .slider-container {
+  padding: 15px 10px 5px;
   position: relative; /* 필터와 같은 위치에 배치 */
-  margin-top: 5px; /* 필터와의 간격 설정 */
-  flex-direction: column; /* 세로 방향으로 배치 */
-  align-items: center;
   width: 100%; /* 자동 너비 설정 */
-  max-width: 15rem;
+  /*max-width: 15rem;*/
 }
 
 .km-labels {
   display: flex;
   justify-content: space-between; /* 양쪽 끝으로 정렬 */
   width: 100%; /* 너비를 100%로 설정 */
-  font-size: 10px; /* 작은 글씨 크기 */
+  font-size: 15px; /* 작은 글씨 크기 */
   margin-top: 5px; /* 슬라이더와의 간격 */
 }
 
 #distanceRange {
-  /*width: 100%; !* 슬라이더 너비를 100%로 설정 *!*/
-  /*margin-bottom: 3px; !* 슬라이더와 단위 간격 *!*/
-  width: 90%;
+  width: 100%;
   background: linear-gradient(to right, #FFE283 0%, #FFE283 50%, #ececec 70%, #ececec 100%);
   border-radius: 8px;
   outline: none;
