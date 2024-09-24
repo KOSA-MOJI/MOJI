@@ -78,7 +78,6 @@ label {
 .btn-base {
   font-family: "KyoboHand";
   padding: 10px;
-  background-color: #ffe898;
   border: none;
   border-radius: 5px;
   font-size: 23px;
@@ -87,7 +86,7 @@ label {
 }
 
 .btn:hover {
-  background-color: #ddb347;
+  /*background-color: #ddb347;*/
 }
 
 .text-primary {

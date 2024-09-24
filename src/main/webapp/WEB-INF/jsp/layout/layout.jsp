@@ -48,7 +48,7 @@
             <p class="auth-options" id="authOptions" style="display: none; margin-right: 10px;">
                 <a href="#" id="signupBtn" class="auth-link">Signup</a> |
                 <a href="#" id="loginBtn" class="auth-link">Login</a>
-            <p class="notification">🔔</p>
+<%--            <p class="notification">🔔</p>--%>
         </div>
     </header>
 
