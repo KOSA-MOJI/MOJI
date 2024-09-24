@@ -26,54 +26,59 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/diary")
+@RequestMapping("user/couple/api/diary")
 public class DiaryRestController {
-	private final DiaryServiceImpl diaryService;
 
-	@GetMapping("/{coupleId}")
-	public Diary getDiary(@PathVariable Long coupleId) {
-		return diaryService.findByCoupleId(coupleId);
-	}
+  private final DiaryServiceImpl diaryService;
 
-	@GetMapping("/page/{diaryId}")
-	public List<Page> getPages(@PathVariable Long diaryId, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate){
-		return diaryService.fetchDiaryPages(diaryId, startDate, endDate);
-	}
+  @GetMapping("/{coupleId}")
+  public Diary getDiary(@PathVariable Long coupleId) {
+    return diaryService.findByCoupleId(coupleId);
+  }
 
-	@PostMapping("/public/{pageId}")
-	public boolean setPagePublicStatus(@PathVariable Long pageId, @RequestParam boolean publicStatus){
-		diaryService.setPagePublicStatus(pageId,publicStatus);
-		return true;
-	}
+  @GetMapping("/page/{diaryId}")
+  public List<Page> getPages(@PathVariable Long diaryId,
+      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+    return diaryService.fetchDiaryPages(diaryId, startDate, endDate);
+  }
 
-	@GetMapping("/template")
-	public List<Template> getTemplates() {
-		return diaryService.findAllTemplates();
-	}
+  @PostMapping("/public/{pageId}")
+  public boolean setPagePublicStatus(@PathVariable Long pageId,
+      @RequestParam boolean publicStatus) {
+    diaryService.setPagePublicStatus(pageId, publicStatus);
+    return true;
+  }
 
-	@PostMapping("/coverImage/{coupleId}")
-	public String coverImage(@PathVariable Long coupleId, @RequestParam("diaryCoverImage")MultipartFile diaryCoverImage) throws
-		IOException {
-		return diaryService.updateCoverImage(coupleId,diaryCoverImage);
-	}
+  @GetMapping("/template")
+  public List<Template> getTemplates() {
+    return diaryService.findAllTemplates();
+  }
 
-	@PostMapping("/page")
-	public void createPage(@RequestBody PageInsertRequestDTO pageInsertRequestDTO) {
-		diaryService.createPage(pageInsertRequestDTO);
-	}
+  @PostMapping("/coverImage/{coupleId}")
+  public String coverImage(@PathVariable Long coupleId,
+      @RequestParam("diaryCoverImage") MultipartFile diaryCoverImage) throws
+      IOException {
+    return diaryService.updateCoverImage(coupleId, diaryCoverImage);
+  }
 
-	@DeleteMapping("/page/{pageId}")
-	public void deletePage(@PathVariable Long pageId) {
-		diaryService.deletePageById(pageId);
-	}
+  @PostMapping("/page")
+  public void createPage(@RequestBody PageInsertRequestDTO pageInsertRequestDTO) {
+    diaryService.createPage(pageInsertRequestDTO);
+  }
 
-	@PostMapping("/preupload")
-	public String preSigningImage(@RequestBody MultipartFile image) {
-		return diaryService.preSigningImage(image);
-	}
+  @DeleteMapping("/page/{pageId}")
+  public void deletePage(@PathVariable Long pageId) {
+    diaryService.deletePageById(pageId);
+  }
 
-	@DeleteMapping("/preupload")
-	public void deletePreSignedImage(@RequestParam String imageUrl) {
-		diaryService.deletePreSignedImage(imageUrl);
-	}
+  @PostMapping("/preupload")
+  public String preSigningImage(@RequestBody MultipartFile image) {
+    return diaryService.preSigningImage(image);
+  }
+
+  @DeleteMapping("/preupload")
+  public void deletePreSignedImage(@RequestParam String imageUrl) {
+    diaryService.deletePreSignedImage(imageUrl);
+  }
 }

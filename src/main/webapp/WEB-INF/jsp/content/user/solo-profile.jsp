@@ -60,7 +60,7 @@
             <p class="clearfix">
                 <span class="float-start"> 정보 변경 </span>
                 <span class="float-end text-muted">
-        <a href="update-profile">변경 </a>
+        <a href="solo/update-profile">변경 </a>
         </span>
             </p>
         </div>
