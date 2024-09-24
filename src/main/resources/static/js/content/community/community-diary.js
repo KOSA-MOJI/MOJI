@@ -1,10 +1,11 @@
 let currentLocation = {latitude: null, longitude: null};
-let currentRadius = 1; // 기본 반경 값
+let currentRadius = 5; // 기본 반경 값
 const email = "wjdekqls1@example.com"
 const listLimit = 5; // 한 번에 불러올 데이터 수
 let communityData = []; // 받아온 데이터 저장 배열
 let curDataIndex = 0; //실제 가리키는 보여줄 데이터의 시작 위치
 let selectedIndex = 1; //1~limit
+let selectedDistanceValue = 5; //현재
 
 // 위치정보 가져오기
 function getCurrentLocation() {
@@ -114,6 +115,7 @@ function fetchCommunityData(offset, limit, isInit) {
     if (data.length === 0) {
       return
     }
+    console.log("radius" + currentRadius);
     let pageIds = communityData.map(elem => elem.pageId)
     data.forEach((singleData) => { //기존 communityData에 새로 온 singleData와 중복을 확인
       if (!pageIds.includes(singleData.pageId)) {
@@ -358,7 +360,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function toggleFilter() {
   const modal = document.getElementById("filterModal");
-  modal.style.display = modal.style.display === "block" ? "none" : "block"; // 모달을 토글
+  if (modal.style.display === 'none') {
+    modal.style.display = 'block';
+
+    // 저장된 거리 값을 슬라이더와 input에 반영
+    document.getElementById('distanceRange').value = selectedDistanceValue;
+    document.getElementById('selectedDistance').value = selectedDistanceValue;
+  } else {
+    modal.style.display = 'none';
+  }
 }
 
 function showModal() {
@@ -371,14 +381,20 @@ function closeModal() {
   modal.style.display = "none";
 }
 
+// 슬라이더 값이 변경될 때마다 input 업데이트
+document.getElementById('distanceRange')
+.addEventListener('input', function () {
+  const inputRange = this.value;
+  document.getElementById('selectedDistance').value = inputRange; // input에 값 반영
+});
+
 /*필터(반경거리) range*/
 function applyFilter() {
-  const updateRadius = document.getElementById('distanceRange').value;
-
-  // console.log("필터 값은" + updateRadius);
+  //슬라이더->input 안의 현재 값을 저장
+  selectedDistanceValue = document.getElementById('selectedDistance').value;
 
   //radius 지정 및 초기화
-  resetDefaultData(updateRadius);
+  resetDefaultData(selectedDistanceValue);
 
   getCurrentLocation().then(() => {
     fetchCommunityData(0, 20, true)
