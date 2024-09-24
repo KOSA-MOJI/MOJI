@@ -1,5 +1,6 @@
 package com.spring.moji.dto.request;
 
+import com.spring.moji.entity.Couple;
 import com.spring.moji.entity.User;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -48,38 +49,36 @@ public class UserRequestDTO implements UserDetails {
 
   // jstl에서 user의 정보를 조회하는데 필요한 메서드
   public String getUserName() {
-    log.info("[[  getUserName 메서드 호출됨  ]]");
+
     return user.getUserName();
   }
 
   public LocalDate getBirthday() {
-    log.info("[[  getBirthday 메서드 호출됨  ]]");
+
     return user.getBirthday();
   }
 
   public String getGender() {
-    log.info("[[  getGender 메서드 호출됨  ]]");
     return user.getGender();
   }
 
   public LocalDate getCreatedAt() {
-    log.info("[[  getCreatedAt 메서드 호출됨  ]]");
     return user.getCreatedAt();
   }
 
   public String getProfileImageUrl() {
-    log.info("[[  getProfileImageUrl 메서드 호출됨  ]]");
     return user.getProfileImageUrl();
   }
 
-  public String getCoupleId() {
-    log.info("[[  getCoupleId 메서드 호출됨  ]]");
-    return user.getCoupleId();
+  public Long getCoupleStatus() {
+    return user.getCoupleStatus();
   }
 
+  public Couple getCouple() {
+    return user.getCouple();
+  }
 
   public void setProfileImageUrl(String profileImageUrl) {
-    log.info("[[  setProfileImageUrl 메서드 호출됨  ]]");
 
     if (this.user == null) {
       this.user = User.builder()  // builder를 통해 객체 생성

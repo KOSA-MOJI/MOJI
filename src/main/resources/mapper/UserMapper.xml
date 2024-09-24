@@ -10,9 +10,17 @@
     <result column="password" property="password"/>
     <result column="created_at" property="createdAt"/>
     <result column="profile_image_url" property="profileImageUrl"/>
-    <result column="couple_id" property="coupleId"/>
+    <result column="couple_status" property="coupleStatus"/>
+    <association property="couple" javaType="com.spring.moji.entity.Couple">
+      <id property="couple_id" column="couple_id"/>
+      <result property="user1Email" column="user1_email"/>
+      <result property="user2Email" column="user2_email"/>
+      <result property="coupleName" column="couple_name"/>
+      <result property="coupleProfileImage" column="couple_profile_image"/>
+    </association>
     <collection property="authList" resultMap="authMap"/>
   </resultMap>
+
   <resultMap id="authMap" type="com.spring.moji.entity.UserAuth">
     <id column="auth_no" property="authNo"/>
     <result column="user_email" property="userEmail"/>
@@ -22,18 +30,22 @@
   <select id="login" resultMap="userMap">
     SELECT u.email
          , u.user_name
-         , birthday
-         , gender
-         , password
-         , profile_image_url
-         , auth
-         , couple_id
-         , created_at
+         , u.birthday
+         , u.gender
+         , u.password
+         , u.profile_image_url
+         , auth.auth
+         , u.couple_status
+         , u.created_at
+         , c.user1_email
+         , c.user2_email
+         , c.couple_name
+         , c.COUPLE_PROFILE_IMAGE
     FROM users u
            JOIN user_auth auth ON u.email = auth.user_email
+           LEFT JOIN couples c ON (u.email = c.user1_email OR u.email = c.user2_email)
     WHERE u.email = #{email}
   </select>
-
   <insert id="join">
     INSERT INTO users (email, user_name, birthday, gender, password, created_at)
     VALUES (#{email}, #{userName}, #{birthday}, #{gender}, #{password}, sysdate)
@@ -43,11 +55,22 @@
     insert into user_auth(auth_no, user_email, auth)
     values (user_auth_seq.nextval, #{userEmail}, #{auth})
   </insert>
-
-  <update id="updateProfileImageUrl" parameterType="com.spring.moji.entity.User">
+  <update id="updateProfileImageUrl">
     update users
     set profile_image_url = #{profileImageUrl}
     where EMAIL = #{email}
   </update>
+  <select id="findUserByEmail" resultMap="userMap">
+    SELECT email
+         , user_name
+         , birthday
+         , gender
+         , password
+         , profile_image_url
+         , couple_status
+         , created_at
+    FROM users
+    WHERE email = #{email}
+  </select>
 
 </mapper>

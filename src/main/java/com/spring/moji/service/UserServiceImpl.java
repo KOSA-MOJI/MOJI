@@ -32,14 +32,22 @@ public class UserServiceImpl implements UserService {
     if (result > 0) {
       UserAuth userAuth = new UserAuth();
       userAuth.setUserEmail(user.getEmail());
-      userAuth.setAuth("ROLE_USER");
+      userAuth.setAuth("ROLE_SOLO");
       result += userMapper.insertAuth(userAuth);
     }
     return result;
   }
 
   @Override
-  public void updateProfileImageUrl(String email, String profileImageUrl) throws Exception {
-    userMapper.updateProfileImageUrl(email, profileImageUrl);
+  public int updateProfileImageUrl(String email, String profileImageUrl) throws Exception {
+    int result = userMapper.updateProfileImageUrl(email, profileImageUrl);
+
+    return result;
+  }
+
+  @Override
+  public User findUserbyEmail(String email) throws Exception {
+    User user = userMapper.findUserByEmail(email);
+    return null;
   }
 }

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
-  List<UserAuth> authList;
   private String email;  // 이메일
   private String userName; // 성함
   private LocalDate birthday;
@@ -19,13 +18,14 @@ public class User {
   private String password;
   private LocalDate createdAt;
   private String profileImageUrl;
-  private String coupleId;
-
+  private Long coupleStatus;
+  private Couple couple;
+  List<UserAuth> authList;
 
   @Builder
   public User(String email, String userName, LocalDate birthday, String gender,
       String password,
-      LocalDate createdAt, String profileImageUrl, String coupleId) {
+      LocalDate createdAt, String profileImageUrl, Long coupleStatus, Couple couple) {
     this.email = email;
     this.userName = userName;
     this.birthday = birthday;
@@ -33,6 +33,8 @@ public class User {
     this.password = password;
     this.createdAt = createdAt;
     this.profileImageUrl = profileImageUrl;
-    this.coupleId = coupleId;
+    this.coupleStatus = coupleStatus;
+    this.couple = couple;
+
   }
 }

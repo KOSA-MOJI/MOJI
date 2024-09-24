@@ -6,6 +6,10 @@
 <security:authorize access="isAuthenticated()">
     <security:authentication property="principal" var="principal"/>
 </security:authorize>
+
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 <!-- css -->
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/user/profile-style.css"/>
@@ -106,41 +110,41 @@
                 <p class="card-description">
                     상대에게 내 이메일을 복사해주거나 이메일로 커플 신청을 보내세요
                 </p>
-                <form class="forms-sample">
-                    <div class="form-group">
-                        <label for="exampleInputEmail3">나의 이메일</label>
-                        <input
-                                type="email"
-                                class="form-control"
-                                id="exampleInputEmail3"
-                                placeholder="Email"
-                                value="rhkdghks21@naver.com"
-                                readonly
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail3">이메일을 입력하세요</label>
-                        <input
-                                type="email"
-                                class="form-control"
-                                id="exampleInputEmail4"
-                                placeholder="Email"
-                        />
-                    </div>
-                    <button type="submit" class="btn btn-success">확인</button>
-                    <button
-                            type="button"
-                            class="btn btn-light cancel-button"
-                            id="cancel-invitation-btn"
-                    >
-                        취소
-                    </button>
-                </form>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">나의 이메일</label>
+                    <input
+                            type="email"
+                            class="form-control"
+                            id="exampleInputEmail3"
+                            placeholder="Email"
+                            value="${principal.email}"
+                            readonly
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="email-input">이메일을 입력하세요</label>
+                    <input
+                            type="email"
+                            class="form-control"
+                            id="email-input"
+                            placeholder="Email"
+                    />
+                </div>
+                <button type="submit" class="btn btn-success" id="request-confirm-btn">확인
+                </button>
+                <button
+                        type="button"
+                        class="btn btn-light cancel-button"
+                        id="cancel-invitation-btn"
+                >
+                    취소
+                </button>
+
             </div>
         </div>
     </div>
 
     <!-- js -->
     <script src="${pageContext.request.contextPath}/js/content/user/solo-profile.js"></script>
-
+</div>
 

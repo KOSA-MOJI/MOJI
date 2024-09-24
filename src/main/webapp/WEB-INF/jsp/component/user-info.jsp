@@ -11,8 +11,8 @@
         <span class="float-start"> 커플 상태 </span>
         <span class="float-end text-muted" id="couple-stat">
             <c:choose>
-                <c:when test="${principal.coupleId eq '1'}">커플</c:when>
-                <c:when test="${principal.coupleId eq '0'}">솔로</c:when>
+                <c:when test="${principal.coupleStatus eq '1'}">커플</c:when>
+                <c:when test="${principal.coupleStatus eq '0'}">솔로</c:when>
             </c:choose>
         </span>
     </p>
