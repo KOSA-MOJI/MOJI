@@ -4,7 +4,7 @@ body {
   font-style: normal;
   display: flex;
   min-height: 100vh;
-  background-color: #fffae7;
+  background-color: #f4d9d9;
 }
 
 /* 헤더 스타일 */
@@ -15,7 +15,7 @@ body {
   padding: 10px;
   height: 70px;
   box-shadow: 0 4px 2px -2px gray;
-  background-image: linear-gradient(to top, #ffe4f8 100%, #a18cd1 0%);
+  background-image: linear-gradient(to top, #fbfcdb 100%, #f4d4d4 0%);
 }
 
 /* 헤더 왼쪽 스타일 */
@@ -97,7 +97,9 @@ margin-bottom: -8px;
 /* 사이드바 스타일 */
 .sidebar {
   width: 100px;
-  background-image: linear-gradient(to top, #a18cd1 0%, #ffe4f8 100%);
+  /*background-image: linear-gradient(to top, #a18cd1 0%, #ffe4f8 100%);*/
+  /*background-image: linear-gradient(to top, #d299c2 0%, #fef9d7 100%);*/
+  background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -173,14 +175,14 @@ margin-bottom: -8px;
 /* 메인 콘텐츠 스타일 */
 .main-content {
   flex-grow: 1;
-  background-color: #f3f3f3;
+  background-color: #f4d9d9;
   margin-left: 100px;
 }
 
 .content {
   margin-top: 10px;
   padding: 10px;
-  background-color: #fff;
+  background-color: #f4d9d9;
   width: 100%;
   min-height: calc(100vh - 15%);
   overflow-y: auto;
@@ -192,6 +194,4 @@ margin-bottom: -8px;
   left: 0;
   width: 100%;
   text-align: center;
-  padding: 10px 0;
-  border-top: 1px solid #ddd;
 }
