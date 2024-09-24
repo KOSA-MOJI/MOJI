@@ -75,7 +75,7 @@ label {
   box-sizing: border-box; /* padding과 border를 width에 포함시킴 */
 }
 
-.btn {
+.btn-base {
   font-family: "KyoboHand";
   padding: 10px;
   background-color: #ffe898;
