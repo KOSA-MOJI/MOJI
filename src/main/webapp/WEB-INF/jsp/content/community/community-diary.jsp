@@ -17,9 +17,19 @@
     </div>
     <div id="filterModal" style="display: none">
         <div class="modal-content" style="z-index: 100">
-            <div class="auth-form">
+            <div class="modal-header">
+                <p class="header-title">필터 </p>
                 <span id="closeModal" class="close" onclick="toggleFilter()">&times;</span>
-                <h1>필터</h1>
+            </div>
+            <div class="filter-modal-frame">
+                <div class="filter-modal-hd">
+                    <div class="filter-modal-title">거리 범위</div>
+                    <%-- 버튼--%>
+                    <div class="filter-radius">
+                        <label>적용된 거리</label>
+                        <input id="selectedDistance" value="5">
+                    </div>
+                </div>
                 <%-- 거리 슬라이더 --%>
                 <div class="slider-container" id="filterContainer">
                     <input type="range" id="distanceRange" min="5" max="50" value="5" step="5"
@@ -30,7 +40,9 @@
                         <span>50km</span>
                     </div>
                 </div>
-                <button class="btn btn-primary btn-block" onclick="applyFilter()">적용</button>
+                <button class="btn btn-primary btn-block " style="margin-top : 35px"
+                        onclick="applyFilter()">적용
+                </button>
             </div>
         </div>
         <div class="modal" onclick="closeModal()"></div>
