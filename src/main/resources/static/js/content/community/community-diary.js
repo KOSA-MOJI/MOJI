@@ -39,6 +39,24 @@ function updateListImage() {
     imgTag.src = communityData[curDataIndex + i].imageUrl
     imageItemDiv.appendChild(imgTag)
 
+    // 기존 존재하는 클릭 이벤트 제거 (중복 방지)
+    imageItemDiv.onclick = null;
+
+    if (!communityData[curDataIndex + i].pageId) {
+      ////pageId가 undefined이면-> 클릭 이벤트를 막기 위해 더미 함수 사용
+      imageItemDiv.onclick = function (event) {
+        event.preventDefault(); // 기본 동작 막기
+      };
+      imageItemDiv.style.cursor = "not-allowed";
+      imageItemDiv.title = "존재하지 않는 페이지 입니다.";
+    } else {
+      // pageId가 있을 경우 클릭 이벤트 설정
+      imageItemDiv.onclick = function () {
+        updateDiaryContent(this);
+      };
+      imageItemDiv.style.cursor = "pointer";
+      imageItemDiv.removeAttribute('title');
+    }
   }
 }
 
