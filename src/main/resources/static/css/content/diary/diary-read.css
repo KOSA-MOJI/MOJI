@@ -51,6 +51,14 @@
     background: #f0f0f0; /* Consistent background color */
 }
 
+#cover-image-upload-btn {
+    padding: 6px 25px;
+    background-color:#FF6600;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
 #left-side {
     left: 0;
 }

@@ -1,4 +1,5 @@
 let coupleId=12;
+let coupleName = "광환커플2"
 let currentPage = 0;
 let diaryId;
 const lazyLoadLimit = 2;
@@ -113,16 +114,43 @@ function createRightChild(idx){
     container.appendChild(diaryImg)
     let diaryTitle = document.createElement("h2")
     let diaryCoverImage = document.createElement("img")
-    diaryTitle.innerText=coupleId+"의 다이어리"
+    let imageUploadDiv = document.createElement("div")
+
+    diaryTitle.innerText=coupleName+"의 다이어리"
+
     diaryCoverImage.src=data.coverImage
+    diaryCoverImage.setAttribute("id","diaryCoverImage")
     diaryCoverImage.setAttribute("style","width:50%;height:50%;")
+    imageUploadDiv.innerHTML= `
+      <label for="upload-file" id="cover-image-upload-btn">
+        업로드
+      </label>
+      <input id="upload-file" type="file" name="file" accept=".jpg, .jpeg, .png, .pdf" onchange="UploadImage(this)" style="display: none;"/>
+    `
     container.appendChild(diaryTitle)
+    container.appendChild(imageUploadDiv)
     container.appendChild(diaryCoverImage)
   }else{
     let templateImg = document.createElement("img")
     templateImg.src=pages[idx].left.template.templateImage;
     templateImg.setAttribute("style","position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
     container.appendChild(templateImg)
+
+    let btnContainer = document.createElement("div")
+    let deletePageBtn = document.createElement("img")
+    let setPublicStatusBtn = document.createElement("img")
+
+    deletePageBtn.setAttribute("style","position:absolute; top:2%; right:1%; width:10%; height:auto;")
+    deletePageBtn.setAttribute("onclick","deleteCurPage()")
+    setPublicStatusBtn.setAttribute("style","position:absolute; top:2%; right:11%; width:10%; height:auto;")
+    setPublicStatusBtn.setAttribute("onclick","togglePublicStatus(this)")
+    deletePageBtn.src=`${imagePath}delete-page.png`
+    setPublicStatusBtn.src=`${imagePath}${pages[idx].left.publicStatus?"show-page.png":"hide-page.png"}`
+    btnContainer.setAttribute("style","display:flex; flex-direction: row; top:0;width : 100%; height: 8%")
+
+    btnContainer.appendChild(setPublicStatusBtn)
+    btnContainer.appendChild(deletePageBtn)
+    container.appendChild(btnContainer)
 
     let mapContainer = document.createElement("div");
     mapContainer.id = "map";
@@ -150,6 +178,8 @@ function createRightChild(idx){
       "width:90%; height:40%;"+
       "display: inline-block;" +
       "align-items: center;")
+
+
 
     // 만들어진 위치 마커와 이미지연결
     data.locations.forEach((location,idx) => {
@@ -228,6 +258,64 @@ function createRightChild(idx){
   )
   return container
 }
+function deleteCurPage(){
+  if(currentPage!==0){
+    alert("페이지를 삭제하시겠습니까?")
+    //TODO: 페이지 삭제
+    // 페이지 실제 DB에서 삭제
+    // 이전페이지로 옮기고, 해당 아이디를 기준으로 pages에서도 삭제
+  }
+}
+
+function togglePublicStatus(elem){
+  let curPage = pages[currentPage].left
+  console.log(curPage)
+  fetch(`/api/diary/public/${curPage.pageId}?publicStatus=${curPage==="y"?"false":"true"}`,{
+    method:`POST`
+  }).then((res)=>{
+    if(res.ok) return null
+    throw Error("cannot change public status this page!")
+  }).then(()=>{
+    curPage.publicStatus=curPage.publicStatus==="y"?"n":"y"
+    elem.src = curPage.publicStatus==="y"
+      ?`${imagePath}show-page.png`
+      :`${imagePath}hide-page.png`
+  }).catch(err=>console.log(err))
+}
+
+
+function UploadImage(input){
+  const file = input.files[0]; // 선택된 파일 가져오기
+  if (file) {
+    const formData = new FormData();
+    formData.append("diaryCoverImage", file);
+
+    fetch(`/api/diary/coverImage/${diaryId}`, {
+      method: "POST",
+      body: formData,
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("업로드 실패");
+        }
+        return response.text();
+      })
+      .then(data => {
+        console.log("업로드 성공:", data);
+        let img = document.getElementById("diaryCoverImage")
+        if(!img){
+          throw Error("변경할 이미지 박스가 없음!")
+        }
+        pages[0].right.coverImage=data
+        img.src=data;
+      })
+      .catch(error => {
+        console.error("오류:", error);
+      });
+  } else {
+    console.log("파일이 선택되지 않았습니다.");
+  }
+}
 
 function prevPage() {
   if (currentPage > 0) {
@@ -253,8 +341,6 @@ function preparePageTransition(direction, oldPage, newPage) {
   const pageTransition = document.createElement('div');
   pageTransition.className = 'page-transition';
 
-
-  //TODO
   const frontContent = direction === 'right' ? createRightChild(oldPage) : createLeftChild(oldPage);
   const backContent = direction === 'right' ? createLeftChild(newPage) : createRightChild(newPage);
 
