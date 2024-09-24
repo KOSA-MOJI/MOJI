@@ -22,6 +22,7 @@
           crossorigin="anonymous">
 </head>
 <body>
+<input type="hidden" value="${principal.couple.couple_id}" id="log-in-couple-id"/>
 <div class="main-content" id="mainContent">
     <header style="display: flex; justify-content: space-between; align-items: center;">
       <span class="header-left" style="display: flex; align-items: center;">
@@ -44,12 +45,11 @@
             <li security:authorize="isAuthenticated()">
                 <a class="dropdown-item" href="/user/logout">로그아웃</a>
             </li>
-              <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
-              <li><a class="dropdown-item" href="#">Edit</a></li>
-              <li><a class="dropdown-item" href="#">MyPage</a></li>
+              <li><a class="dropdown-item" href="/user/solo">MyPage</a></li>
             </ul>
           </div>
             </p>
+
             <p class="auth-options" id="authOptions" style="display: none; margin-right: 10px;">
           <a href="#" id="signupBtn" class="auth-link">Signup</a> |
           <a href="#" id="loginBtn" class="auth-link">Login</a>
@@ -84,8 +84,9 @@
             <li><a href="/user/couple/diary"><img
                     src="${pageContext.request.contextPath}/image/common/diary.png"
                     alt="Diary" width="30" height="30"><span> Diary</span></a></li>
-            <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/community.png"
-                                 alt="Community" width="30" height="30"><span> Community</span></a>
+            <li><a href="/user/community"><img
+                    src="${pageContext.request.contextPath}/image/common/community.png"
+                    alt="Community" width="30" height="30"><span> Community</span></a>
             </li>
             <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/map.png"
                                  alt="Map" width="30" height="30"><span> Map</span></a></li>
