@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,6 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -33,9 +37,9 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
     http.authorizeHttpRequests(auth -> auth
-            .requestMatchers("/user/**").hasAnyRole("COUPLE", "SOLO")
+            .requestMatchers("/user/couple/diary").hasRole("COUPLE")
             .requestMatchers("/user/solo/**").hasRole("SOLO")
-            .requestMatchers("/user/couple/**").hasRole("COUPLE")
+            .requestMatchers("/").hasAnyRole("COUPLE", "SOLO")
             .anyRequest().permitAll())
         .formLogin(withDefaults())
         .logout(withDefaults()
@@ -56,12 +60,11 @@ public class SecurityConfig {
         .maximumSessions(1)
         .maxSessionsPreventsLogin(true)
     );
-
-    http.logout(logout -> logout
-        .logoutUrl("/logout")
-        .logoutSuccessUrl("/")
-        .deleteCookies("JSESSIONID")
-        .invalidateHttpSession(true));
+    http.logout((logout) -> logout
+        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+        .logoutSuccessUrl("/signin")
+        .invalidateHttpSession(true))
+    ;
 
     http.exceptionHandling(exceptions -> exceptions
         .accessDeniedHandler(accessDeniedHandler())
@@ -94,5 +97,17 @@ public class SecurityConfig {
   @Bean
   public AccessDeniedHandler accessDeniedHandler() {
     return new CustomerAccessDeniedHandler();
+  }
+
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      public void addCoresMappings(CorsRegistry registry) {
+
+        registry.addMapping("/**")
+            .allowedMethods("*")
+            .allowedOrigins("http://localhost:3000");
+      }
+    };
   }
 }

@@ -39,6 +39,6 @@ public class SignInSuccessHandler implements AuthenticationSuccessHandler {
 
     String jsonResponse = objectMapper.writeValueAsString(user);
     response.getWriter().write(jsonResponse);
-    response.sendRedirect("/user/solo");
+    response.sendRedirect("/user/community");
   }
 }
