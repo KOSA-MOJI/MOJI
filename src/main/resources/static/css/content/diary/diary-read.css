@@ -52,6 +52,14 @@
     background: #f0f0f0; /* Consistent background color */
 }
 
+#cover-image-upload-btn {
+    padding: 6px 25px;
+    background-color:#FF6600;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
 #left-side {
     left: 0;
 }
@@ -83,11 +91,12 @@
 
 /* Page Transition Styles */
 .page-transition {
-    border: 1px solid;
+    border: solid 1px;
     position: absolute;
     display: flex;
     align-items: center;
-    justify-content: center; /* 기본 중앙 정렬 추가 */
+    justify-content: center;
+    /*gap: 10%;*/
     width: 50%;
     height: 100%;
     transform-style: preserve-3d;
