@@ -4,7 +4,7 @@ body {
   font-style: normal;
   display: flex;
   min-height: 100vh;
-  background-color: #f4d9d9;
+  background-color: #f8e5e5;
 }
 
 /* 헤더 스타일 */
@@ -175,14 +175,14 @@ margin-bottom: -8px;
 /* 메인 콘텐츠 스타일 */
 .main-content {
   flex-grow: 1;
-  background-color: #f4d9d9;
+  background-color: #f8e5e5;
   margin-left: 100px;
 }
 
 .content {
   margin-top: 10px;
   padding: 10px;
-  background-color: #f4d9d9;
+  background-color: #f8e5e5;
   width: 100%;
   min-height: calc(100vh - 15%);
   overflow-y: auto;
