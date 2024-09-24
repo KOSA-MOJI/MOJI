@@ -43,8 +43,8 @@ public class SecurityConfig {
 
     http.formLogin(form -> form
         .loginPage("/signin")  // 커스텀 로그인 페이지 요청 경로
-        .loginProcessingUrl("/login-process")  // 커스텀 로그인 처리 경로 지정
-        .defaultSuccessUrl("/")  // 로그인 성공 시 이동할 경로
+        .loginProcessingUrl("/signin-process")  // 커스텀 로그인 처리 경로 지정
+        .defaultSuccessUrl("/user/solo", true)  // 로그인 성공 시 이동할 경로
         .usernameParameter("email")  // 사용자 이름 파라미터 설정
         .passwordParameter("password")  // 패스워드 파라미터 설정
         .successHandler(authenticationSuccessHandler())  // 성공 시 핸들러 설정
