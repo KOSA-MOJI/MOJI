@@ -28,19 +28,20 @@
   </resultMap>
 
   <select id="login" resultMap="userMap">
-    SELECT u.email
-         , u.user_name
-         , u.birthday
-         , u.gender
-         , u.password
-         , u.profile_image_url
-         , auth.auth
-         , u.couple_status
-         , u.created_at
-         , c.user1_email
-         , c.user2_email
-         , c.couple_name
-         , c.COUPLE_PROFILE_IMAGE
+    SELECT distinct u.email
+                  , u.user_name
+                  , u.birthday
+                  , u.gender
+                  , u.password
+                  , u.profile_image_url
+                  , auth.auth
+                  , u.couple_status
+                  , u.created_at
+                  , c.user1_email
+                  , c.user2_email
+                  , c.couple_name
+                  , c.COUPLE_PROFILE_IMAGE
+                  , c.couple_id
     FROM users u
            JOIN user_auth auth ON u.email = auth.user_email
            LEFT JOIN couples c ON (u.email = c.user1_email OR u.email = c.user2_email)
