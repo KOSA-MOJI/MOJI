@@ -120,7 +120,7 @@ function fetchCommunityData(offset, limit, isInit) {
     data.forEach((singleData) => { //기존 communityData에 새로 온 singleData와 중복을 확인
       if (!pageIds.includes(singleData.pageId)) {
         singleData.imageUrl = singleData.imageUrl ? singleData.imageUrl
-            : "https://placehold.co/600x400"
+            : `${imgCommonPath}color-no-image.png`
         communityData.push(singleData)
       }
     })
@@ -130,7 +130,7 @@ function fetchCommunityData(offset, limit, isInit) {
       for (let i = 0; i < missingCount; i++) {
         // 기본(대체) 이미지를 추가
         communityData.push({
-          imageUrl: "https://placehold.co/600x400" // 기본 이미지 URL
+          imageUrl: `${imgCommonPath}color-no-image.png` // 기본 이미지 URL
         });
       }
     }
