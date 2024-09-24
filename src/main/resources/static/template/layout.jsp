@@ -59,7 +59,6 @@
     <div class="profile">
         <img src="${pageContext.request.contextPath}/image/common/profile.png" alt="Profile" width="70" height="70">
         <h3>이름</h3>
-        <p>자기 소개</p>
     </div>
     <nav>
         <ul>
