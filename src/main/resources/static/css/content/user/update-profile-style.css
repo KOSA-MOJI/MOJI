@@ -3,7 +3,7 @@
 }
 
 .main-panel {
-  background-color: #ffeeb1;
+  background-color: #fffae7;
   width: 100%;
   height: 100%;
 }
@@ -37,7 +37,7 @@
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  background-color: #ffe898;
+  background-color: #ffe4f8;
   display: inline-block;
   position: relative;
 }
@@ -80,7 +80,7 @@
 }
 
 .profile-card .btn-success {
-  background-color: #ffe898;
+  background-color: #ffe4f8;
   width: 156px;
   color: black;
   border: 0px;
@@ -100,13 +100,13 @@
 }
 
 .profile-card .btn-success:hover {
-  background-color: #fad13e;
-  box-shadow: 0 0 10px #ffc80073 !important;
+  background-color: #d5a3fd;
+  box-shadow: 0 0 10px #d5a3fd !important;
 }
 
 .profile-card .btn-success:active,
 .profile-card .btn-success:focus {
-  background-color: #fad13e;
+  background-color: #cc83fb;
 }
 
 .profile-card .btn-container {

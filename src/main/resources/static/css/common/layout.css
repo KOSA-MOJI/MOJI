@@ -2,7 +2,6 @@
 body {
   font-weight: normal;
   font-style: normal;
-  display: flex;
   min-height: 100vh;
   background-color: #fffae7;
 }
@@ -34,7 +33,7 @@ body {
 }
 
 .header-left img {
-  width:50px;
+  width: 50px;
   height: 50px
 }
 
@@ -52,14 +51,14 @@ body {
 }
 
 .profile-img {
-width: 40px;
-height: 40px;
-margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 
 .dropdown {
-display: inline-block;
-margin-bottom: -8px;
+  display: inline-block;
+  margin-bottom: -8px;
 }
 
 /* 드롭다운 버튼 스타일 */

@@ -9,18 +9,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/user/login-style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>로그인</title>
-
 </head>
 <body>
 
-<button id="openModalBtn">로그인</button> <!-- 로그인 버튼 추가 -->
-
 <div id="loginModal" class="modal">
     <div class="modal-content">
-
-
         <div class="auth-form">
-            <span class="close">&times;</span>
             <h1>로그인</h1>
             <form action="/signin-process" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
@@ -56,7 +50,5 @@
 
 
 <script src="${pageContext.request.contextPath}/js/user/setting.js"></script>
-<script src="${pageContext.request.contextPath}/js/user/test.js"></script>
-
 </body>
 </html>
