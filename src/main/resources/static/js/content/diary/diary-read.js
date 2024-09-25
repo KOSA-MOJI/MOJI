@@ -214,6 +214,8 @@ function createRightChild(idx) {
         "display: inline-block;" +
         "align-items: center;")
 
+
+
     // 만들어진 위치 마커와 이미지연결
     data.locations.forEach((location, idx) => {
       let marker = new kakao.maps.Marker({
@@ -274,10 +276,12 @@ function createRightChild(idx) {
         "width:80%;" +
         "height:80%;" +
         "vertical-align: middle;" +
-        "padding:7px;" +  // 세미콜론 추가
-        "object-fit:cover;" +  // 세미콜론 추가
-        "visibility: visible;"  // 세미콜론 추가
+        "padding:7px;" +
+        "object-fit:contain;" +  // 이미지가 규격 내에 맞춰지도록 변경
+        "visibility: visible;" +
+        "margin-top: 90px;"
     );
+
 
     img_box.setAttribute("onerror", "this.style.visibility='hidden';")
     img_container.appendChild(img_prev_btn)

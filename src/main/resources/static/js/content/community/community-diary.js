@@ -352,11 +352,12 @@ function createRightChild(pageData) {
   img_box.setAttribute("style",
       "width:80%;" +
       "height:80%;" +
-      "padding:7px;" +
       "vertical-align: middle;" +
-      "object-fit:cover" +
-      "visibility: visible;"
-  )
+      "padding:7px;" +
+      "object-fit:contain;" +  // 이미지가 규격 내에 맞춰지도록 변경
+      "visibility: visible;" +
+      "margin-top: 75px;"
+  );
   img_box.setAttribute("onerror", "this.style.visibility='hidden';")
 
   img_container.appendChild(img_prev_btn)
