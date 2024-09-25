@@ -120,7 +120,7 @@ function fetchCommunityData(offset, limit, isInit) {
     data.forEach((singleData) => { //기존 communityData에 새로 온 singleData와 중복을 확인
       if (!pageIds.includes(singleData.pageId)) {
         singleData.imageUrl = singleData.imageUrl ? singleData.imageUrl
-            : "https://placehold.co/600x400"
+            : `${imgCommonPath}color-no-image.png`
         communityData.push(singleData)
       }
     })
@@ -130,7 +130,7 @@ function fetchCommunityData(offset, limit, isInit) {
       for (let i = 0; i < missingCount; i++) {
         // 기본(대체) 이미지를 추가
         communityData.push({
-          imageUrl: "https://placehold.co/600x400" // 기본 이미지 URL
+          imageUrl: `${imgCommonPath}color-no-image.png` // 기본 이미지 URL
         });
       }
     }
@@ -194,6 +194,7 @@ function resetSideChild() {
   resetRightSideChild()
 }
 
+// TO DO : 왼쪽 요소 css 뜯어 고치기
 function createLeftChild(pageData) {
   let data = pageData.left
   let fontColor = data.fontColor;
@@ -206,27 +207,46 @@ function createLeftChild(pageData) {
   let dateWeatherDiv = document.createElement("div")
   let contentDiv = document.createElement("div")
   let templateImg = document.createElement("img")
+  let topContentDiv = document.createElement("div")
 
   templateImg.src = templateUrl;
+  // class: side 밑
   templateImg.setAttribute("style",
       "position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
   container.appendChild(templateImg)
-
   dateDiv.innerText = data.createdAt;
   weatherDiv.innerText = data.weather;
+
   dateDiv.setAttribute("style", "position: absolute; left: 10%;")
   weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
   dateWeatherDiv.appendChild(dateDiv)
   dateWeatherDiv.appendChild(weatherDiv)
+
   dateWeatherDiv.setAttribute("style",
       "display: flex; flex-direction: row; width: 100%;")
-  container.appendChild(dateWeatherDiv)
+  container.appendChild(dateWeatherDiv) //(상단영역)
 
+  //일기내용
   contentDiv.innerText = data.content;
   contentDiv.setAttribute("style",
-      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`)
-  container.appendChild(contentDiv)
+      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment};`
+      + "overflow-y: auto; max-height: 100%; padding: 10px;"
+  )
 
+  topContentDiv.setAttribute("style",
+      "background-color: rgba(255, 255, 255, 0.7);"
+      + "display: flex;"
+      + " justify-content: center;"
+      + "align-items: center;"
+      + " width: 80%;"
+      + "height: 23rem;"
+      + "margin-top: .5rem;"
+      + "overflow: hidden;")
+
+  topContentDiv.appendChild(contentDiv)
+  container.appendChild(topContentDiv)
+
+  //TO DO : class:"side" 바로 ㄴ div
   container.setAttribute("style",
       "width:100%; height:100%;" +
       "display: flex;" +
@@ -280,7 +300,7 @@ function createRightChild(pageData) {
       position: new kakao.maps.LatLng(location.latitude, location.longitude),
     });
     img_lists.push(location.imageUrls.length > 0 ? location.imageUrls.map(
-        data => data.mapImage) : ["https://placehold.co/400"])
+        data => data.mapImage) : [`${imgCommonPath}color-no-image.png`])
     kakao.maps.event.addListener(marker, 'click', function () {
       cur_img_list = img_lists[idx]
       cur_img_pointer = 0
@@ -308,7 +328,7 @@ function createRightChild(pageData) {
   cur_img_list = img_lists
   img_box.src = cur_img_list[cur_img_pointer]
 
-  img_next_btn.innerText = "다음"
+  img_next_btn.innerText = "▶"
   img_next_btn.addEventListener("click", function () {
     if (cur_img_pointer < cur_img_list.length - 1) {
       cur_img_pointer++;
@@ -317,7 +337,7 @@ function createRightChild(pageData) {
   })
   img_next_btn.setAttribute("style", "right:0")
 
-  img_prev_btn.innerText = "이전"
+  img_prev_btn.innerText = "◀"
   img_prev_btn.addEventListener("click", function () {
     if (0 < cur_img_pointer) {
       cur_img_pointer--;
@@ -325,15 +345,19 @@ function createRightChild(pageData) {
     }
   })
   img_prev_btn.setAttribute("style", "left:0")
-
+  img_next_btn.setAttribute("style",
+      "right:0;border:none; outline:none;background:none");
+  img_prev_btn.setAttribute("style",
+      "left:0; border:none; outline:none;background:none");
   img_box.setAttribute("style",
       "width:80%;" +
       "height:80%;" +
       "vertical-align: middle;" +
-      "object-fit:cover" +
-      "background-color: lightgray;" +
-      "visibility: visible;"
-  )
+      "padding:7px;" +
+      "object-fit:contain;" +  // 이미지가 규격 내에 맞춰지도록 변경
+      "visibility: visible;" +
+      "margin-top: 75px;"
+  );
   img_box.setAttribute("onerror", "this.style.visibility='hidden';")
 
   img_container.appendChild(img_prev_btn)

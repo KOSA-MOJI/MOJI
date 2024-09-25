@@ -1,9 +1,10 @@
-let coupleId;
+const coupleId = document.getElementById("log-in-couple-id").value
+// const coupleName = document.getElementById("log-in-couple-id").value
+const coupleName = "광환커플2"
 let currentPage = 0;
 let diaryId;
 const lazyLoadLimit = 2;
 const lazyLoadNum = 5;
-const loginCoupleId = document.getElementById("log-in-couple-id").value
 let pages = []
 
 function updatePageContent() {
@@ -65,20 +66,57 @@ function createLeftChild(idx) {
   if (data === null) {
     return document.createElement("div")
   }
+  let fontColor = data.fontColor;
+  let fontSize = data.fontSize;
+  let textAlignment = data.textAlignment;
+  let templateUrl = data.template.templateImage;
   let container = document.createElement("div")
   let dateDiv = document.createElement("div")
   let weatherDiv = document.createElement("div")
+  let dateWeatherDiv = document.createElement("div")
   let contentDiv = document.createElement("div")
+  let templateImg = document.createElement("img")
+  let prevPageDiv = document.createElement("div")
+  let topContentDiv = document.createElement("div")
+
+  templateImg.src = templateUrl;
+  templateImg.setAttribute("style",
+      "position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
+  container.appendChild(templateImg)
+
   dateDiv.innerText = data.createdAt;
   weatherDiv.innerText = data.weather;
+  dateDiv.setAttribute("style", "position: absolute; left: 10%;")
+  weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
+  dateWeatherDiv.appendChild(dateDiv)
+  dateWeatherDiv.appendChild(weatherDiv)
+  dateWeatherDiv.setAttribute("style",
+      "display: flex; flex-direction: row; width: 100%;")
+  container.appendChild(dateWeatherDiv)
+
   contentDiv.innerText = data.content;
-  let prevPageDiv = document.createElement("div")
+  contentDiv.setAttribute("style",
+      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment};`
+      + "overflow-y: auto; max-height: 100%; padding: 10px;"
+  )
+
+  topContentDiv.setAttribute("style",
+      "background-color: rgba(255, 255, 255, 0.7);"
+      + "display: flex;"
+      + " justify-content: center;"
+      + "align-items: center;"
+      + " width: 80%;"
+      + "height: 23rem;"
+      + "margin-top: .5rem;"
+      + "overflow: hidden;")
+
+  topContentDiv.appendChild(contentDiv)
+  container.appendChild(topContentDiv)
+
   prevPageDiv.id = "prevPage"
   prevPageDiv.addEventListener("click", prevPage)
   document.querySelector("#left-side").appendChild(prevPageDiv)
-  container.appendChild(dateDiv)
-  container.appendChild(weatherDiv)
-  container.appendChild(contentDiv)
+
   container.setAttribute("style",
       "width:100%; height:100%;" +
       "display: flex;" +
@@ -91,19 +129,67 @@ function createLeftChild(idx) {
 function createRightChild(idx) {
   let data = pages[idx].right
   let container = document.createElement("div")
+  let nextPageDiv = document.createElement("div")
+  nextPageDiv.id = "nextPage"
+  nextPageDiv.addEventListener("click", nextPage)
+  document.querySelector("#right-side").appendChild(nextPageDiv)
+
   if (idx === 0) {
+    let diaryImg = document.createElement("img")
+    diaryImg.src = `${imagePath}diary-cover.png`
+    diaryImg.setAttribute("style",
+        "position: absolute; width: 100%; height: 100%; top: 0; left : 0; object-fit: cover; z-index: -1;")
+    container.appendChild(diaryImg)
     let diaryTitle = document.createElement("h2")
     let diaryCoverImage = document.createElement("img")
-    diaryTitle.innerText = coupleId + "의 다이어리"
+    let imageUploadDiv = document.createElement("div")
+
+    diaryTitle.innerText = coupleName + "의 다이어리"
+
     diaryCoverImage.src = data.coverImage
+    diaryCoverImage.setAttribute("id", "diaryCoverImage")
     diaryCoverImage.setAttribute("style", "width:50%;height:50%;")
+    imageUploadDiv.innerHTML = `
+      <label for="upload-file" id="cover-image-upload-btn">
+        업로드
+      </label>
+      <input id="upload-file" type="file" name="file" accept=".jpg, .jpeg, .png, .pdf" onchange="UploadImage(this)" style="display: none;"/>
+    `
     container.appendChild(diaryTitle)
+    container.appendChild(imageUploadDiv)
     container.appendChild(diaryCoverImage)
   } else {
+    let templateImg = document.createElement("img")
+    templateImg.src = pages[idx].left.template.templateImage;
+    templateImg.setAttribute("style",
+        "position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
+    container.appendChild(templateImg)
+
+    let btnContainer = document.createElement("div")
+    let deletePageBtn = document.createElement("img")
+    let setPublicStatusBtn = document.createElement("img")
+
+    deletePageBtn.setAttribute("style",
+        "position:absolute; top:2%; right:1%; width:7%; height:6%;")
+    deletePageBtn.setAttribute("onclick", "deleteCurPage()")
+    setPublicStatusBtn.setAttribute("style",
+        "position:absolute; top:2%; right:11%; width:7%; height:6%;")
+    setPublicStatusBtn.setAttribute("onclick", "togglePublicStatus(this)")
+    deletePageBtn.src = `${imagePath}delete-page.png`
+    setPublicStatusBtn.src = `${imagePath}${pages[idx].left.publicStatus
+        ? "show-page.png" : "hide-page.png"}`
+    btnContainer.setAttribute("style",
+        "display:flex; flex-direction: row; top:0;width : 100%; height: 8%")
+
+    btnContainer.appendChild(setPublicStatusBtn)
+    btnContainer.appendChild(deletePageBtn)
+    container.appendChild(btnContainer)
+
     let mapContainer = document.createElement("div");
     mapContainer.id = "map";
     mapContainer.setAttribute("style",
         "width:80%; height:40%; position : relative");
+
     let mapOption = {
       center: new kakao.maps.LatLng(37.5665, 126.9780),
       level: 3
@@ -111,10 +197,6 @@ function createRightChild(idx) {
     let map = new kakao.maps.Map(mapContainer, mapOption);
     container.appendChild(mapContainer);
 
-    setTimeout(() => {
-      map.relayout();
-      map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
-    }, 0);
     window.addEventListener('resize', () => {
       map.relayout();
     });
@@ -131,6 +213,10 @@ function createRightChild(idx) {
         "width:90%; height:40%;" +
         "display: inline-block;" +
         "align-items: center;")
+
+
+
+    // 만들어진 위치 마커와 이미지연결
     data.locations.forEach((location, idx) => {
       let marker = new kakao.maps.Marker({
         map: map,
@@ -145,10 +231,27 @@ function createRightChild(idx) {
       })
       markers.push(marker)
     });
+
+    // 모여진 마커들을 기반으로 맵의 바운드 설정
+    if (markers.length > 0) {
+      let bounds = new kakao.maps.LatLngBounds();
+
+      // 각 마커의 위치를 bounds에 추가
+      for (let i = 0; i < markers.length; i++) {
+        bounds.extend(markers[i].getPosition());
+      }
+
+      // 약간의 지연을 두고 setBounds 호출
+      setTimeout(() => {
+        map.relayout(); // 지도 크기를 재설정
+        map.setBounds(bounds); // bounds에 맞게 지도를 설정
+      }, 100); // 지연 시간 100ms (필요에 따라 조정 가능)
+    }
+
     cur_img_list = img_lists
     img_box.src = cur_img_list[cur_img_pointer]
 
-    img_next_btn.innerText = "다음"
+    img_next_btn.innerText = "▶"
     img_next_btn.addEventListener("click", function () {
       if (cur_img_pointer < cur_img_list.length - 1) {
         cur_img_pointer++;
@@ -157,7 +260,7 @@ function createRightChild(idx) {
     })
     img_next_btn.setAttribute("style", "right:0")
 
-    img_prev_btn.innerText = "이전"
+    img_prev_btn.innerText = "◀"
     img_prev_btn.addEventListener("click", function () {
       if (0 < cur_img_pointer) {
         cur_img_pointer--;
@@ -165,44 +268,97 @@ function createRightChild(idx) {
       }
     })
     img_prev_btn.setAttribute("style", "left:0")
-
+    img_next_btn.setAttribute("style",
+        "right:0; border:none; outline:none;background:none");
+    img_prev_btn.setAttribute("style",
+        "left:0; border:none; outline:none;background:none");
     img_box.setAttribute("style",
         "width:80%;" +
         "height:80%;" +
         "vertical-align: middle;" +
-        "object-fit:cover" +
-        "background-color: lightgray;" +
-        "visibility: visible;"
-    )
-    img_box.setAttribute("onerror", "this.style.visibility='hidden';")
+        "padding:7px;" +
+        "object-fit:contain;" +  // 이미지가 규격 내에 맞춰지도록 변경
+        "visibility: visible;" +
+        "margin-top: 90px;"
+    );
 
+
+    img_box.setAttribute("onerror", "this.style.visibility='hidden';")
     img_container.appendChild(img_prev_btn)
     img_container.appendChild(img_box)
     img_container.appendChild(img_next_btn)
     container.appendChild(img_container)
-
-    if (markers.length > 0) {
-      let bounds = new kakao.maps.LatLngBounds();
-      for (let i = 0; i < markers.length; i++) {
-        bounds.extend(markers[i].getPosition());
-      }
-      map.setBounds(bounds);
-    }
   }
-  let nextPageDiv = document.createElement("div")
-  nextPageDiv.id = "nextPage"
-  nextPageDiv.addEventListener("click", nextPage)
-  document.querySelector("#right-side").appendChild(nextPageDiv)
-
   container.setAttribute("style",
       "width: 100%; " +
       "height: 100%;" +
       "display: flex;" +
       "flex-direction: column;" +
-      "align-items: center;" +
-      "gap: 10%;"
+      "align-items: center;"
+      // "gap: 10%;"
   )
   return container
+}
+
+function deleteCurPage() {
+  if (currentPage !== 0) {
+    alert("페이지를 삭제하시겠습니까?")
+    //TODO: 페이지 삭제
+    // 페이지 실제 DB에서 삭제
+    // 이전페이지로 옮기고, 해당 아이디를 기준으로 pages에서도 삭제
+  }
+}
+
+function togglePublicStatus(elem) {
+  let curPage = pages[currentPage].left
+  console.log(curPage)
+  fetch(`/api/diary/public/${curPage.pageId}?publicStatus=${curPage === "y"
+      ? "false" : "true"}`, {
+    method: `POST`
+  }).then((res) => {
+    if (res.ok) {
+      return null
+    }
+    throw Error("cannot change public status this page!")
+  }).then(() => {
+    curPage.publicStatus = curPage.publicStatus === "y" ? "n" : "y"
+    elem.src = curPage.publicStatus === "y"
+        ? `${imagePath}show-page.png`
+        : `${imagePath}hide-page.png`
+  }).catch(err => console.log(err))
+}
+
+function UploadImage(input) {
+  const file = input.files[0]; // 선택된 파일 가져오기
+  if (file) {
+    const formData = new FormData();
+    formData.append("diaryCoverImage", file);
+
+    fetch(`/api/diary/coverImage/${diaryId}`, {
+      method: "POST",
+      body: formData,
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("업로드 실패");
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log("업로드 성공:", data);
+      let img = document.getElementById("diaryCoverImage")
+      if (!img) {
+        throw Error("변경할 이미지 박스가 없음!")
+      }
+      pages[0].right.coverImage = data
+      img.src = data;
+    })
+    .catch(error => {
+      console.error("오류:", error);
+    });
+  } else {
+    console.log("파일이 선택되지 않았습니다.");
+  }
 }
 
 function prevPage() {
@@ -229,14 +385,22 @@ function preparePageTransition(direction, oldPage, newPage) {
   const pageTransition = document.createElement('div');
   pageTransition.className = 'page-transition';
 
-  const frontContent = direction === 'right' ? createRightChild(
-      oldPage).outerHTML : createLeftChild(oldPage).outerHTML;
-  const backContent = direction === 'right' ? createLeftChild(newPage).outerHTML
-      : createRightChild(newPage).outerHTML;
+  const frontContent = direction === 'right' ? createRightChild(oldPage)
+      : createLeftChild(oldPage);
+  const backContent = direction === 'right' ? createLeftChild(newPage)
+      : createRightChild(newPage);
 
-  pageTransition.innerHTML =
-      `<div class="page-content front">${frontContent || ""}</div>
-         <div class="page-content back">${backContent || ""}</div>`;
+  const frontPage = document.createElement('div');
+  frontPage.className = 'page-content front';
+  frontPage.setAttribute("style", "z-index:3;")
+  frontPage.appendChild(frontContent);
+
+  const backPage = document.createElement('div');
+  backPage.className = 'page-content back';
+  backPage.appendChild(backContent);
+
+  pageTransition.appendChild(frontPage);
+  pageTransition.appendChild(backPage);
 
   if (direction === 'right') {
     pageTransition.style.right = `${bookContainer.style.width / 2}`
@@ -289,6 +453,9 @@ function createPagesData(pageData) {
     createdAt: pageData.createdAt,
     weather: pageData.weather,
     content: pageData.content,
+    fontSize: pageData.fontSize,
+    fontColor: pageData.fontColor,
+    textAlignment: pageData.textAlignment,
     publicStatus: pageData.publicStatus,
     template: pageData.template
   }
@@ -302,8 +469,8 @@ function createPagesData(pageData) {
 }
 
 function loadDiary(id) {
-  coupleId = id
-  fetch("api/diary/" + coupleId).then((res) => {
+  fetch("api/diary/" + id).then((res) => {
+    console.log(id)
     if (res.ok) {
       return res.json()
     }
@@ -363,5 +530,5 @@ async function prefetchPages(direction) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  loadDiary(loginCoupleId)
+  loadDiary(coupleId)
 });

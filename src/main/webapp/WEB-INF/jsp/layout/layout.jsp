@@ -26,9 +26,11 @@
 <div class="main-content" id="mainContent">
     <header class="header">
         <span class="header-left">
-            <img src="${pageContext.request.contextPath}/image/common/diaryLogo.png"
-                 class="menu-bar" alt="Menu Bar">
-            <h1>Moji</h1>
+<%--            <img src="${pageContext.request.contextPath}/image/common/diaryLogo.png"--%>
+<%--                 class="menu-bar" alt="Menu Bar">--%>
+            <img src="${pageContext.request.contextPath}/image/common/logo.png"
+                 class="logo" alt="Logo" style="width: 7rem; height: 7rem">
+<%--            <h1>Moji</h1>--%>
         </span>
         <div class="header-right">
             <div class="user-info">
@@ -50,7 +52,7 @@
             <p class="auth-options" id="authOptions" style="display: none; margin-right: 10px;">
                 <a href="#" id="signupBtn" class="auth-link">Signup</a> |
                 <a href="#" id="loginBtn" class="auth-link">Login</a>
-            <p class="notification">🔔</p>
+<%--            <p class="notification">🔔</p>--%>
         </div>
     </header>
 
@@ -75,15 +77,15 @@
         <ul>
             <li><a href="/user/couple/diary"><img
                     src="${pageContext.request.contextPath}/image/common/diary.png"
-                    alt="Diary"><span> Diary</span></a></li>
+                    alt="Diary"></a></li>
             <li><a href="/user/community"><img
                     src="${pageContext.request.contextPath}/image/common/community.png"
-                    alt="Community"><span> Community</span></a>
+                    alt="Community"></a>
             </li>
             <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/map.png"
-                                 alt="Map"><span> Map</span></a></li>
+                                 alt="Map"></a></li>
             <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/About.png"
-                                 alt="About Us"><span> About Us</span></a>
+                                 alt="About Us"></a>
             </li>
         </ul>
     </nav>

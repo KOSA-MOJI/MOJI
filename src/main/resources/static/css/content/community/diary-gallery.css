@@ -5,16 +5,17 @@
   opacity: 0.3;
 }
 
-/* 이미지 갤러리 스타일 */
 .gallery-component {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 25px;
+  margin-top: 6rem;
   margin-bottom: 15px;
-  width: 100%; /* 전체 너비 사용 */
-  background: linear-gradient(to bottom, #fbf8e1, #fffdb7, #eee696) /* 노란색 그라데이션 */
+  width: 100%;
+
+  /*background-image: linear-gradient(-20deg, #fff5ff 0%, #fbfcdb 100%);*/
 }
+
 
 .images {
   display: flex;

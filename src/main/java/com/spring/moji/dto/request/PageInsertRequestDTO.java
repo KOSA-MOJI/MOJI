@@ -9,8 +9,8 @@ import lombok.Data;
 @Builder
 public class PageInsertRequestDTO {
   private Long pageId;
-  private Long diaryId;
-  private LocalDate createdAt;
+  private Long coupleId;
+  private String createdAt;
   private String weather;
   private String content;
   private Long fontSize;

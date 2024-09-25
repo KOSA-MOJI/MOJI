@@ -40,7 +40,7 @@
                         <span>50km</span>
                     </div>
                 </div>
-                <button class="btn btn-primary btn-block " style="margin-top : 35px"
+                <button class="btn-base btn-primary btn-block " style="margin-top : 35px"
                         onclick="applyFilter()">적용
                 </button>
             </div>
@@ -90,5 +90,8 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApiKey}"></script>
 <script>
   const imagePath = "${pageContext.request.contextPath}/image/content/community/";
+</script>
+<script>
+  const imgCommonPath = "${pageContext.request.contextPath}/image/common/";
 </script>
 <script src="${pageContext.request.contextPath}/js/content/community/community-diary.js"></script>
