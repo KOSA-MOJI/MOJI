@@ -229,18 +229,19 @@ function createLeftChild(pageData) {
   //일기내용
   contentDiv.innerText = data.content;
   contentDiv.setAttribute("style",
-      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`
-      + `overflow-y: auto; max-height: 100%; padding: 10px;`
+      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment};`
+      + "overflow-y: auto; max-height: 100%; padding: 10px;"
   )
 
   topContentDiv.setAttribute("style",
-      "background-color: rgba(255, 255, 255, 0.7);;"
+      "background-color: rgba(255, 255, 255, 0.7);"
       + "display: flex;"
       + " justify-content: center;"
       + "align-items: center;"
       + " width: 80%;"
       + "height: 23rem;"
-      + "margin-top: .5rem;")
+      + "margin-top: .5rem;"
+      + "overflow: hidden;")
 
   topContentDiv.appendChild(contentDiv)
   container.appendChild(topContentDiv)
@@ -299,7 +300,7 @@ function createRightChild(pageData) {
       position: new kakao.maps.LatLng(location.latitude, location.longitude),
     });
     img_lists.push(location.imageUrls.length > 0 ? location.imageUrls.map(
-        data => data.mapImage) : ["https://placehold.co/400"])
+        data => data.mapImage) : [`${imgCommonPath}color-no-image.png`])
     kakao.maps.event.addListener(marker, 'click', function () {
       cur_img_list = img_lists[idx]
       cur_img_pointer = 0
@@ -344,8 +345,10 @@ function createRightChild(pageData) {
     }
   })
   img_prev_btn.setAttribute("style", "left:0")
-  img_next_btn.setAttribute("style", "right:0;border:none; outline:none;background:none");
-  img_prev_btn.setAttribute("style", "left:0; border:none; outline:none;background:none");
+  img_next_btn.setAttribute("style",
+      "right:0;border:none; outline:none;background:none");
+  img_prev_btn.setAttribute("style",
+      "left:0; border:none; outline:none;background:none");
   img_box.setAttribute("style",
       "width:80%;" +
       "height:80%;" +
