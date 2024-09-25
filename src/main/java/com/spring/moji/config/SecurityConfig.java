@@ -33,13 +33,14 @@ public class SecurityConfig {
 
   private final CustomerDetailService customerDetailService;
 
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
     http.authorizeHttpRequests(auth -> auth
-            .requestMatchers("/user/couple/diary").hasRole("COUPLE")
-            .requestMatchers("/user/solo/**").hasRole("SOLO")
-            .requestMatchers("/").hasAnyRole("COUPLE", "SOLO")
+//            .requestMatchers("/user/couple/diary").hasRole("COUPLE")
+//            .requestMatchers("/user/solo/**").hasRole("SOLO")
+//            .requestMatchers("/").hasAnyRole("COUPLE", "SOLO")
             .anyRequest().permitAll())
         .formLogin(withDefaults())
         .logout(withDefaults()
@@ -102,11 +103,11 @@ public class SecurityConfig {
   @Bean
   public WebMvcConfigurer corsConfigurer() {
     return new WebMvcConfigurer() {
-      public void addCoresMappings(CorsRegistry registry) {
+      public void addCorsMappings(CorsRegistry registry) {
 
         registry.addMapping("/**")
             .allowedMethods("*")
-            .allowedOrigins("http://localhost:3000");
+            .allowedOrigins("http://localhost:8090");
       }
     };
   }

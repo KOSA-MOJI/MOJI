@@ -38,7 +38,7 @@ public class HomeController {
     int result = userService.join(user);
 
     if (result > 0) {
-      return "redirect:/user/sign-in";
+      return "redirect:/signin";
     }
     return "redirect:/signup?error";
   }

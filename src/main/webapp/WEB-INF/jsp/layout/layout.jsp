@@ -39,9 +39,11 @@
                             data-bs-toggle="dropdown" aria-expanded="false"></button>
                     <ul class="dropdown-menu">
                         <li security:authorize="isAuthenticated()">
-                            <a class="dropdown-item" href="/user/logout">로그아웃</a>
+                            <a class="dropdown-item"
+                               href="${pageContext.request.contextPath}/user/logout" id="logoutBtn">로그아웃</a>
                         </li>
-                        <li><a class="dropdown-item" href="/user/solo">MyPage</a></li>
+                        <li><a class="dropdown-item"
+                               href="${pageContext.request.contextPath}/user/solo">MyPage</a></li>
                     </ul>
                 </div>
             </div>

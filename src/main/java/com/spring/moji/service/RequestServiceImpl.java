@@ -7,7 +7,6 @@ import com.spring.moji.mapper.RequestMapper;
 import com.spring.moji.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,19 +45,28 @@ public class RequestServiceImpl implements RequestService {
     int result = requestMapper.addCouple(requestEmail, receiverEmail);
 
     if (result > 0) {
-      result += requestMapper.updateAuth(requestEmail);
-      result += requestMapper.updateAuth(receiverEmail);
+//      result += requestMapper.addCoupleAuth(requestEmail);
+//      result += requestMapper.addCoupleAuth(receiverEmail);
+
+//      result += requestMapper.deleteRequest(receiverEmail);
+      result += userMapper.convertCoupleStatusIntoCouple(requestEmail);
+      result += userMapper.convertCoupleStatusIntoCouple(receiverEmail);
     }
+
     return result;
   }
 
   @Override
-  public Request checkRequest(String receiverEmail) throws Exception {
-    return requestMapper.checkRequest(receiverEmail);
+  public User checkRequestUser(String receiverEmail) throws Exception {
+    Request result = requestMapper.checkRequest(receiverEmail);
+    if (result == null) {
+      return User.builder().build();
+    }
+    return userMapper.findUserByEmail(result.getRequestEmail());
   }
 
   @Override
-  public int denyRequest(String email) throws Exception {
+  public int deleteRequest(String email) throws Exception {
     int result = requestMapper.deleteRequest(email);
     return result;
   }

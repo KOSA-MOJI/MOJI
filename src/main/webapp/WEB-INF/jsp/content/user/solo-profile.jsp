@@ -51,7 +51,8 @@
                     <button class="btn btn-success btn-lg" id="couple-invitation-btn">
                         이메일로 커플 신청
                     </button>
-                    <button class="btn btn-success btn-lg" id="check-invitation-btn">
+                    <button class="btn btn-success btn-lg" id="check-invitation-btn"
+                    >
                         커플 신청 확인
                     </button>
                 </div>
@@ -66,13 +67,14 @@
         </div>
     </div>
 
-    <!-- 커플신청 확인 모n창 -->
+    <!-- 커플신청 확인 모달창 -->
     <div class="modal" id="check-invitation-modal">
         <div class="modal-content">
             <div class="card-body">
                 <h4 class="card-title">커플 신청 확인</h4>
+                <input value="${requestUserEmail}" id="request-user-email"/>
                 <p class="card-description">
-                    000으로부터 커플신청이 왔습니다. 수락하시겠습니까?
+                    ${requestUserName}으로부터 커플신청이 왔습니다. 수락하시겠습니까?
                 </p>
                 <form class="forms-sample">
                     <div class="profile-content text-center pb-4">
@@ -80,14 +82,14 @@
                             <div class="pfp-container">
                                 <img
                                         class="pfp"
-                                        src="${pageContext.request.contextPath}/image/content/user/man.jpg"
-                                        alt="남자의 프로필 사진"
+                                        src="${requestUserProfileImageSource}"
                                 />
                             </div>
                         </div>
-                        <p>안녕하세요 인도사람 입니다</p>
                         <div class="btn-container d-flex justify-content-between">
-                            <button type="submit" class="btn btn-success">확인</button>
+                            <button type="submit" class="btn btn-success"
+                                    id="accept-invitation-btn">확인
+                            </button>
                             <button
                                     type="button"
                                     class="btn btn-light cancel-button"

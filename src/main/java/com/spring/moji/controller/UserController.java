@@ -1,10 +1,14 @@
 package com.spring.moji.controller;
 
+import com.spring.moji.dto.request.UserRequestDTO;
+import com.spring.moji.entity.User;
+import com.spring.moji.service.RequestServiceImpl;
 import com.spring.moji.service.UserService;
 import com.spring.moji.service.UserServiceImpl;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +20,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class UserController {
 
-  @GetMapping({"/solo/", "/solo",})
-  public String readProfile(Model model, Principal principal) {
-    String name = principal.getName();
+  private final UserServiceImpl userService;
+  private final RequestServiceImpl requestService;
 
-    log.info("[[[  /profile  ]]]");
+
+  @GetMapping({"/solo/", "/solo",})
+  public String readProfile(Model model, @AuthenticationPrincipal UserRequestDTO user)
+      throws Exception {
+    User requestUser = requestService.checkRequestUser(user.getEmail());
     model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/solo-profile.jsp");
-    model.addAttribute("name", name);
+    model.addAttribute("requestUserName", requestUser.getUserName());
+    model.addAttribute("requestUserEmail", requestUser.getEmail());
+
     return "user/profile-page";
   }
 

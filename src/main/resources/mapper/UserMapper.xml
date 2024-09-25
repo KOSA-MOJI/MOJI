@@ -53,8 +53,8 @@
   </insert>
 
   <insert id="insertAuth">
-    insert into user_auth(auth_no, user_email, auth)
-    values (user_auth_seq.nextval, #{userEmail}, #{auth})
+    insert into user_auth(user_email, auth)
+    values (#{userEmail}, #{auth})
   </insert>
   <update id="updateProfileImageUrl">
     update users
@@ -73,5 +73,10 @@
     FROM users
     WHERE email = #{email}
   </select>
+  <update id="convertCoupleStatusIntoCouple">
+    update users
+    set COUPLE_STATUS = 1
+    where email = #{email}
+  </update>
 
 </mapper>

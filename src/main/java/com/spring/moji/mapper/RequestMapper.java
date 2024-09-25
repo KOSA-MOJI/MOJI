@@ -14,6 +14,6 @@ public interface RequestMapper {
 
   int deleteRequest(String email) throws Exception;
 
-  int updateAuth(String requestEmail) throws Exception;
+  int addCoupleAuth(String requestEmail) throws Exception;
 
 }
