@@ -92,6 +92,7 @@ public class DiaryServiceImpl implements DiaryService {
 	@Override
 	@Transactional
 	public void createPage(PageInsertRequestDTO pageInsertRequestDTO) {
+		System.out.println(pageInsertRequestDTO.toString());
 		pageMapper.insertPage(pageInsertRequestDTO);
 		Long pageId = pageInsertRequestDTO.getPageId();
 		for (LocationInsertRequestDTO locationInsertRequestDTO : pageInsertRequestDTO.getLocations()) {
