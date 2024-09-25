@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 public class PageInsertRequestDTO {
   private Long pageId;
-  private Long diaryId;
+  private Long coupleId;
   private LocalDate createdAt;
   private String weather;
   private String content;
