@@ -194,6 +194,7 @@ function resetSideChild() {
   resetRightSideChild()
 }
 
+// TO DO : 왼쪽 요소 css 뜯어 고치기
 function createLeftChild(pageData) {
   let data = pageData.left
   let fontColor = data.fontColor;
@@ -208,6 +209,7 @@ function createLeftChild(pageData) {
   let templateImg = document.createElement("img")
 
   templateImg.src = templateUrl;
+  // class: side 밑
   templateImg.setAttribute("style",
       "position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
   container.appendChild(templateImg)
@@ -224,9 +226,11 @@ function createLeftChild(pageData) {
 
   contentDiv.innerText = data.content;
   contentDiv.setAttribute("style",
-      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`)
+      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`
+      + `overflow-y: auto; max-height: 100%; padding: 10px;`
+  )
   container.appendChild(contentDiv)
-
+  //TO DO : class:"side" 바로 ㄴ div
   container.setAttribute("style",
       "width:100%; height:100%;" +
       "display: flex;" +
