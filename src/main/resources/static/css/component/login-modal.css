@@ -28,7 +28,7 @@
 }
 
 .auth-form {
-  font-family: "KyoboHand";
+
   background-color: #fff;
   padding: 2rem;
   border-radius: 10px;
@@ -76,8 +76,10 @@ label {
 }
 
 .btn-base {
-  font-family: "KyoboHand";
+  width: calc(100% - 2px); /* border 두께를 고려한 width */
+  box-sizing: border-box;
   padding: 10px;
+  background-color: #ffe898;
   border: none;
   border-radius: 5px;
   font-size: 23px;
@@ -85,8 +87,8 @@ label {
   transition: background-color 0.3s;
 }
 
-.btn:hover {
-  /*background-color: #ddb347;*/
+.btn-base:hover {
+  background-color: #ddb347;
 }
 
 .text-primary {

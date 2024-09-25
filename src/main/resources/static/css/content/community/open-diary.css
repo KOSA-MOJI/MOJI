@@ -19,10 +19,10 @@
 .content-diary {
   display: flex;
   flex-direction: row;
-  margin-top: 15px;
-  max-width: 700px; /* 적당한 너비 설정 */
+  /*margin-top: 15px;*/
+  max-width: 50rem; /* 적당한 너비 설정 */
   width: 100%; /* 전체 너비에 맞춰 조정 */
-  height: 380px; /* 최대 높이 설정 */
+  height: 28rem; /* 최대 높이 설정 */
   justify-content: space-between; /* 항목 사이에 공간 배분 */
   align-items: flex-end; /* 상단 정렬 */
   flex-grow: 1; /* 남은 공간을 차지하도록 설정 */
