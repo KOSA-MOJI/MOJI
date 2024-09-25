@@ -10,6 +10,7 @@ import com.spring.moji.entity.Scrap;
 @Mapper
 public interface ScrapMapper {
 	List<Scrap> findAllByPageIds(CommunityScrapRequestDTO communityScrapRequestDTO);
+	List<Scrap> findAllByPageId(Long pageId);
 	void createScrap(CommunityScrapRequestDTO communityScrapRequestDTO);
 	void removeScrap(CommunityScrapRequestDTO communityScrapRequestDTO);
 
