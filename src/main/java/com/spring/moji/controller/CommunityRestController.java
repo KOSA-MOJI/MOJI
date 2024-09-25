@@ -11,6 +11,7 @@ import com.spring.moji.service.CommunityServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/community")
 public class CommunityRestController {
 
-    private final CommunityServiceImpl communityService;
+	private final CommunityServiceImpl communityService;
 
-    @RequestMapping()
-    public List<CommunityResponseDTO> getCommunityUnderList(@ModelAttribute CommunityRequestDTO communityRequestDTO) {
-        return communityService.getCommunityUnderList(communityRequestDTO);
-    }
+	@RequestMapping()
+	public List<CommunityResponseDTO> getCommunityUnderList(@ModelAttribute CommunityRequestDTO communityRequestDTO) {
+		return communityService.getCommunityUnderList(communityRequestDTO);
+	}
 	@RequestMapping("/page/{pageId}")
 	public Page getCommunityUnderListPage(@PathVariable Long pageId){
 		return communityService.getPublicPage(pageId);
@@ -45,6 +46,12 @@ public class CommunityRestController {
 		ArrayList<Long> pageIds = new ArrayList<>();
 		pageIds.add(pageId);
 		CommunityScrapRequestDTO communityScrapRequestDTO = CommunityScrapRequestDTO.builder().email(email).pageIds(pageIds).build();
-		return communityService.removeScrap(communityScrapRequestDTO);
+		return communityService.
+			removeScrap(communityScrapRequestDTO);
+	}
+
+	@GetMapping("/scrap/{pageId}")
+	public Long getScrapCount(@PathVariable Long pageId) {
+		return communityService.getScrapCount(pageId);
 	}
 }

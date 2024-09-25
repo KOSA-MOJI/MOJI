@@ -12,4 +12,5 @@ public interface CommunityService {
 	Page getPublicPage(Long pageId);
 	boolean addScrap(CommunityScrapRequestDTO communityScrapRequestDTO);
 	boolean removeScrap(CommunityScrapRequestDTO communityScrapRequestDTO);
+	Long getScrapCount(Long pageId);
 }
