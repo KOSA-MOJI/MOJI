@@ -353,7 +353,7 @@ function createRightChild(pageData) {
       "padding:7px;" +
       "object-fit:contain;" +  // 이미지가 규격 내에 맞춰지도록 변경
       "visibility: visible;" +
-      "margin-top: 90px;"
+      "margin-top: 75px;"
   );
   img_box.setAttribute("onerror", "this.style.visibility='hidden';")
 
