@@ -40,21 +40,21 @@ function updateListImage() {
         "display: flex; width:100%;height:100%;z-index: 1")
     imgTag.src = communityData[curDataIndex + i].imageUrl;
 
-    let scrapButton = document.createElement("img");
-    scrapButton.src = `${imagePath}full-heart.png`;
-    scrapButton.alt = "찜하기";
-    scrapButton.className = "gallery-scrap-button";
-    scrapButton.style.zIndex = 5; // z-index 설정
+    let imgScrapButton = document.createElement("img");
+    imgScrapButton.src = `${imagePath}full-heart.png`;
+    imgScrapButton.alt = "찜하기";
+    imgScrapButton.className = "gallery-scrap-button";
+    imgScrapButton.style.zIndex = 5; // z-index 설정
 
     // 조건에 따라 하트 이미지의 스타일 조정
     if (communityData[curDataIndex + i].scrapped) {
-      scrapButton.style.display = "block";
+      imgScrapButton.style.display = "block";
     } else {
-      scrapButton.style.display = "none";
+      imgScrapButton.style.display = "none";
     }
 
     imageItemDiv.appendChild(imgTag);
-    imageItemDiv.appendChild(scrapButton);
+    imageItemDiv.appendChild(imgScrapButton);
 
     // 기존 존재하는 클릭 이벤트 제거 (중복 방지)
     imageItemDiv.onclick = null;
