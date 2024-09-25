@@ -327,7 +327,7 @@ function createRightChild(pageData) {
   cur_img_list = img_lists
   img_box.src = cur_img_list[cur_img_pointer]
 
-  img_next_btn.innerText = "다음"
+  img_next_btn.innerText = "▶"
   img_next_btn.addEventListener("click", function () {
     if (cur_img_pointer < cur_img_list.length - 1) {
       cur_img_pointer++;
@@ -336,7 +336,7 @@ function createRightChild(pageData) {
   })
   img_next_btn.setAttribute("style", "right:0")
 
-  img_prev_btn.innerText = "이전"
+  img_prev_btn.innerText = "◀"
   img_prev_btn.addEventListener("click", function () {
     if (0 < cur_img_pointer) {
       cur_img_pointer--;
@@ -344,13 +344,14 @@ function createRightChild(pageData) {
     }
   })
   img_prev_btn.setAttribute("style", "left:0")
-
+  img_next_btn.setAttribute("style", "right:0;border:none; outline:none;background:none");
+  img_prev_btn.setAttribute("style", "left:0; border:none; outline:none;background:none");
   img_box.setAttribute("style",
       "width:80%;" +
       "height:80%;" +
+      "padding:7px;" +
       "vertical-align: middle;" +
       "object-fit:cover" +
-      "background-color: lightgray;" +
       "visibility: visible;"
   )
   img_box.setAttribute("onerror", "this.style.visibility='hidden';")

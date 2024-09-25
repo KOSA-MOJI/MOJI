@@ -27,7 +27,7 @@
     width: 50%;
     height: 100%;
     display: flex;
-    margin-top:25px;
+    /*margin-top:25px;*/
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -49,7 +49,7 @@
     border:1px solid;
     top: 0;
     bottom: 0;
-    background: #f0f0f0; /* Consistent background color */
+    /*background: #f0f0f0; !* Consistent background color *!*/
 }
 
 #cover-image-upload-btn {
