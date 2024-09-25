@@ -141,9 +141,9 @@ function createRightChild(idx){
     let deletePageBtn = document.createElement("img")
     let setPublicStatusBtn = document.createElement("img")
 
-    deletePageBtn.setAttribute("style","position:absolute; top:2%; right:1%; width:10%; height:auto;")
+    deletePageBtn.setAttribute("style","position:absolute; top:2%; right:1%; width:7%; height:6%;")
     deletePageBtn.setAttribute("onclick","deleteCurPage()")
-    setPublicStatusBtn.setAttribute("style","position:absolute; top:2%; right:11%; width:10%; height:auto;")
+    setPublicStatusBtn.setAttribute("style","position:absolute; top:2%; right:11%; width:7%; height:6%;")
     setPublicStatusBtn.setAttribute("onclick","togglePublicStatus(this)")
     deletePageBtn.src=`${imagePath}delete-page.png`
     setPublicStatusBtn.src=`${imagePath}${pages[idx].left.publicStatus?"show-page.png":"hide-page.png"}`
@@ -217,7 +217,7 @@ function createRightChild(idx){
     cur_img_list=img_lists
     img_box.src=cur_img_list[cur_img_pointer]
 
-    img_next_btn.innerText="다음"
+    img_next_btn.innerText="▶"
     img_next_btn.addEventListener("click",function (){
       if(cur_img_pointer<cur_img_list.length-1){
         cur_img_pointer++;
@@ -226,7 +226,7 @@ function createRightChild(idx){
     })
     img_next_btn.setAttribute("style","right:0")
 
-    img_prev_btn.innerText="이전"
+    img_prev_btn.innerText="◀"
     img_prev_btn.addEventListener("click",function (){
       if(0<cur_img_pointer){
         cur_img_pointer--;
@@ -234,15 +234,17 @@ function createRightChild(idx){
       }
     })
     img_prev_btn.setAttribute("style","left:0")
-
+    img_next_btn.setAttribute("style", "right:0; border:none; outline:none;background:none");
+    img_prev_btn.setAttribute("style", "left:0; border:none; outline:none;background:none");
     img_box.setAttribute("style",
-      "width:80%;" +
-      "height:80%;"+
-      "vertical-align: middle;"+
-      "object-fit:cover"+
-      "background-color: lightgray;"+
-      "visibility: visible;"
-    )
+        "width:80%;" +
+        "height:80%;" +
+        "vertical-align: middle;" +
+        "padding:7px;" +  // 세미콜론 추가
+        "object-fit:cover;" +  // 세미콜론 추가
+        "visibility: visible;"  // 세미콜론 추가
+    );
+
     img_box.setAttribute("onerror","this.style.visibility='hidden';")
     img_container.appendChild(img_prev_btn)
     img_container.appendChild(img_box)
@@ -254,8 +256,8 @@ function createRightChild(idx){
     "height: 100%;" +
     "display: flex;" +
     "flex-direction: column;"+
-    "align-items: center;"+
-    "gap: 10%;"
+    "align-items: center;"
+    // "gap: 10%;"
   )
   return container
 }
@@ -279,10 +281,11 @@ function togglePublicStatus(elem){
   }).then(()=>{
     curPage.publicStatus=curPage.publicStatus==="y"?"n":"y"
     elem.src = curPage.publicStatus==="y"
-      ?`${imagePath}show-page.png`
-      :`${imagePath}hide-page.png`
+        ?`${imagePath}show-page.png`
+        :`${imagePath}hide-page.png`
   }).catch(err=>console.log(err))
 }
+
 
 
 function UploadImage(input){
