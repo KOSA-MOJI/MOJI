@@ -50,10 +50,10 @@ public class DiaryRestController {
     return true;
   }
 
-	@PostMapping("/coverImage/{diaryId}")
-	public String coverImage(@PathVariable Long diaryId, @RequestParam("diaryCoverImage")MultipartFile diaryCoverImage) throws
+	@PostMapping("/coverImage/{coupleId}")
+	public String coverImage(@PathVariable Long coupleId, @RequestParam("diaryCoverImage")MultipartFile diaryCoverImage) throws
 		IOException {
-		return diaryService.updateCoverImage(diaryId,diaryCoverImage);
+		return diaryService.updateCoverImage(coupleId,diaryCoverImage);
 	}
 
   @GetMapping("/template")
@@ -64,6 +64,11 @@ public class DiaryRestController {
   @PostMapping("/page")
   public void createPage(@RequestBody PageInsertRequestDTO pageInsertRequestDTO) {
     diaryService.createPage(pageInsertRequestDTO);
+  }
+
+  @GetMapping("/date/{coupleId}")
+  public List<LocalDate> getDates(@PathVariable Long coupleId) {
+	  return diaryService.getDates(coupleId);
   }
 
   @DeleteMapping("/page/{pageId}")

@@ -85,7 +85,7 @@
     </select>
 
     <update id="updateCoverImage" parameterType="com.spring.moji.dto.request.DiaryRequestDTO">
-        UPDATE diaries SET cover_image = #{coverImage} WHERE diary_id = #{diaryId}
+        UPDATE diaries SET cover_image = #{coverImage} WHERE diary_id = (select diary_id from diaries where couple_id = #{coupleId})
     </update>
 
 </mapper>
