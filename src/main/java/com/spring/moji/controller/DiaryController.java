@@ -19,9 +19,16 @@ public class DiaryController {
   private String kakaoApiKey;
 
   @GetMapping()
-  public String diary(Model model) {
+  public String diaryRead(Model model) {
     model.addAttribute("kakaoApiKey", kakaoApiKey);
     model.addAttribute("contentURL", "/WEB-INF/jsp/content/diary/diary-read.jsp");
     return "diary/diary-read-page";
+  }
+
+  @GetMapping("/write")
+  public String diaryWrite(Model model) {
+    model.addAttribute("kakaoApiKey", kakaoApiKey);
+	model.addAttribute("contentURL", "/WEB-INF/jsp/content/diary/diary-write.jsp");
+	return "diary/diary-write-page";
   }
 }

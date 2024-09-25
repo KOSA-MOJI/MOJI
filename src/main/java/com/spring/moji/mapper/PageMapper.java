@@ -2,6 +2,8 @@ package com.spring.moji.mapper;
 
 import com.spring.moji.dto.request.CommunityRequestDTO;
 import com.spring.moji.dto.request.PageInsertRequestDTO;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -18,4 +20,5 @@ public interface PageMapper {
 	int deleteByPageId(Long pageId);
 	void insertPage(PageInsertRequestDTO pageInsertRequestDTO);
 	void updatePublicStatusByPageId(PageRequestDTO pageRequestDTO);
+	List<LocalDate> findAllByCoupleId(Long coupleId);
 }

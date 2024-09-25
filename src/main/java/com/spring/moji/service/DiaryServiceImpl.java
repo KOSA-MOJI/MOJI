@@ -51,10 +51,10 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	@Transactional
-	public String updateCoverImage(Long diaryId, MultipartFile diaryCoverImage) throws IOException {
+	public String updateCoverImage(Long coupleId, MultipartFile diaryCoverImage) throws IOException {
 		// TODO : 기존 S3내 이미지 삭제 로직 추가
 		String imageURL = s3Util.uploadFile(diaryCoverImage);
-		DiaryRequestDTO diaryRequestDTO = DiaryRequestDTO.builder().diaryId(diaryId).coverImage(imageURL).build();
+		DiaryRequestDTO diaryRequestDTO = DiaryRequestDTO.builder().coupleId(coupleId).coverImage(imageURL).build();
 		diaryMapper.updateCoverImage(diaryRequestDTO);
 		return imageURL;
 	}
@@ -117,5 +117,10 @@ public class DiaryServiceImpl implements DiaryService {
 			}
 		}
 		pageMapper.deleteByPageId(pageId);
+	}
+
+	@Override
+	public List<LocalDate> getDates(Long coupleId) {
+		return pageMapper.findAllByCoupleId(coupleId);
 	}
 }

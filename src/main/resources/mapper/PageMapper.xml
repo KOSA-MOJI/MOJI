@@ -174,4 +174,12 @@
 		<update id="updatePublicStatusByPageId" parameterType="com.spring.moji.dto.request.PageRequestDTO">
 			UPDATE pages SET public_status = #{publicStatus} WHERE page_id = #{pageId}
 		</update>
+
+		<select id="findAllByCoupleId" parameterType="java.lang.Long" resultType="java.time.LocalDate">
+				select distinct created_at
+				from pages
+				where diary_id = (select diary_id
+													from diaries
+													where couple_id = #{coupleId})
+		</select>
 </mapper>

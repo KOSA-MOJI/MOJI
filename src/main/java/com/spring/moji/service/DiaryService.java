@@ -21,4 +21,5 @@ public interface DiaryService {
 	void deletePreSignedImage(String imageUrl);
 	void createPage(PageInsertRequestDTO pageInsertRequestDTO);
 	void deletePageById(Long pageId);
+	List<LocalDate> getDates(Long coupleId);
 }
