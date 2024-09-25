@@ -69,6 +69,7 @@ function createLeftChild(idx){
   let contentDiv=document.createElement("div")
   let templateImg = document.createElement("img")
   let prevPageDiv = document.createElement("div")
+  let topContentDiv = document.createElement("div")
 
   templateImg.src=templateUrl;
   templateImg.setAttribute("style","position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
@@ -83,9 +84,24 @@ function createLeftChild(idx){
   dateWeatherDiv.setAttribute("style","display: flex; flex-direction: row; width: 100%;")
   container.appendChild(dateWeatherDiv)
 
-  contentDiv.innerText=data.content;
-  contentDiv.setAttribute("style",`font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`)
-  container.appendChild(contentDiv)
+  //일기내용
+  contentDiv.innerText = data.content;
+  contentDiv.setAttribute("style",
+      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`
+      + `overflow-y: auto; max-height: 100%; padding: 10px;`
+  )
+
+  topContentDiv.setAttribute("style",
+      "background-color: rgba(255, 255, 255, 0.7);;"
+      + "display: flex;"
+      + " justify-content: center;"
+      + "align-items: center;"
+      + " width: 80%;"
+      + "height: 30rem;"
+      + "margin-top: .5rem;")
+
+  topContentDiv.appendChild(contentDiv)
+  container.appendChild(topContentDiv)
 
   prevPageDiv.id="prevPage"
   prevPageDiv.addEventListener("click",prevPage)
@@ -121,7 +137,7 @@ function createRightChild(idx){
 
     diaryCoverImage.src=data.coverImage
     diaryCoverImage.setAttribute("id","diaryCoverImage")
-    diaryCoverImage.setAttribute("style","width:50%;height:50%;")
+    diaryCoverImage.setAttribute("style","width:55%;height:50%;margin-top:7rem")
     imageUploadDiv.innerHTML= `
       <label for="upload-file" id="cover-image-upload-btn">
         업로드
@@ -240,10 +256,12 @@ function createRightChild(idx){
         "width:80%;" +
         "height:80%;" +
         "vertical-align: middle;" +
-        "padding:7px;" +  // 세미콜론 추가
-        "object-fit:cover;" +  // 세미콜론 추가
-        "visibility: visible;"  // 세미콜론 추가
+        "padding:7px;" +
+        "object-fit:contain;" +  // 이미지가 규격 내에 맞춰지도록 변경
+        "visibility: visible;" +
+        "margin-top: 90px;"
     );
+
 
     img_box.setAttribute("onerror","this.style.visibility='hidden';")
     img_container.appendChild(img_prev_btn)
