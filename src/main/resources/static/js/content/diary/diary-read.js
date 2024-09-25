@@ -69,6 +69,7 @@ function createLeftChild(idx){
   let contentDiv=document.createElement("div")
   let templateImg = document.createElement("img")
   let prevPageDiv = document.createElement("div")
+  let topContentDiv = document.createElement("div")
 
   templateImg.src=templateUrl;
   templateImg.setAttribute("style","position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
@@ -83,9 +84,24 @@ function createLeftChild(idx){
   dateWeatherDiv.setAttribute("style","display: flex; flex-direction: row; width: 100%;")
   container.appendChild(dateWeatherDiv)
 
-  contentDiv.innerText=data.content;
-  contentDiv.setAttribute("style",`font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`)
-  container.appendChild(contentDiv)
+  //일기내용
+  contentDiv.innerText = data.content;
+  contentDiv.setAttribute("style",
+      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`
+      + `overflow-y: auto; max-height: 100%; padding: 10px;`
+  )
+
+  topContentDiv.setAttribute("style",
+      "background-color: rgba(255, 255, 255, 0.7);;"
+      + "display: flex;"
+      + " justify-content: center;"
+      + "align-items: center;"
+      + " width: 80%;"
+      + "height: 30rem;"
+      + "margin-top: .5rem;")
+
+  topContentDiv.appendChild(contentDiv)
+  container.appendChild(topContentDiv)
 
   prevPageDiv.id="prevPage"
   prevPageDiv.addEventListener("click",prevPage)
@@ -242,7 +258,8 @@ function createRightChild(idx){
         "vertical-align: middle;" +
         "padding:7px;" +  // 세미콜론 추가
         "object-fit:cover;" +  // 세미콜론 추가
-        "visibility: visible;"  // 세미콜론 추가
+        "visibility: visible;" + // 세미콜론 추가
+        "margin-top: 90px;"
     );
 
     img_box.setAttribute("onerror","this.style.visibility='hidden';")
