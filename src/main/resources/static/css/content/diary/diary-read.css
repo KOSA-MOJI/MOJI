@@ -12,11 +12,6 @@
     border-radius: 15px;
     /* 책 위치 변화 애니메이션 */
     transition: transform 0.5s ease, box-shadow 0.5s ease;
-    /* 호버 시 다이어리 책이 약간 들린 효과 */
-    &:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2);
-        transform: translateY(-10px); /* 살짝 위로 이동 */
-    }
 }
 
 
