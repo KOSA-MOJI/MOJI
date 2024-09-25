@@ -300,7 +300,7 @@ function createRightChild(pageData) {
       position: new kakao.maps.LatLng(location.latitude, location.longitude),
     });
     img_lists.push(location.imageUrls.length > 0 ? location.imageUrls.map(
-        data => data.mapImage) : ["https://placehold.co/400"])
+        data => data.mapImage) : [`${imgCommonPath}color-no-image.png`])
     kakao.maps.event.addListener(marker, 'click', function () {
       cur_img_list = img_lists[idx]
       cur_img_pointer = 0
