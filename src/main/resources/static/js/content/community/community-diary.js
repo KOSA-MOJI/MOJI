@@ -207,29 +207,44 @@ function createLeftChild(pageData) {
   let dateWeatherDiv = document.createElement("div")
   let contentDiv = document.createElement("div")
   let templateImg = document.createElement("img")
+  let topContentDiv = document.createElement("div")
 
   templateImg.src = templateUrl;
   // class: side 밑
   templateImg.setAttribute("style",
       "position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
   container.appendChild(templateImg)
-
   dateDiv.innerText = data.createdAt;
   weatherDiv.innerText = data.weather;
+
   dateDiv.setAttribute("style", "position: absolute; left: 10%;")
   weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
   dateWeatherDiv.appendChild(dateDiv)
   dateWeatherDiv.appendChild(weatherDiv)
+
   dateWeatherDiv.setAttribute("style",
       "display: flex; flex-direction: row; width: 100%;")
-  container.appendChild(dateWeatherDiv)
+  container.appendChild(dateWeatherDiv) //(상단영역)
 
+  //일기내용
   contentDiv.innerText = data.content;
   contentDiv.setAttribute("style",
       `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment}`
       + `overflow-y: auto; max-height: 100%; padding: 10px;`
   )
-  container.appendChild(contentDiv)
+
+  topContentDiv.setAttribute("style",
+      "background-color: white;"
+      + "display: flex;"
+      + " justify-content: center;"
+      + "align-items: center;"
+      + " width: 80%;"
+      + "height: 23rem;"
+      + "margin-top: .5rem;")
+
+  topContentDiv.appendChild(contentDiv)
+  container.appendChild(topContentDiv)
+
   //TO DO : class:"side" 바로 ㄴ div
   container.setAttribute("style",
       "width:100%; height:100%;" +
