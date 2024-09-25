@@ -1,6 +1,6 @@
 let currentLocation = {latitude: null, longitude: null};
 let currentRadius = 5; // 기본 반경 값
-const email = "wjdekqls1@example.com"
+const email = "hahaha123@naver.com"
 const listLimit = 5; // 한 번에 불러올 데이터 수
 let communityData = []; // 받아온 데이터 저장 배열
 let curDataIndex = 0; //실제 가리키는 보여줄 데이터의 시작 위치
@@ -36,9 +36,25 @@ function updateListImage() {
     imageItemDiv.innerText = ""
     imageItemDiv.innerHTML = "";
     let imgTag = document.createElement("img")
-    imgTag.setAttribute("style", "width:100%;height:100%")
-    imgTag.src = communityData[curDataIndex + i].imageUrl
-    imageItemDiv.appendChild(imgTag)
+    imgTag.setAttribute("style",
+        "display: flex; width:100%;height:100%;z-index: 1")
+    imgTag.src = communityData[curDataIndex + i].imageUrl;
+
+    let scrapButton = document.createElement("img");
+    scrapButton.src = `${imagePath}full-heart.png`;
+    scrapButton.alt = "찜하기";
+    scrapButton.className = "gallery-scrap-button";
+    scrapButton.style.zIndex = 5; // z-index 설정
+
+    // 조건에 따라 하트 이미지의 스타일 조정
+    if (communityData[curDataIndex + i].scrapped) {
+      scrapButton.style.display = "block";
+    } else {
+      scrapButton.style.display = "none";
+    }
+
+    imageItemDiv.appendChild(imgTag);
+    imageItemDiv.appendChild(scrapButton);
 
     // 기존 존재하는 클릭 이벤트 제거 (중복 방지)
     imageItemDiv.onclick = null;
