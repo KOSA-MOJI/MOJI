@@ -17,14 +17,15 @@
 <div class="py-4">
     <p class="clearfix">
         <span class="float-start"> 커플 상태 </span>
-        <span class="float-end text-muted"> OOO님과 커플 </span>
+        <span class="float-end text-muted"> ${partner.userName}님과 커플 </span>
     </p>
     <p class="clearfix">
-        <span class="float-start"> 전화번호 </span>
-        <span class="float-end text-muted"> +821012345678 </span>
+        <span class="float-start"> 내 이메일 </span>
+        <span class="float-end text-muted"> ${principal.email} </span>
     </p>
     <p class="clearfix">
-        <span class="float-start"> email </span>
-        <span class="float-end text-muted"> example@gmail.com </span>
+        <span class="float-start"> 파트너의 이메일 </span>
+        <span class="float-end text-muted"> ${partner.email} </span>
     </p>
+
 </div>

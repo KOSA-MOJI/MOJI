@@ -4,15 +4,19 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Couple {
+
   private Long couple_id;
   private String user1Email;
   private String user2Email;
   private String coupleName;
   private String coupleProfileImage;
+
   @Builder
   public Couple(Long couple_id, String user1Email, String user2Email, String coupleName,
       String coupleProfileImage) {

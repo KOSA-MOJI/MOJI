@@ -73,10 +73,37 @@
     FROM users
     WHERE email = #{email}
   </select>
+
   <update id="convertCoupleStatusIntoCouple">
     update users
     set COUPLE_STATUS = 1
     where email = #{email}
   </update>
+
+  <update id="updateCoupleProfile">
+    update COUPLES
+    set COUPLE_PROFILE_IMAGE = #{profileImageUrl},
+        COUPLE_NAME          = #{coupleName}
+    WHERE COUPLE_ID = #{coupleId}
+  </update>
+
+  <select id="findPartner" resultMap="userMap">
+    SELECT email
+         , user_name
+         , birthday
+         , gender
+         , password
+         , profile_image_url
+         , couple_status
+         , created_at
+    FROM USERS
+    WHERE EMAIL = (SELECT CASE
+                            WHEN USER1_EMAIL = #{email} THEN USER2_EMAIL
+                            ELSE USER1_EMAIL
+                            END
+                   FROM COUPLES
+                   WHERE USER1_EMAIL = #{email}
+                      OR USER2_EMAIL = #{email})
+  </select>
 
 </mapper>

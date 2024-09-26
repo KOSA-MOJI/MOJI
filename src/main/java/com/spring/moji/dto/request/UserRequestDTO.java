@@ -2,11 +2,13 @@ package com.spring.moji.dto.request;
 
 import com.spring.moji.entity.Couple;
 import com.spring.moji.entity.User;
+import com.spring.moji.mapper.UserMapper;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -50,12 +52,10 @@ public class UserRequestDTO implements UserDetails {
 
   // jstl에서 user의 정보를 조회하는데 필요한 메서드
   public String getUserName() {
-
     return user.getUserName();
   }
 
   public LocalDate getBirthday() {
-
     return user.getBirthday();
   }
 

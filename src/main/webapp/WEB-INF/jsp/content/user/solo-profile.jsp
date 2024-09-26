@@ -32,7 +32,7 @@
             <!-- 정보 -->
             <div class="profile-content border-bottom text-center pb-4">
                 <div class="pfp-background">
-                    <div class="pfp-container">
+                    <div class="pfp-container central-pfp-container">
                         <img
                                 class="pfp"
                                 id="solo-pfp"

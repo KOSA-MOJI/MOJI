@@ -21,7 +21,7 @@
             <h3 class="page-title">Profile</h3>
         </div>
         <div class="profile-card">
-            <h4>보검수지 커플</h4>
+            <h4>${principal.couple.coupleName}</h4>
             <div class="profile-content border-bottom text-center pb-4">
                 <div class="triple-pfp-container">
                     <div class="individual pfp-background">
@@ -32,13 +32,6 @@
                                     src="${principal.profileImageUrl}"
                                     onerror="this.src='${pageContext.request.contextPath}/image/content/user/default-avatar.avif'"
                             />
-                            <input
-                                    type="file"
-                                    class="pfp-file-input"
-                                    id="woman-pfp-file-input"
-                                    style="display: none"
-                                    accept="image/*"
-                            />
                         </div>
                         <i class="hidden bi bi-camera-fill"></i>
                     </div>
@@ -47,15 +40,8 @@
                             <img
                                     class="pfp"
                                     id="couple-pfp"
-                                    src="${pageContext.request.contextPath}/image/content/user/bogum.jpg"
+                                    src="${principal.couple.coupleProfileImage}"
                                     onerror="this.src='/image/content/user/default-avatar.avif'"
-                            />
-                            <input
-                                    type="file"
-                                    class="pfp-file-input"
-                                    id="couple-pfp-file-input"
-                                    style="display: none"
-                                    accept="image/*"
                             />
                         </div>
                         <i class="hidden bi bi-camera-fill"></i>
@@ -65,21 +51,13 @@
                             <img
                                     class="pfp"
                                     id="man-pfp"
-                                    src="${pageContext.request.contextPath}/image/content/user/Bogum2.jpg"
+                                    src="${partner.profileImageUrl}"
                                     onerror="this.src='/image/content/user/default-avatar.avif'"
-                            />
-                            <input
-                                    type="file"
-                                    class="pfp-file-input"
-                                    id="man-pfp-file-input"
-                                    style="display: none"
-                                    accept="image/*"
                             />
                         </div>
                         <i class="hidden bi bi-camera-fill"></i>
                     </div>
                 </div>
-                <p>박보검과 배수지 커플입니다.</p>
                 <div class="btn-container d-flex justify-content-between">
                     <button
                             class="btn btn-success btn-lg"
@@ -102,7 +80,7 @@
                     <button
                             class="btn btn-success btn-lg"
                             id="couple-info-edit-btn"
-                            onclick="location.href='profile/update'"
+                            onclick="location.href='/user/couple/update-profile'"
                     >
                         <img src="${pageContext.request.contextPath}/image/common/About.png"
                              alt=""/>
@@ -112,12 +90,18 @@
             </div>
             <jsp:include page="/WEB-INF/jsp/component/couple-info.jsp"/>
             <p class="clearfix">
+                <span class="float-start"> 커플 정보 변경 </span>
+                <span class="float-end text-muted">
+                <a href="/user/couple/update-profile" id="break-up"
+                   style="color: rgb(255, 148, 148)"
+                >변경</a>
+                </span>
+            <p class="clearfix">
                 <span class="float-start"> 커플 상태 변경 </span>
                 <span class="float-end text-muted">
-                <a href="#" id="break-up" style="color: rgb(255, 148, 148)"
-                >커플 끊기</a
-                >
-      </span>
+                <a href="#" id="change-couple-profile" style="color: rgb(255, 148, 148)"
+                >커플 끊기</a>
+                </span>
             </p>
 
         </div>
@@ -178,28 +162,26 @@
                 커플 끊기 신청 후 회원님에게 40일간 유예기간이 적용되며 유예기간
                 동안 회원님은 커플 게시물을 조회할 수 없습니다
             </p>
-            <form class="forms-sample">
-                <div class="form-group">
-                    <label for="exampleInputEmail3">사유를 입력하세요</label>
-                    <input
-                            type="email"
-                            class="form-control"
-                            id="exampleInputEmail3"
-                            placeholder="사유"
-                    />
-                </div>
-                <button type="submit" class="btn btn-success">확인</button>
-                <button
-                        type="button"
-                        class="btn btn-light cancel-button"
-                        id="cancel-break-up-btn"
-                >
-                    취소
-                </button>
-            </form>
+            <div class="form-group">
+                <label for="exampleInputEmail3">사유를 입력하세요</label>
+                <input
+                        type="email"
+                        class="form-control"
+                        id="exampleInputEmail3"
+                        placeholder="사유"
+                />
+            </div>
+            <button type="submit" class="btn btn-success">확인</button>
+            <button
+                    type="button"
+                    class="btn btn-light cancel-button"
+                    id="cancel-break-up-btn"
+            >
+                취소
+            </button>
         </div>
     </div>
 </div>
-<script src="${pageContext.request.contextPath}/js/user/couple-profile.js"></script>
+<script src="${pageContext.request.contextPath}/js/content/user/couple-profile.js"></script>
 
 

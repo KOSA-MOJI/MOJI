@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
@@ -43,14 +44,28 @@ public class UserController {
   }
 
   @GetMapping({"/couple/", "/couple",})
-  public String readCoupleProfile(Model model) {
+  public String readCoupleProfile(@AuthenticationPrincipal UserRequestDTO user, Model model)
+      throws Exception {
+    User partner = userService.findPartner(user.getEmail());
+    model.addAttribute("partner", partner);
     model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/couple-profile.jsp");
     return "user/profile-page";
   }
 
   @GetMapping({"/couple/update-profile"})
-  public String updateCoupleProfile(Model model) {
+  public String updateCoupleProfile(@AuthenticationPrincipal UserRequestDTO user, Model model)
+      throws Exception {
+    User partner = userService.findPartner(user.getEmail());
+    model.addAttribute("partner", partner);
     model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/update-couple-profile.jsp");
     return "user/profile-page";
   }
+
+  @PostMapping({"/couple/breakup"})
+  public String breakup(Model model) {
+    model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/update-couple-profile.jsp");
+    return "user/profile-page";
+  }
+
 }
+

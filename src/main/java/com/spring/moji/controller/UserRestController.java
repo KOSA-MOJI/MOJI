@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,20 +35,26 @@ public class UserRestController {
       throws Exception {
     if (file != null) {
       String profileImageUrl = s3Util.uploadFile(file);
-      userService.updateProfileImageUrl(email, profileImageUrl);
+      userService.updateProfileImageUrl(email, profileImageUrl, session);
+    }
+    return ResponseEntity.ok()
+        .body(Map.of("message", "Profile updated successfully", "redirectUrl", "/user/solo/"));
+  }
 
-      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-      if (auth != null && auth.isAuthenticated()) {
-        UserRequestDTO currentUser = (UserRequestDTO) auth.getPrincipal();
-        currentUser.getUser().setProfileImageUrl(profileImageUrl);
-        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
-            currentUser, auth.getCredentials(), auth.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
-        session.setAttribute("profileImageUrl", profileImageUrl);
-        log.info("Profile image URL updated in session and authentication object");
-
-      }
+  @PostMapping({"/couple/update-profile"})
+  public ResponseEntity<?> updateCoupleProfileProcess(
+      @RequestParam("file") MultipartFile file,
+      @AuthenticationPrincipal UserRequestDTO user,
+      HttpSession session)
+      throws Exception {
+    if (file != null) {
+      String profileImageUrl = s3Util.uploadFile(file);
+      userService.updateCoupleProfile(
+          user.getCouple().getCouple_id()
+          , user.getCouple().getCoupleName()
+          , profileImageUrl
+          , session
+      );
     }
     return ResponseEntity.ok()
         .body(Map.of("message", "Profile updated successfully", "redirectUrl", "/user/solo/"));

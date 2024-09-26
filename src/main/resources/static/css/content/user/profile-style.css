@@ -72,6 +72,10 @@
   transform: translate(-50%, -50%);
 }
 
+.profile-content .pfp-background .central-pfp-container {
+  cursor: pointer;
+}
+
 .profile-content .pfp-background .pfp-container .pfp {
   width: 100%;
   height: 100%;

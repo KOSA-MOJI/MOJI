@@ -15,6 +15,8 @@
 
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/user/profile-modal-style.css"/>
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"/>
 
 
 <!-- jsp -->
@@ -24,7 +26,7 @@
             <h3 class="page-title">Profile</h3>
         </div>
         <div class="profile-card">
-            <h4>보검수지 커플</h4>
+            <input type="text" value="${principal.couple.coupleName}">
             <div class="profile-content border-bottom text-center pb-4">
                 <div class="triple-pfp-container">
                     <div class="individual pfp-background">
@@ -35,22 +37,14 @@
                                     src="${principal.profileImageUrl}"
                                     onerror="this.src='${pageContext.request.contextPath}/image/content/user/default-avatar.avif'"
                             />
-                            <input
-                                    type="file"
-                                    class="pfp-file-input"
-                                    id="woman-pfp-file-input"
-                                    style="display: none"
-                                    accept="image/*"
-                            />
                         </div>
-                        <i class="bi bi-camera-fill"></i>
                     </div>
                     <div class="pfp-background">
-                        <div class="pfp-container">
+                        <div class="pfp-container central-pfp-container" id="couple-pfp-container">
                             <img
                                     class="pfp"
                                     id="couple-pfp"
-                                    src="${pageContext.request.contextPath}/image/content/user/bogum.jpg"
+                                    src="${principal.couple.coupleProfileImage}"
                                     onerror="this.src='/image/content/user/default-avatar.avif'"
                             />
                             <input
@@ -68,15 +62,8 @@
                             <img
                                     class="pfp"
                                     id="man-pfp"
-                                    src="${pageContext.request.contextPath}/image/content/user/Bogum2.jpg"
+                                    src="${partnerProfileUrl}"
                                     onerror="this.src='/image/content/user/default-avatar.avif'"
-                            />
-                            <input
-                                    type="file"
-                                    class="pfp-file-input"
-                                    id="man-pfp-file-input"
-                                    style="display: none"
-                                    accept="image/*"
                             />
                         </div>
                     </div>
@@ -132,6 +119,6 @@
         </div>
     </div>
 </div>
-<script src="${pageContext.request.contextPath}/js/user/update-couple-profile.js"></script>
+<script src="${pageContext.request.contextPath}/js/content/user/update-couple-profile.js"></script>
 
 

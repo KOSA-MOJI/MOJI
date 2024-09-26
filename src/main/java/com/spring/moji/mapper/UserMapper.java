@@ -16,7 +16,12 @@ public interface UserMapper {
 
   int updateProfileImageUrl(String email, String profileImageUrl) throws Exception;
 
+  int updateCoupleProfile(Long coupleId, String profileImageUrl, String coupleName)
+      throws Exception;
+
   User findUserByEmail(String email) throws Exception;
 
-  int convertCoupleStatusIntoCouple(String email);
+  int convertCoupleStatusIntoCouple(String email) throws Exception;
+
+  User findPartner(String email) throws Exception;
 }
