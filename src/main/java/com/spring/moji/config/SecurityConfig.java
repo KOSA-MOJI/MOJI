@@ -34,9 +34,9 @@ public class SecurityConfig {
 //    http.csrf(csrf -> csrf.disable());
 
     http.authorizeHttpRequests(auth -> auth
-        .requestMatchers("/user/couple/diary").hasRole("COUPLE")
-        .requestMatchers("/user/solo/**").hasRole("SOLO")
-        .requestMatchers("/").hasAnyRole("COUPLE", "SOLO")
+        .requestMatchers("/user/couple/**").hasRole("COUPLE")
+        .requestMatchers("/user/solo/**").hasAnyRole("COUPLE", "SOLO")
+        .requestMatchers("/user/community").hasAnyRole("COUPLE", "SOLO")
         .anyRequest().permitAll()
     );
 
