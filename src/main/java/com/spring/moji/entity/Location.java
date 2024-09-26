@@ -3,7 +3,6 @@ package com.spring.moji.entity;
 import java.time.LocalDate;
 import java.util.List;
 
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,8 +29,4 @@ public class Location {
 		this.createdAt = createdAt;
     this.imageUrls = imageUrls;
   }
-
-	public void setPageId(Long pageId) {
-
-	}
 }
