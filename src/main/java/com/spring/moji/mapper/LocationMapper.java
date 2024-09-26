@@ -13,4 +13,5 @@ public interface LocationMapper {
 	List<Location> findAllByPageId(Long pageId);
 	void insertLocation(LocationInsertRequestDTO locationInsertRequestDTO);
 	List<Location> findAllFirstLocation(Long coupleId);
+	List<Location> findScrapedLocations(String email);
 }

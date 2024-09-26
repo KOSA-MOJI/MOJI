@@ -63,4 +63,36 @@
 				ORDER BY p.page_id
 		</select>
 
+		<select id="findScrapedLocations" parameterType="String" resultMap="LocationResultMap">
+				SELECT
+						l.location_id,
+						l.page_id,
+						l.address,
+						l.latitude,
+						l.longitude,
+						l.created_at AS location_created_at,
+						iu.image_url_id,
+						iu.location_id AS image_location_id,
+						iu.map_image,
+						iu.created_at AS image_url_created_at
+				FROM (
+								 SELECT page_id, diary_id, created_at
+								 FROM pages
+								 WHERE page_id IN (
+										 SELECT page_id
+										 FROM scraps
+										 WHERE email = #{email}
+								 )
+						 ) p
+								 LEFT JOIN (
+						SELECT l.*, ROW_NUMBER() OVER (PARTITION BY l.page_id ORDER BY l.created_at ASC) AS rn
+						FROM locations l
+				) l ON p.page_id = l.page_id AND l.rn = 1
+								 LEFT JOIN (
+						SELECT iu.*, ROW_NUMBER() OVER (PARTITION BY iu.location_id ORDER BY iu.created_at ASC) AS rn
+						FROM image_urls iu
+				) iu ON l.location_id = iu.location_id AND iu.rn = 1
+				WHERE l.location_id IS NOT NULL
+				ORDER BY p.created_at
+		</select>
 </mapper>

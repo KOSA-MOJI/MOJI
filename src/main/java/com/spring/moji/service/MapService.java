@@ -7,6 +7,6 @@ import com.spring.moji.entity.Page;
 
 public interface MapService {
 	public List<Location> getDiaryLocations(Long coupleId);
-	public List<Location> getMyScrapLocations();
+	public List<Location> getMyScrapLocations(String email);
 	public List<Location> getPartnerScrapLocations();
 }

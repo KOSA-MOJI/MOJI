@@ -28,8 +28,8 @@ public class MapRestController {
 
 	// 개인 스크랩으로 가져오기
 	@GetMapping("/scrap/mine")
-	public String scrapMine(@RequestParam String email){
-		return null;
+	public List<Location> scrapMine(@RequestParam String email){
+		return mapService.getMyScrapLocations(email);
 	}
 
 	// 상대 스크랩으로 가져오기

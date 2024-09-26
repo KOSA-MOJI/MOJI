@@ -27,8 +27,8 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<Location> getMyScrapLocations() {
-		return List.of();
+	public List<Location> getMyScrapLocations(String email) {
+		return locationMapper.findScrapedLocations(email);
 	}
 
 	@Override
