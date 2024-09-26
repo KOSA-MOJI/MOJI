@@ -6,6 +6,7 @@ let communityData = []; // 받아온 데이터 저장 배열
 let curDataIndex = 0; //실제 가리키는 보여줄 데이터의 시작 위치
 let selectedIndex = 1; //1~limit
 let selectedDistanceValue = 5; //현재
+let curPage;
 
 // 위치정보 가져오기
 function getCurrentLocation() {
@@ -46,6 +47,8 @@ function updateListImage() {
     imgScrapButton.className = "gallery-scrap-button";
     imgScrapButton.style.zIndex = 5; // z-index 설정
 
+    // console.log("communityData", communityData)
+
     // 조건에 따라 하트 이미지의 스타일 조정
     if (communityData[curDataIndex + i].scrapped) {
       imgScrapButton.style.display = "block";
@@ -75,12 +78,13 @@ function updateListImage() {
       imageItemDiv.removeAttribute('title');
     }
   }
+  console.log(communityData)
 }
 
 function updateDiaryContent(element) {
   selectedIndex = Number(element.getAttribute("id").split("-")[2])
-  fetch(`/api/community/page/${communityData[curDataIndex + selectedIndex
-  - 1].pageId}`)
+  curPage = communityData[curDataIndex + selectedIndex - 1]
+  fetch(`/api/community/page/${curPage.pageId}`)
   .then((res) => {
     if (res.ok) {
       return res.json()
@@ -490,24 +494,25 @@ function resetDefaultData(radius) {
 }
 
 //클릭시, 스크랩 이미지 업데이트1
-function toggleFavorite() {
-  isFavorited = !isFavorited; // 찜 상태 토글
-  updateFavoriteButton(); // 이미지 업데이트
-}
-
-//클릭시, 스크랩 이미지 업데이트2
-function updateFavoriteButton() {
-  const img = document.getElementById('uploadButton');
-  if (isFavorited) {
-    img.src = `${imagePath}full-heart.png`; // 찜된 이미지
-
-  } else {
-    img.src = `${imagePath}gray-heart.png`; // 회색 이미지
-  }
-}
+// function toggleFavorite() {
+//   isFavorited = !isFavorited; // 찜 상태 토글
+//   updateFavoriteButton(); // 이미지 업데이트
+// }
+//
+// //클릭시, 스크랩 이미지 업데이트2
+// function updateFavoriteButton() {
+//   const img = document.getElementById('uploadButton');
+//   if (isFavorited) {
+//     img.src = `${imagePath}full-heart.png`; // 찜된 이미지
+//
+//   } else {
+//     img.src = `${imagePath}gray-heart.png`; // 회색 이미지
+//   }
+// }
 
 function toggleScrap() {
-  let curPage = communityData[curDataIndex + selectedIndex - 1]
+  // let curPage = communityData[curDataIndex + selectedIndex - 1]
+  console.log("스크랩된 페이지" + curPage.pageId)
   fetch(`/api/community/scrap?email=${email}&pageId=${curPage.pageId}`, {
     method: `${curPage.scrapped ? "DELETE" : "POST"}`
   }).then((res) => {
@@ -521,5 +526,8 @@ function toggleScrap() {
     scrapButton.src = curPage.scrapped
         ? `${imagePath}full-heart.png`
         : `${imagePath}gray-heart.png`
+    // TO DO : 스크랩 버튼 여부에 따라 하단 스크랩 isnone/block 처리
+    updateListImage();
+
   }).catch(err => console.log(err))
 }
