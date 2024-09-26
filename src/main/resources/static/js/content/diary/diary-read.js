@@ -479,6 +479,7 @@ function createPagesData(pageData) {
 
 //coupleId 세션
 function loadDiary(id) {
+  console.log("id" + id)
   fetch("api/diary/" + id, {
     headers: {
       'X-CSRF-TOKEN': csrfToken
@@ -548,5 +549,6 @@ async function prefetchPages(direction) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  console.log("커플id는" + coupleId)
   loadDiary(coupleId)
 });

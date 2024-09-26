@@ -10,7 +10,6 @@
 
 <script>
   var principalCoupleId = "${principal.couple.couple_id}";
-  console.log(principalCoupleId);
 </script>
 
 
