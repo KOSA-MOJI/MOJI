@@ -90,12 +90,12 @@ function createLeftChild(idx) {
   dateDiv.innerText = data.createdAt;
   weatherDiv.innerText = data.weather;
   dateDiv.setAttribute("style", "position: absolute; left: 10%;")
-  weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
-  dateWeatherDiv.appendChild(dateDiv)
-  dateWeatherDiv.appendChild(weatherDiv)
-  dateWeatherDiv.setAttribute("style",
-      "display: flex; flex-direction: row; width: 100%;")
-  container.appendChild(dateWeatherDiv)
+  // weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
+  // dateWeatherDiv.appendChild(dateDiv)
+  // dateWeatherDiv.appendChild(weatherDiv)
+  // dateWeatherDiv.setAttribute("style",
+  //     "display: flex; flex-direction: row; width: 100%;")
+  // container.appendChild(dateWeatherDiv)
 
   //date css추가
   // 인라인 스타일 추가
