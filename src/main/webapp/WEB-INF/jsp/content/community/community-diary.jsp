@@ -14,8 +14,7 @@
 
 <%--이메일 js에 보내주기--%>
 <script>
-  var userEmail = "<%= request.getUserPrincipal().getName()%>";
-  console.log(userEmail);
+  var userEmail = "${principal.email}";
 </script>
 
 <div class="community-content">
