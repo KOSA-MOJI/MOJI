@@ -95,7 +95,8 @@ function updateDiaryContent(element) {
         ? `${imagePath}full-heart.png`
         : `${imagePath}gray-heart.png`
   })
-  .catch(err => console.log(err))
+  .catch(err => console.log(err)
+  )
 }
 
 function prevBtn() {
@@ -158,7 +159,23 @@ function fetchCommunityData(offset, limit, isInit) {
     if (isInit) {
       updateDiaryContent(document.querySelector("#image-item-1"))
     }
-  }).catch(err => console.log(err))
+  }).catch(err => {
+    console.log(err)
+    alert("5km 이내 데이트 코스가 존재하지 않습니다.")
+
+    //반경 50km 재설정 및 호출
+    currentRadius = 50;
+    selectedDistanceValue = 50;
+
+    //필터 슬라이더 및 input 값 재조정
+    document.getElementById('distanceRange').value = currentRadius;
+    document.getElementById('selectedDistance').value = currentRadius;
+
+    getCurrentLocation().then(() => {
+      fetchCommunityData(0, 20, true)
+    });
+
+  })
 }
 
 // 페이지 화면 구현
