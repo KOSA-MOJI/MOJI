@@ -73,7 +73,6 @@
     width: 50%;
     height: 100%;
     box-shadow: 10px 0 10px #676565; /* 더 깊은 그림자 */
-    transform: perspective(600px) rotateY(2deg); /* 반대 방향 경사 */
 }
 
 #right-side {
@@ -82,7 +81,6 @@
     width: 50%;
     height: 100%;
     box-shadow: -10px 0 10px #676565; /* 더 강한 그림자 */
-    transform: perspective(600px) rotateY(-2deg); /* 반대 방향 경사 */
 }
 
 #prevPage,#nextPage{

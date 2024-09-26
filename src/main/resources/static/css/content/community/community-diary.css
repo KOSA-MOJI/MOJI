@@ -145,8 +145,18 @@
 
 }
 
+.gallery-scrap-button {
+  width: 25px; /* 원하는 크기로 조정 */
+  height: 25px; /* 원하는 크기로 조정 */
+  position: absolute; /* 절대 위치 설정 */
+  top: 5px; /* 위쪽 여백 */
+  right: 5px; /* 오른쪽 여백 */
+  z-index: 5; /* 다른 요소 위에 위치하도록 설정 */
+}
+
 /*하트 이미지*/
 .scrap-button {
+  display: flex;
   width: 35px; /* 별 이미지 크기 */
   height: 35px; /* 별 이미지 크기 */
   position: absolute; /* position 설정 */
@@ -165,10 +175,9 @@
   cursor: pointer;
   display: flex; /* 아이콘과 텍스트를 수평으로 배치 */
   align-items: center; /* 세로 중앙 정렬 */
-  margin-bottom: 10px; /* 아래쪽 여백 추가 */
+  margin-bottom: 1rem; /* 아래쪽 여백 추가 */
   position: relative; /* 상단 왼쪽에 위치하도록 절대 위치 설정 */
-  top: 0; /* 상단에서의 위치 */
-  left: 0; /* 왼쪽에서의 위치 */
+  left: 1.8rem; /* 왼쪽에서의 위치 */
   z-index: 1; /* 다른 요소 위에 위치하도록 설정 */
   width: auto; /* 자동 너비 설정 */
   max-width: 100px; /* 원하는 최대 너비 설정 */
@@ -291,3 +300,75 @@
   cursor: pointer; /* 커서 포인터 */
 }
 
+
+버튼 비활성화
+.disabled {
+  color: gray;
+  pointer-events: none; /* 클릭 이벤트 비활성화 */
+  opacity: 0.3;
+}
+
+.gallery-component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  width: 100%;
+
+  /*background-image: linear-gradient(-20deg, #fff5ff 0%, #fbfcdb 100%);*/
+}
+
+
+.images {
+  display: flex;
+  justify-content: center; /* 가운데 정렬 */
+  margin: 0 10px;
+  width: 60%; /* 이미지 컨테이너 너비 조정 */
+}
+
+.image-item {
+  width: 6rem; /* 각각의 이미지 컨테이너 */
+  height: 7rem;
+  margin: 0 1rem;
+  border-radius: 5px;
+  background-color: #f0f0f0; /* 기본 배경색 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: 20px; /* 텍스트 크기 */
+  color: #333; /* 텍스트 색상 */
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.image-item:hover {
+  background-color: #c9a2ee; /* 마우스 오버 시 색상 변경 */
+  /*border: aqua 5px solid; /* 테두리 강조*/
+  transform: scale(1.3); /* 마우스 오버 시 크기 증가 */
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #2d2d2b;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .image-gallery {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .images {
+    width: 80%; /* 작은 화면에서 이미지 갤러리 너비 조정 */
+  }
+
+  .image-item {
+    width: 60px; /* 작은 화면에서 아이템 너비 조정 */
+    height: 60px; /* 작은 화면에서 아이템 높이 조정 */
+  }
+}

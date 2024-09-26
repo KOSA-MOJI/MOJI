@@ -1,11 +1,15 @@
 let currentLocation = {latitude: null, longitude: null};
 let currentRadius = 5; // 기본 반경 값
-const email = "wjdekqls1@example.com"
+const email = userEmail;//"hahaha123@naver.com"
 const listLimit = 5; // 한 번에 불러올 데이터 수
 let communityData = []; // 받아온 데이터 저장 배열
-let curDataIndex = 0; //실제 가리키는 보여줄 데이터의 시작 위치
-let selectedIndex = 1; //1~limit
+let curDataIndex = 0; //하단의 시작위치가 실제 communityDatay에서 가리키는 위치
+let selectedIndex = 1; //1~limit 하단 리스트에서 선택된 항목의 인덱스
 let selectedDistanceValue = 5; //현재
+let curPage;
+
+const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
+    'content');
 
 // 위치정보 가져오기
 function getCurrentLocation() {
@@ -36,9 +40,25 @@ function updateListImage() {
     imageItemDiv.innerText = ""
     imageItemDiv.innerHTML = "";
     let imgTag = document.createElement("img")
-    imgTag.setAttribute("style", "width:100%;height:100%")
-    imgTag.src = communityData[curDataIndex + i].imageUrl
-    imageItemDiv.appendChild(imgTag)
+    imgTag.setAttribute("style",
+        "display: flex; width:100%;height:100%;z-index: 1")
+    imgTag.src = communityData[curDataIndex + i].imageUrl;
+
+    let imgScrapButton = document.createElement("img");
+    imgScrapButton.src = `${imagePath}full-heart.png`;
+    imgScrapButton.alt = "찜하기";
+    imgScrapButton.className = "gallery-scrap-button";
+    imgScrapButton.style.zIndex = 5; // z-index 설정
+
+    // 조건에 따라 하트 이미지의 스타일 조정
+    if (communityData[curDataIndex + i].scrapped) {
+      imgScrapButton.style.display = "block";
+    } else {
+      imgScrapButton.style.display = "none";
+    }
+
+    imageItemDiv.appendChild(imgTag);
+    imageItemDiv.appendChild(imgScrapButton);
 
     // 기존 존재하는 클릭 이벤트 제거 (중복 방지)
     imageItemDiv.onclick = null;
@@ -63,8 +83,13 @@ function updateListImage() {
 
 function updateDiaryContent(element) {
   selectedIndex = Number(element.getAttribute("id").split("-")[2])
-  fetch(`/api/community/page/${communityData[curDataIndex + selectedIndex
-  - 1].pageId}`)
+  curPage = communityData[curDataIndex + selectedIndex - 1]
+
+  fetch(`/api/community/page/${curPage.pageId}`, {
+    headers: {
+      'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
+    }
+  })
   .then((res) => {
     if (res.ok) {
       return res.json()
@@ -78,8 +103,13 @@ function updateDiaryContent(element) {
     scrapButton.src = communityData[curDataIndex + selectedIndex - 1].scrapped
         ? `${imagePath}full-heart.png`
         : `${imagePath}gray-heart.png`
+
+    //페이지 클릭마다 -> 해당 페이지 스크랩 갯수 업데이트
+    fetchScrapCount(communityData[curDataIndex + selectedIndex - 1].pageId)
+
   })
-  .catch(err => console.log(err))
+  .catch(err => console.log(err)
+  )
 }
 
 function prevBtn() {
@@ -104,8 +134,12 @@ async function nextBtn() {
 // 커뮤니티 하단 리스트 비동기 불러오기
 function fetchCommunityData(offset, limit, isInit) {
   fetch(
-      `/api/community?email=${email}&longitude=${currentLocation.longitude}&latitude=${currentLocation.latitude}&radius=${currentRadius}&offset=${offset}&limit=${limit}`)
-  .then((res) => {
+      `/api/community?email=${email}&longitude=${currentLocation.longitude}&latitude=${currentLocation.latitude}&radius=${currentRadius}&offset=${offset}&limit=${limit}`
+      , {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
+        }
+      }).then((res) => {
     if (res.ok) {
       return res.json()
     }
@@ -115,8 +149,8 @@ function fetchCommunityData(offset, limit, isInit) {
     if (data.length === 0) {
       return
     }
-    console.log("radius" + currentRadius);
     let pageIds = communityData.map(elem => elem.pageId)
+
     data.forEach((singleData) => { //기존 communityData에 새로 온 singleData와 중복을 확인
       if (!pageIds.includes(singleData.pageId)) {
         singleData.imageUrl = singleData.imageUrl ? singleData.imageUrl
@@ -142,7 +176,27 @@ function fetchCommunityData(offset, limit, isInit) {
     if (isInit) {
       updateDiaryContent(document.querySelector("#image-item-1"))
     }
-  }).catch(err => console.log(err))
+  }).then(() => {
+    if (isInit) {
+      fetchScrapCount(curPage.pageId);
+    }
+  }).catch(err => {
+    console.log(err)
+    alert("5km 이내 데이트 코스가 존재하지 않습니다.")
+
+    //반경 50km 재설정 및 호출
+    currentRadius = 50;
+    selectedDistanceValue = 50;
+
+    //필터 슬라이더 및 input 값 재조정
+    document.getElementById('distanceRange').value = currentRadius;
+    document.getElementById('selectedDistance').value = currentRadius;
+
+    getCurrentLocation().then(() => {
+      fetchCommunityData(0, 20, true)
+    });
+
+  })
 }
 
 // 페이지 화면 구현
@@ -377,6 +431,8 @@ function createRightChild(pageData) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
+      'content');
   getCurrentLocation().then(() => {
     fetchCommunityData(0, 10, true)
   })
@@ -457,26 +513,29 @@ function resetDefaultData(radius) {
 }
 
 //클릭시, 스크랩 이미지 업데이트1
-function toggleFavorite() {
-  isFavorited = !isFavorited; // 찜 상태 토글
-  updateFavoriteButton(); // 이미지 업데이트
-}
-
-//클릭시, 스크랩 이미지 업데이트2
-function updateFavoriteButton() {
-  const img = document.getElementById('uploadButton');
-  if (isFavorited) {
-    img.src = `${imagePath}full-heart.png`; // 찜된 이미지
-
-  } else {
-    img.src = `${imagePath}gray-heart.png`; // 회색 이미지
-  }
-}
+// function toggleFavorite() {
+//   isFavorited = !isFavorited; // 찜 상태 토글
+//   updateFavoriteButton(); // 이미지 업데이트
+// }
+//
+// //클릭시, 스크랩 이미지 업데이트2
+// function updateFavoriteButton() {
+//   const img = document.getElementById('uploadButton');
+//   if (isFavorited) {
+//     img.src = `${imagePath}full-heart.png`; // 찜된 이미지
+//
+//   } else {
+//     img.src = `${imagePath}gray-heart.png`; // 회색 이미지
+//   }
+// }
 
 function toggleScrap() {
-  let curPage = communityData[curDataIndex + selectedIndex - 1]
+  // let curPage = communityData[curDataIndex + selectedIndex - 1]
   fetch(`/api/community/scrap?email=${email}&pageId=${curPage.pageId}`, {
-    method: `${curPage.scrapped ? "DELETE" : "POST"}`
+    method: `${curPage.scrapped ? "DELETE" : "POST"}`,
+    headers: {
+      'X-CSRF-TOKEN': csrfToken
+    }
   }).then((res) => {
     if (res.ok) {
       return null
@@ -488,5 +547,31 @@ function toggleScrap() {
     scrapButton.src = curPage.scrapped
         ? `${imagePath}full-heart.png`
         : `${imagePath}gray-heart.png`
+
+    fetchScrapCount(curPage.pageId); //스크랩 갯수 업데이트
+    updateListImage();
+
+  }).catch(err => console.log(err))
+}
+
+function updateScrapCount(count) {
+  const scrapCnt = document.getElementById('scrap-count');
+  scrapCnt.textContent = count;
+}
+
+/*스크랩 갯수 업데이트 */
+function fetchScrapCount(pageId) {
+  fetch(`/api/community/scrap/${pageId}`, {
+    headers: {
+      'X-CSRF-TOKEN': csrfToken
+    }
+  }).then((res) => {
+    if (res.ok) {
+      return res.json()
+    }
+    throw Error("No Scrap!!!!")
+  }).then((data) => {
+    updateScrapCount(data)
+
   }).catch(err => console.log(err))
 }

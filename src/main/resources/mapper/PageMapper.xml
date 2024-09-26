@@ -184,7 +184,7 @@
 			UPDATE pages SET public_status = #{publicStatus} WHERE page_id = #{pageId}
 		</update>
 
-		<select id="findAllByCoupleId" parameterType="java.lang.Long" resultType="java.time.LocalDate">
+		<select id="findDateByCoupleId" parameterType="java.lang.Long" resultType="java.time.LocalDate">
 				select distinct created_at
 				from pages
 				where diary_id = (select diary_id

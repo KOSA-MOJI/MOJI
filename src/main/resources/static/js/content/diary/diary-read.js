@@ -1,4 +1,4 @@
-const coupleId = document.getElementById("log-in-couple-id").value
+const coupleId = principalCoupleId;//document.getElementById("log-in-couple-id").value
 // const coupleName = document.getElementById("log-in-couple-id").value
 const coupleName = "광환커플2"
 let currentPage = 0;
@@ -6,6 +6,9 @@ let diaryId;
 const lazyLoadLimit = 2;
 const lazyLoadNum = 5;
 let pages = []
+
+const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
+    'content');
 
 function updatePageContent() {
   resetSideChild()
@@ -233,8 +236,6 @@ function createRightChild(idx) {
         "display: inline-block;" +
         "align-items: center;")
 
-
-
     // 만들어진 위치 마커와 이미지연결
     data.locations.forEach((location, idx) => {
       let marker = new kakao.maps.Marker({
@@ -301,7 +302,6 @@ function createRightChild(idx) {
         "margin-top: 90px;"
     );
 
-
     img_box.setAttribute("onerror", "this.style.visibility='hidden';")
     img_container.appendChild(img_prev_btn)
     img_container.appendChild(img_box)
@@ -333,7 +333,10 @@ function togglePublicStatus(elem) {
   console.log(curPage)
   fetch(`/api/diary/public/${curPage.pageId}?publicStatus=${curPage === "y"
       ? "false" : "true"}`, {
-    method: `POST`
+    method: `POST`,
+    headers: {
+      'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
+    }
   }).then((res) => {
     if (res.ok) {
       return null
@@ -355,6 +358,9 @@ function UploadImage(input) {
 
     fetch(`/api/diary/coverImage/${diaryId}`, {
       method: "POST",
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      },
       body: formData,
     })
     .then(response => {
@@ -443,7 +449,7 @@ function preparePageTransition(direction, oldPage, newPage) {
     if (direction === 'right') {
       pageTransition.style.animation = 'page-flip-right 1s forwards';
     } else {
-      if(currentPage===0) {
+      if (currentPage === 0) {
         leftSide.classList.add('hidden');
       }
       pageTransition.style.animation = 'page-flip-left 1s forwards';
@@ -490,8 +496,14 @@ function createPagesData(pageData) {
   }
 }
 
+//coupleId 세션
 function loadDiary(id) {
-  fetch("api/diary/" + id).then((res) => {
+  console.log("id" + id)
+  fetch("api/diary/" + id, {
+    headers: {
+      'X-CSRF-TOKEN': csrfToken
+    }
+  }).then((res) => {
     console.log(id)
     if (res.ok) {
       return res.json()
@@ -530,7 +542,11 @@ async function prefetchPages(direction) {
   console.log(
       `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`)
   fetch(
-      `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`).then(
+      `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`, {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken
+        }
+      }).then(
       (res) => {
         if (res.ok) {
           return res.json()
@@ -552,5 +568,6 @@ async function prefetchPages(direction) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  console.log("커플id는" + coupleId)
   loadDiary(coupleId)
 });
