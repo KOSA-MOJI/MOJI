@@ -1,4 +1,16 @@
-
+#book-container {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+    perspective: 1000px; /* Adding perspective for 3D effect */
+    transform-style: preserve-3d;
+    color: #333; /* Global text color */
+    /* 모서리를 부드럽게 처리 */
+    border-radius: 15px;
+}
 .container {
     position: fixed;
     margin: 0;
@@ -9,47 +21,57 @@
 }
 
 .book-content {
-    margin-top:1rem;
-    margin-left: 2rem;
-    position: fixed;
-    width: 87%;
-    height: 70%;
+    position: absolute;
+    width: 90%;
+    margin-top:4rem;
+    margin-left: 5rem;
+    height: 90%;
     display: flex;
-    flex-direction: row;
-    background-color: #dfdcdc;
+    transform-style: preserve-3d;
 }
-
 .side {
     width: 50%;
     height: 100%;
-    top: 0;
+    display: flex;
+    /*margin-top:25px;*/
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #f0f0f0;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    font-size: inherit; /* Inherit font-size from parent */
 }
 
+
 #left-side {
-    position: relative;
+    position: absolute;
     left: 0; /* 가운데에 최대한 붙이기 */
     width: 50%;
     height: 100%;
-    box-shadow: 10px 0 30px #dfdcdc; /* 더 깊은 그림자 */
+    box-shadow: 10px 0 10px #676565; /* 더 깊은 그림자 */
     transform: perspective(600px) rotateY(2deg); /* 반대 방향 경사 */
 }
 
 #right-side {
-    position: relative;
+    position: absolute;
     right: 0; /* 가운데에 최대한 붙이기 */
     width: 50%;
     height: 100%;
-    box-shadow: -10px 0 30px #dfdcdc; /* 더 강한 그림자 */
+    box-shadow: -10px 0 10px #676565; /* 더 강한 그림자 */
     transform: perspective(600px) rotateY(-2deg); /* 반대 방향 경사 */
 }
 
 
 #center-gap {
     width: 1rem; /* 접힘 부분의 두께 */
-    background-color: #dfdcdc;
+    background-color: #676565;
     height: 100%;
     position: relative;
-    box-shadow: inset 0 0 10px #acacac; /* 어두운 중간 효과 */
+    box-shadow: inset 0 0 10px #676565; /* 어두운 중간 효과 */
     box-sizing: border-box;
 }
 
