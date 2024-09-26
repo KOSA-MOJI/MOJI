@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <link rel="stylesheet"
-      href="${pageContext.request.contextPath}/css/content/community/open-diary.css">
+      href="${pageContext.request.contextPath}/css/content/community/community-diary.css">
 <link rel="stylesheet" type="text/css"
       href="${pageContext.request.contextPath}/css/component/login-modal.css">
 
@@ -14,8 +14,7 @@
 
 <%--이메일 js에 보내주기--%>
 <script>
-  var userEmail = "<%= request.getUserPrincipal().getName()%>";
-  console.log(userEmail);
+  var userEmail = "${principal.email}";
 </script>
 
 <div class="community-content">

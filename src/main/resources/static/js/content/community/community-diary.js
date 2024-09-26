@@ -18,7 +18,6 @@ function getCurrentLocation() {
       navigator.geolocation.getCurrentPosition((position) => {
         currentLocation.latitude = position.coords.latitude;
         currentLocation.longitude = position.coords.longitude;
-        console.log("내가 누구게 " + email);
         console.log(
             `현재 위치: 위도 ${currentLocation.latitude}, 경도 ${currentLocation.longitude}`);
         resolve(); // 작업이 성공적으로 끝난 경우
@@ -51,8 +50,6 @@ function updateListImage() {
     imgScrapButton.className = "gallery-scrap-button";
     imgScrapButton.style.zIndex = 5; // z-index 설정
 
-    // console.log("communityData", communityData)
-
     // 조건에 따라 하트 이미지의 스타일 조정
     if (communityData[curDataIndex + i].scrapped) {
       imgScrapButton.style.display = "block";
@@ -82,13 +79,12 @@ function updateListImage() {
       imageItemDiv.removeAttribute('title');
     }
   }
-  console.log(communityData)
 }
 
 function updateDiaryContent(element) {
   selectedIndex = Number(element.getAttribute("id").split("-")[2])
   curPage = communityData[curDataIndex + selectedIndex - 1]
-  console.log("updateDiaryContent()" + curPage)
+
   fetch(`/api/community/page/${curPage.pageId}`, {
     headers: {
       'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
@@ -109,9 +105,8 @@ function updateDiaryContent(element) {
         : `${imagePath}gray-heart.png`
 
     //페이지 클릭마다 -> 해당 페이지 스크랩 갯수 업데이트
-    console.log(
-        "updateDiary" + communityData[curDataIndex + selectedIndex - 1].pageId)
     fetchScrapCount(communityData[curDataIndex + selectedIndex - 1].pageId)
+
   })
   .catch(err => console.log(err)
   )
@@ -154,8 +149,8 @@ function fetchCommunityData(offset, limit, isInit) {
     if (data.length === 0) {
       return
     }
-    console.log("radius" + currentRadius);
     let pageIds = communityData.map(elem => elem.pageId)
+
     data.forEach((singleData) => { //기존 communityData에 새로 온 singleData와 중복을 확인
       if (!pageIds.includes(singleData.pageId)) {
         singleData.imageUrl = singleData.imageUrl ? singleData.imageUrl
@@ -536,7 +531,6 @@ function resetDefaultData(radius) {
 
 function toggleScrap() {
   // let curPage = communityData[curDataIndex + selectedIndex - 1]
-  console.log("스크랩된 페이지" + curPage.pageId)
   fetch(`/api/community/scrap?email=${email}&pageId=${curPage.pageId}`, {
     method: `${curPage.scrapped ? "DELETE" : "POST"}`,
     headers: {
@@ -553,7 +547,7 @@ function toggleScrap() {
     scrapButton.src = curPage.scrapped
         ? `${imagePath}full-heart.png`
         : `${imagePath}gray-heart.png`
-    console.log("toggleScrap()" + curPage.pageId)
+
     fetchScrapCount(curPage.pageId); //스크랩 갯수 업데이트
     updateListImage();
 
@@ -567,7 +561,6 @@ function updateScrapCount(count) {
 
 /*스크랩 갯수 업데이트 */
 function fetchScrapCount(pageId) {
-  console.log("스크랩된 페이지" + pageId)
   fetch(`/api/community/scrap/${pageId}`, {
     headers: {
       'X-CSRF-TOKEN': csrfToken
@@ -578,10 +571,7 @@ function fetchScrapCount(pageId) {
     }
     throw Error("No Scrap!!!!")
   }).then((data) => {
-    console.log("이게 무슨 데이터인가", data)
     updateScrapCount(data)
-
-    // updateListImage();
 
   }).catch(err => console.log(err))
 }
