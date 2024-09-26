@@ -12,4 +12,5 @@ import com.spring.moji.entity.Location;
 public interface LocationMapper {
 	List<Location> findAllByPageId(Long pageId);
 	void insertLocation(LocationInsertRequestDTO locationInsertRequestDTO);
+	List<Location> findAllFirstLocation(Long coupleId);
 }
