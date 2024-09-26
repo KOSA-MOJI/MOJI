@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function() {
       locInfo.style.float = "left";
       locInfo.innerText = place.place_name;
       selectLocBtn.style.float = "right";
-      selectLocBtn.innerText = "선택";
+      selectLocBtn.innerText = "️️✔️";
 
       // 각 버튼 클릭시 추가될 정보
       selectLocBtn.addEventListener("click", function(){
@@ -248,25 +248,104 @@ document.addEventListener("DOMContentLoaded", function() {
       placeList.appendChild(placeItem);
     }
   }
+  // 페이지네이션 스타일 추가 함수
+  // 페이지네이션 스타일 추가 함수
+  function addPaginationStyles() {
+    const style = document.createElement('style');
+    style.innerHTML = `
+    #pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
 
-  // 장소 검색 결과 페이지네이션 화면 구성 함수
+    #pagination .page-link {
+      display: inline-block;
+      margin: 0 8px; /* 버튼 간격 */
+      padding: 10px 16px; /* 버튼 크기 */
+      text-decoration: none;
+      color: #555;
+      border: 1px solid #ddd;
+      border-radius: 10px; /* 둥근 버튼 모양 */
+      background-color: #fafafa;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+      transition: all 0.3s ease;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    #pagination .page-link:hover {
+      background-color: #d5a3fd; /* 버튼에 호버할 때 배경색 */
+      color: white;
+      border-color: #d5a3fd;
+      transform: translateY(-3px); /* 호버 시 살짝 위로 올라가는 효과 */
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 강조 */
+    }
+
+    #pagination .page-link.active {
+      background-color: #cc83fb; /* 현재 페이지 배경색 */
+      color: white;
+      border-color: #cc83fb;
+      pointer-events: none;
+      transform: scale(1.1); /* 현재 페이지는 크기가 조금 더 크게 */
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* 활성화된 페이지 그림자 */
+    }
+
+    /* 페이지네이션 넘버 간격을 줄이기 */
+    #pagination .page-link:first-child {
+      margin-left: 0;
+    }
+
+    #pagination .page-link:last-child {
+      margin-right: 0;
+    }
+
+    /* 페이드 인 애니메이션 추가 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    #pagination .page-link {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  `;
+    document.head.appendChild(style);
+  }
+
+// 장소 검색 결과 페이지네이션 화면 구성 함수
   function displayPagination(pagination) {
-    let paginationDiv = document.getElementById("pagination")
+    // 스타일 추가 함수 호출
+    addPaginationStyles();
+
+    let paginationDiv = document.getElementById("pagination");
     paginationDiv.innerHTML = '';
+
     for (let i = 1; i <= pagination.last; i++) {
       let pageButton = document.createElement('a');
       pageButton.href = "#";
       pageButton.innerText = i;
       pageButton.classList.add("page-link");
+
+      // 현재 페이지에 active 클래스 추가
       if (i === pagination.current) {
-        pageButton.style.color = "red";
+        pageButton.classList.add("active");
       }
+
+      // 페이지 이동 이벤트
       (function(i) {
         pageButton.addEventListener('click', function(event) {
           event.preventDefault();
           pagination.gotoPage(i);
         });
       })(i);
+
       paginationDiv.appendChild(pageButton);
     }
   }

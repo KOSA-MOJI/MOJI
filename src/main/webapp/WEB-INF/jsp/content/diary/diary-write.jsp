@@ -5,7 +5,7 @@
 <!-- jsp -->
 <div id="book-container">
     <!-- Book content section -->
-
+    <button id="saveBtn">저장</button>
     <div id="book-content" class="book-content">
         <div id="left-side" class="side">
             <img class="current-template-image" src="${pageContext.request.contextPath}/image/content/diary/001.png" alt="Main Image" id="left-current-template">
@@ -69,11 +69,16 @@
         <div id="right-side" class="side">
             <img class="current-template-image" src="${pageContext.request.contextPath}/image/content/diary/001.png" alt="Main Image" id="right-current-template">
             <div class="editor-container">
-                <div class="mode-select-btn-container" style="width: 100%;">
-                    <button id="add-datespot-btn" class="tabActive">Add Date Place</button>
-                    <button id="add-image-btn" disabled>Add Image to Place</button>
+                <<div class="mode-select-container">
+                <div class="map-container">
+                    <div id="map" class="map" style="width: 100%; height: 15rem;"></div>
+                    <div class="mode-select-btn-container">
+                        <button id="add-datespot-btn" class="tabActive">장소 추가</button>
+                        <button id="add-image-btn" disabled>이미지 추가</button>
+                    </div>
                 </div>
-                <div id="map" class="map" style="width: 100%; height: 200px"></div>
+            </div>
+
                 <!-- 지도 띄워주는 곳 -->
                 <div class="extra-address"></div>
                 <div class = "marker-list" id = "markerList"></div>
@@ -104,7 +109,7 @@
                         <button id="nextImageButton" disabled>▶</button>
                     </div>
                 </div>
-                <button id="saveBtn">저장</button>
+
             </div>
         </div>
     </div>
