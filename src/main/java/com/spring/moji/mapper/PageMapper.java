@@ -21,5 +21,4 @@ public interface PageMapper {
 	void insertPage(PageInsertRequestDTO pageInsertRequestDTO);
 	void updatePublicStatusByPageId(PageRequestDTO pageRequestDTO);
 	List<LocalDate> findDateByCoupleId(Long coupleId);
-	List<Page> findAllByCoupleId(Long communityId);
 }
