@@ -37,8 +37,20 @@ public class UserController {
   }
 
   @GetMapping({"/solo/update-profile"})
-  public String updateProfile(Model model, Principal principal) {
+  public String updateProfile(Model model) {
     model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/update-solo-profile.jsp");
+    return "user/profile-page";
+  }
+
+  @GetMapping({"/couple/", "/couple",})
+  public String readCoupleProfile(Model model) {
+    model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/couple-profile.jsp");
+    return "user/profile-page";
+  }
+
+  @GetMapping({"/couple/update-profile"})
+  public String updateCoupleProfile(Model model) {
+    model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/update-couple-profile.jsp");
     return "user/profile-page";
   }
 }
