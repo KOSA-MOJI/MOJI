@@ -2,6 +2,7 @@
 body {
   font-weight: normal;
   font-style: normal;
+  /*display: flex;*/
   min-height: 100vh;
   background-color: #fffae7;
 }
@@ -33,8 +34,8 @@ body {
 }
 
 .header-left img {
-  width: 50px;
-  height: 50px
+  width: 8.8rem;
+  height: 8.8rem;
 }
 
 /* 헤더 오른쪽 스타일 */
@@ -137,7 +138,6 @@ body {
   align-items: center;
   width: 60px;
   height: 60px;
-  background-color: #fff;
   border-radius: 50%;
   position: relative;
   transition: background-color 0.3s ease, transform 0.3s ease;
@@ -183,12 +183,13 @@ body {
   padding: 10px;
   background-color: #fffae7;
   width: 100%;
-  min-height: calc(100vh - 15%);
+  min-height: 90vh;
   overflow-y: auto;
 }
 
 /* 푸터 스타일 */
 .footer {
+  background-color: #fffae7;
   bottom: 0;
   left: 0;
   width: 100%;

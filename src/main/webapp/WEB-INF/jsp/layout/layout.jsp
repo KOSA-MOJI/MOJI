@@ -25,13 +25,13 @@
 <input type="hidden" value="${principal.couple.couple_id}" id="log-in-couple-id"/>
 <div class="main-content" id="mainContent">
     <header class="header">
-        <span class="header-left">
-<%--            <img src="${pageContext.request.contextPath}/image/common/diaryLogo.png"--%>
-<%--                 class="menu-bar" alt="Menu Bar">--%>
-            <img src="${pageContext.request.contextPath}/image/common/logo.png"
-                 class="logo" alt="Logo" style="width: 7rem; height: 7rem">
-<%--            <h1>Moji</h1>--%>
-        </span>
+            <span class="header-left">
+    <%--            <img src="${pageContext.request.contextPath}/image/common/diaryLogo.png"--%>
+    <%--                 class="menu-bar" alt="Menu Bar">--%>
+                <img src="${pageContext.request.contextPath}/image/common/logo.png"
+                     class="logo" alt="Logo" style="width: 7rem; height: 7rem">
+    <%--            <h1>Moji</h1>--%>
+            </span>
         <div class="header-right">
             <div class="user-info">
                 <img src="${principal.profileImageUrl}" alt="Profile Image" class="profile-img">
@@ -52,7 +52,8 @@
             <p class="auth-options" id="authOptions" style="display: none; margin-right: 10px;">
                 <a href="#" id="signupBtn" class="auth-link">Signup</a> |
                 <a href="#" id="loginBtn" class="auth-link">Login</a>
-<%--            <p class="notification">🔔</p>--%>
+                <%--            <p class="notification">🔔</p>--%>
+            </p>
         </div>
     </header>
 
@@ -90,7 +91,6 @@
         </ul>
     </nav>
 </div>
-
 <script src="${pageContext.request.contextPath}/js/common/layout.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

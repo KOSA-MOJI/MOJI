@@ -430,3 +430,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   document.getElementById("saveBtn").addEventListener("click",saveResults)
 });
+
+
+//추가
