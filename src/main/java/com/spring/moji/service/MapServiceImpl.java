@@ -1,13 +1,11 @@
 package com.spring.moji.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.moji.dto.request.MapRequestDTO;
-import com.spring.moji.dto.request.PageRequestDTO;
 import com.spring.moji.entity.Location;
 import com.spring.moji.entity.Page;
 import com.spring.moji.mapper.LocationMapper;
@@ -40,6 +38,6 @@ public class MapServiceImpl implements MapService {
 
 	@Override
 	public Page getPage(Long pageId) {
-		return null;
+		return pageMapper.findByPageId(pageId);
 	}
 }

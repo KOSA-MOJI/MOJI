@@ -43,6 +43,6 @@ public class MapRestController {
 	// 단건 페이지 조회
 	@GetMapping("/page/{pageId}")
 	public Page getPage(@PathVariable Long pageId) {
-		return null;
+		return mapService.getPage(pageId);
 	}
 }
