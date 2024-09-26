@@ -3,8 +3,8 @@ let currentRadius = 5; // 기본 반경 값
 const email = "hahaha123@naver.com"
 const listLimit = 5; // 한 번에 불러올 데이터 수
 let communityData = []; // 받아온 데이터 저장 배열
-let curDataIndex = 0; //실제 가리키는 보여줄 데이터의 시작 위치
-let selectedIndex = 1; //1~limit
+let curDataIndex = 0; //하단의 시작위치가 실제 communityDatay에서 가리키는 위치
+let selectedIndex = 1; //1~limit 하단 리스트에서 선택된 항목의 인덱스
 let selectedDistanceValue = 5; //현재
 let curPage;
 
