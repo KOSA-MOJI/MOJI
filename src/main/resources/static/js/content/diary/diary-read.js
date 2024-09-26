@@ -424,6 +424,9 @@ function preparePageTransition(direction, oldPage, newPage) {
     if (direction === 'right') {
       pageTransition.style.animation = 'page-flip-right 1s forwards';
     } else {
+      if(currentPage===0) {
+        leftSide.classList.add('hidden');
+      }
       pageTransition.style.animation = 'page-flip-left 1s forwards';
     }
   }, 10);

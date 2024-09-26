@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- css -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/content/diary/diary-write.css">
 <!-- jsp -->
 <div id="book-container">
@@ -12,36 +13,44 @@
             <div class="editor-container">
                 <!-- 툴바 포함 -->
                 <div class="toolbar" id="toolbar">
-                    <div class="toolbar-left">
-<%--                        <label for="dateInput">날짜를 선택하세요:</label>--%>
-                        <input type="date" id="dateInput">
-                        <label for="fontSizeSelect"></label>
-                        <select id="fontSizeSelect">
-                            <option value="10">10</option>
-                            <option value="12">12</option>
-                            <option value="15" selected>15</option>
-                            <option value="18">18</option>
-                            <option value="20">20</option>
-                        </select>
-                        <button id="alignLeft">
-                            <img src="${pageContext.request.contextPath}/image/content/diary/left.png" alt="left" style="width: 25px; height: 16px;">
-                        </button>
-                        <button id="alignCenter">
-                            <img src="${pageContext.request.contextPath}/image/content/diary/center.png" alt="center" style="width: 25px; height: 16px;">
-                        </button>
-                        <button id="alignRight">
-                            <img src="${pageContext.request.contextPath}/image/content/diary/right.png" alt="right" style="width: 25px; height: 16px;">
-                        </button>
-<%--                        <button id="templateButton">템플릿</button>--%>
-                        <label for="template-select">템플릿 선택:</label>
-                        <select id="template-select" name="template">
-                            <option value="template1" data-thumbnail="template1.png">템플릿 1</option>
-                            <option value="template2" data-thumbnail="template2.png">템플릿 2</option>
-                            <option value="template3" data-thumbnail="template3.png">템플릿 3</option>
-                        </select>
-                    </div>
-                    <div class="toolbar-right">
-                        <label for="fontColor"></label><input type="color" id="fontColor" value="#333333">
+                    <div class="toolbar d-flex justify-content-between align-items-center p-2 bg-light rounded shadow-sm">
+                        <div class="toolbar-left d-flex align-items-center gap-3">
+                            <!-- 날짜 선택 -->
+                            <input type="date" id="dateInput" class="form-control form-control-sm">
+
+                            <!-- 글자 크기 선택 -->
+                            <select id="fontSizeSelect" class="form-select form-select-sm">
+                                <option value="10">10</option>
+                                <option value="12">12</option>
+                                <option value="15" selected>15</option>
+                                <option value="18">18</option>
+                                <option value="20">20</option>
+                            </select>
+
+                            <!-- 정렬 버튼 -->
+                            <button id="alignLeft" class="btn btn-light">
+                                <img src="${pageContext.request.contextPath}/image/content/diary/left.png" alt="left" style="width: 25px; height: 16px;">
+                            </button>
+                            <button id="alignCenter" class="btn btn-light">
+                                <img src="${pageContext.request.contextPath}/image/content/diary/center.png" alt="center" style="width: 25px; height: 16px;">
+                            </button>
+                            <button id="alignRight" class="btn btn-light">
+                                <img src="${pageContext.request.contextPath}/image/content/diary/right.png" alt="right" style="width: 25px; height: 16px;">
+                            </button>
+
+                            <!-- 템플릿 선택 -->
+                            <label for="template-select"></label>
+                            <select id="template-select" name="template">
+                                <option value="template1" data-thumbnail="template1.png">템플릿 1</option>
+                                <option value="template2" data-thumbnail="template2.png">템플릿 2</option>
+                                <option value="template3" data-thumbnail="template3.png">템플릿 3</option>
+                            </select>
+                        </div>
+
+                        <div class="toolbar-right">
+                            <!-- 글자 색상 선택 -->
+                            <input type="color" id="fontColor" value="#333333" class="form-control form-control-color">
+                        </div>
                     </div>
                 </div>
                 <!-- 템플릿 포함-->
@@ -51,8 +60,12 @@
                 <div class="editor-content" id="editorContentPage1">
                     <div class="text-content" id="textContentPage1" contenteditable="true">일기 내용 입력</div>
                 </div>
+
             </div>
         </div>
+        <!-- 중간의 어두운 배경 -->
+        <div id="center-gap" class="center-gap"></div>
+
         <div id="right-side" class="side">
             <img class="current-template-image" src="${pageContext.request.contextPath}/image/content/diary/001.png" alt="Main Image" id="right-current-template">
             <div class="editor-container">

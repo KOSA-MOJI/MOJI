@@ -13,6 +13,12 @@
 				AND email = #{email}
 		</select>
 
+		<select id="findAllByPageId" parameterType="java.lang.Long" resultType="com.spring.moji.entity.Scrap">
+				SELECT DISTINCT *
+				FROM scraps
+				WHERE page_id = #{pageId}
+		</select>
+
 		<insert id="createScrap" parameterType="com.spring.moji.dto.request.CommunityScrapRequestDTO">
 				INSERT INTO scraps (email,page_id,created_at)
 				VALUES (#{email}, #{pageIds[0]}, SYSDATE)
