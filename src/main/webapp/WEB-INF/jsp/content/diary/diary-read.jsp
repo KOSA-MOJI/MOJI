@@ -13,10 +13,6 @@
       <!-- Left side content will be populated by JavaScript -->
     </div>
     <div id="right-side" class="side">
-      <div class="tabs">
-        <a href="diary.jsp" class="tab diary-tab">write</a>
-        <a href="community.jsp" class="tab community-tab">read</a>
-        <a href="map.jsp" class="tab map-tab">delete</a>
       </div>
       <div id="nextPage" onclick="nextPage()"></div>
     </div>
