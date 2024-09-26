@@ -82,4 +82,8 @@ public class CommunityServiceImpl implements CommunityService {
 		}
 	}
 
+	@Override
+	public Long getScrapCount(Long pageId) {
+		return (long)scrapMapper.findAllByPageId(pageId).size();
+	}
 }
