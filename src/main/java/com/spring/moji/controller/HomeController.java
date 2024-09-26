@@ -54,4 +54,11 @@ public class HomeController {
     String loginId = principal != null ? principal.getName() : "guest";
     return "user/sign-in";
   }
+
+  @GetMapping("/forbidden")
+  public String forbidden() {
+    return "user/forbidden";
+  }
+
+
 }
