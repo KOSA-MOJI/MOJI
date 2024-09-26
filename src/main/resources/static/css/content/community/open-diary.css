@@ -331,7 +331,7 @@
   width: 6rem; /* 각각의 이미지 컨테이너 */
   height: 7rem;
   margin: 0 1rem;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: #f0f0f0; /* 기본 배경색 */
   display: flex;
   align-items: center;
