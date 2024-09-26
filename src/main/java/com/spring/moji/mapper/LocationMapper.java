@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.spring.moji.dto.request.MapRequestDTO;
 import com.spring.moji.entity.Location;
 
 @Mapper
@@ -14,4 +15,5 @@ public interface LocationMapper {
 	void insertLocation(LocationInsertRequestDTO locationInsertRequestDTO);
 	List<Location> findAllFirstLocation(Long coupleId);
 	List<Location> findScrapedLocations(String email);
+	List<Location> findPartnerScrapedLocations(MapRequestDTO mapRequestDTO);
 }

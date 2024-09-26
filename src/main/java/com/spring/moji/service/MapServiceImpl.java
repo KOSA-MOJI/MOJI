@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.moji.dto.request.MapRequestDTO;
+import com.spring.moji.dto.request.PageRequestDTO;
 import com.spring.moji.entity.Location;
 import com.spring.moji.entity.Page;
 import com.spring.moji.mapper.LocationMapper;
@@ -32,7 +34,12 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<Location> getPartnerScrapLocations() {
-		return List.of();
+	public List<Location> getPartnerScrapLocations(MapRequestDTO mapRequestDTO) {
+		return locationMapper.findPartnerScrapedLocations(mapRequestDTO);
+	}
+
+	@Override
+	public Page getPage(Long pageId) {
+		return null;
 	}
 }
