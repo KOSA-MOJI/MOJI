@@ -11,6 +11,7 @@ public interface RequestService {
 
   User checkRequestUser(String receiverEmail) throws Exception;
 
-
   int deleteRequest(String email) throws Exception;
+
+  int cancelRequest(String email) throws Exception;
 }

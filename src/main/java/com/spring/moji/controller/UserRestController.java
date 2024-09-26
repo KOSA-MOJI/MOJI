@@ -32,25 +32,22 @@ public class UserRestController {
       @RequestParam("email") String email,
       HttpSession session)
       throws Exception {
-    String profileImageUrl = s3Util.uploadFile(file);
-    userService.updateProfileImageUrl(email, profileImageUrl);
+    if (file != null) {
+      String profileImageUrl = s3Util.uploadFile(file);
+      userService.updateProfileImageUrl(email, profileImageUrl);
 
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    if (auth != null && auth.isAuthenticated()) {
-      UserRequestDTO currentUser = (UserRequestDTO) auth.getPrincipal();
-      currentUser.getUser().setProfileImageUrl(profileImageUrl);
-      UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
-          currentUser, auth.getCredentials(), auth.getAuthorities());
-      SecurityContextHolder.getContext().setAuthentication(newAuth);
-      session.setAttribute("profileImageUrl", profileImageUrl);
-      log.info("Profile image URL updated in session and authentication object");
+      if (auth != null && auth.isAuthenticated()) {
+        UserRequestDTO currentUser = (UserRequestDTO) auth.getPrincipal();
+        currentUser.getUser().setProfileImageUrl(profileImageUrl);
+        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+            currentUser, auth.getCredentials(), auth.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+        session.setAttribute("profileImageUrl", profileImageUrl);
+        log.info("Profile image URL updated in session and authentication object");
 
-    } else if (auth != null) {
-      log.info("회원정보가 업습니다.");
-    } else if (!auth.isAuthenticated()) {
-      log.info("회원 인증이 안됨");
-
+      }
     }
     return ResponseEntity.ok()
         .body(Map.of("message", "Profile updated successfully", "redirectUrl", "/user/solo/"));

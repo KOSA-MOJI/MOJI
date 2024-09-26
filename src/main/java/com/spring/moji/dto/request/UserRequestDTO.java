@@ -28,7 +28,8 @@ public class UserRequestDTO implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return user.getAuthList()
         .stream()
-        .map((auth) -> new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList());
+        .map((auth) -> new SimpleGrantedAuthority(auth.getAuth())).distinct()
+        .collect(Collectors.toList());
   }
 
   @Override

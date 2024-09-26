@@ -27,9 +27,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (pfpInput.files[0]) {
       formData.append('file', pfpInput.files[0]);
+    } else {
+      formData.append('file', null);
     }
+
     formData.append('email', document.getElementById("email").innerText);
-    console.log(formData);
 
     fetch('/api/user/solo/update-profile', {
       method: 'POST',
@@ -39,14 +41,12 @@ document.addEventListener('DOMContentLoaded', function () {
       body: formData
     })
     .then(response => {
-      console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
     .then(resp => {
-      console.log(resp);
       alert("회원수정이 완료되었습니다.");
       window.location.href = "/user/solo/";
     })

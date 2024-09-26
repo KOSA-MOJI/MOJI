@@ -31,6 +31,7 @@ public class UserController {
     model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/solo-profile.jsp");
     model.addAttribute("requestUserName", requestUser.getUserName());
     model.addAttribute("requestUserEmail", requestUser.getEmail());
+    model.addAttribute("requestUserProfileImageSource", requestUser.getProfileImageUrl());
 
     return "user/profile-page";
   }

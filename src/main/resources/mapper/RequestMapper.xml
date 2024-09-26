@@ -44,6 +44,12 @@
     where RECEIVER_EMAIL = #{email}
   </delete>
 
+  <delete id="cancelRequest">
+    delete
+    from REQUESTS
+    where REQUEST_EMAIL = #{email}
+  </delete>
+
   <update id="convertCoupleStatusIntoCouple">
     update users
     set COUPLE_STATUS = 1

@@ -1,19 +1,15 @@
 package com.spring.moji.config;
 
-import static org.springframework.security.config.Customizer.*;
 
 import com.spring.moji.security.CustomerAccessDeniedHandler;
 import com.spring.moji.security.CustomerDetailService;
 import com.spring.moji.security.SignInSuccessHandler;
-import javax.sql.DataSource;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,8 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -37,14 +31,14 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+//    http.csrf(csrf -> csrf.disable());
+
     http.authorizeHttpRequests(auth -> auth
-//            .requestMatchers("/user/couple/diary").hasRole("COUPLE")
-//            .requestMatchers("/user/solo/**").hasRole("SOLO")
-//            .requestMatchers("/").hasAnyRole("COUPLE", "SOLO")
-            .anyRequest().permitAll())
-        .formLogin(withDefaults())
-        .logout(withDefaults()
-        );
+        .requestMatchers("/user/couple/diary").hasRole("COUPLE")
+        .requestMatchers("/user/solo/**").hasRole("SOLO")
+        .requestMatchers("/").hasAnyRole("COUPLE", "SOLO")
+        .anyRequest().permitAll()
+    );
 
     http.formLogin(form -> form
         .loginPage("/signin")  // 커스텀 로그인 페이지 요청 경로
@@ -64,8 +58,7 @@ public class SecurityConfig {
     http.logout((logout) -> logout
         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
         .logoutSuccessUrl("/signin")
-        .invalidateHttpSession(true))
-    ;
+        .invalidateHttpSession(true));
 
     http.exceptionHandling(exceptions -> exceptions
         .accessDeniedHandler(accessDeniedHandler())
@@ -76,6 +69,7 @@ public class SecurityConfig {
     return http.build();
 
   }
+
 
   @Bean
   public AuthenticationManager authenticationManager(
@@ -98,17 +92,5 @@ public class SecurityConfig {
   @Bean
   public AccessDeniedHandler accessDeniedHandler() {
     return new CustomerAccessDeniedHandler();
-  }
-
-  @Bean
-  public WebMvcConfigurer corsConfigurer() {
-    return new WebMvcConfigurer() {
-      public void addCorsMappings(CorsRegistry registry) {
-
-        registry.addMapping("/**")
-            .allowedMethods("*")
-            .allowedOrigins("http://localhost:8090");
-      }
-    };
   }
 }

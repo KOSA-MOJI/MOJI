@@ -45,10 +45,10 @@ public class RequestServiceImpl implements RequestService {
     int result = requestMapper.addCouple(requestEmail, receiverEmail);
 
     if (result > 0) {
-//      result += requestMapper.addCoupleAuth(requestEmail);
-//      result += requestMapper.addCoupleAuth(receiverEmail);
+      result += requestMapper.addCoupleAuth(requestEmail);
+      result += requestMapper.addCoupleAuth(receiverEmail);
 
-//      result += requestMapper.deleteRequest(receiverEmail);
+      result += requestMapper.deleteRequest(receiverEmail);
       result += userMapper.convertCoupleStatusIntoCouple(requestEmail);
       result += userMapper.convertCoupleStatusIntoCouple(receiverEmail);
     }
@@ -68,6 +68,12 @@ public class RequestServiceImpl implements RequestService {
   @Override
   public int deleteRequest(String email) throws Exception {
     int result = requestMapper.deleteRequest(email);
+    return result;
+  }
+
+  @Override
+  public int cancelRequest(String email) throws Exception {
+    int result = requestMapper.cancelRequest(email);
     return result;
   }
 }
