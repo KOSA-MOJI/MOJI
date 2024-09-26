@@ -72,9 +72,9 @@
                 </div>
             </div>
             <div class="scrap-component" id="favoriteButton" onclick="toggleScrap()">
-                <%--                <div>--%>
-                <%--                    갯수--%>
-                <%--                </div>--%>
+                <div id="scrap-count">
+                    갯수
+                </div>
 
                 <div class="circle-background">
                     <img src="${pageContext.request.contextPath}/image/content/community/gray-heart.png"

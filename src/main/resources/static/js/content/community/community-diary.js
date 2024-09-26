@@ -88,6 +88,7 @@ function updateListImage() {
 function updateDiaryContent(element) {
   selectedIndex = Number(element.getAttribute("id").split("-")[2])
   curPage = communityData[curDataIndex + selectedIndex - 1]
+  console.log("updateDiaryContent()" + curPage)
   fetch(`/api/community/page/${curPage.pageId}`, {
     headers: {
       'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
@@ -106,6 +107,11 @@ function updateDiaryContent(element) {
     scrapButton.src = communityData[curDataIndex + selectedIndex - 1].scrapped
         ? `${imagePath}full-heart.png`
         : `${imagePath}gray-heart.png`
+
+    //페이지 클릭마다 -> 해당 페이지 스크랩 갯수 업데이트
+    console.log(
+        "updateDiary" + communityData[curDataIndex + selectedIndex - 1].pageId)
+    fetchScrapCount(communityData[curDataIndex + selectedIndex - 1].pageId)
   })
   .catch(err => console.log(err)
   )
@@ -174,6 +180,10 @@ function fetchCommunityData(offset, limit, isInit) {
   }).then(() => {
     if (isInit) {
       updateDiaryContent(document.querySelector("#image-item-1"))
+    }
+  }).then(() => {
+    if (isInit) {
+      fetchScrapCount(curPage.pageId);
     }
   }).catch(err => {
     console.log(err)
@@ -543,8 +553,35 @@ function toggleScrap() {
     scrapButton.src = curPage.scrapped
         ? `${imagePath}full-heart.png`
         : `${imagePath}gray-heart.png`
-    // TO DO : 스크랩 버튼 여부에 따라 하단 스크랩 isnone/block 처리
+    console.log("toggleScrap()" + curPage.pageId)
+    fetchScrapCount(curPage.pageId); //스크랩 갯수 업데이트
     updateListImage();
+
+  }).catch(err => console.log(err))
+}
+
+function updateScrapCount(count) {
+  const scrapCnt = document.getElementById('scrap-count');
+  scrapCnt.textContent = count;
+}
+
+/*스크랩 갯수 업데이트 */
+function fetchScrapCount(pageId) {
+  console.log("스크랩된 페이지" + pageId)
+  fetch(`/api/community/scrap/${pageId}`, {
+    headers: {
+      'X-CSRF-TOKEN': csrfToken
+    }
+  }).then((res) => {
+    if (res.ok) {
+      return res.json()
+    }
+    throw Error("No Scrap!!!!")
+  }).then((data) => {
+    console.log("이게 무슨 데이터인가", data)
+    updateScrapCount(data)
+
+    // updateListImage();
 
   }).catch(err => console.log(err))
 }
