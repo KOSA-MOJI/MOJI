@@ -2,7 +2,7 @@
 body {
   font-weight: normal;
   font-style: normal;
-  display: flex;
+  /*display: flex;*/
   min-height: 100vh;
   background-color: #fffae7;
 }
@@ -138,7 +138,6 @@ margin-bottom: -8px;
   align-items: center;
   width: 60px;
   height: 60px;
-  background-color: #fff;
   border-radius: 50%;
   position: relative;
   transition: background-color 0.3s ease, transform 0.3s ease;
@@ -184,12 +183,13 @@ margin-bottom: -8px;
   padding: 10px;
   background-color: #fffae7;
   width: 100%;
-  min-height: calc(100vh - 15%);
+  min-height: 90vh;
   overflow-y: auto;
 }
 
 /* 푸터 스타일 */
 .footer {
+  background-color: #fffae7;
   bottom: 0;
   left: 0;
   width: 100%;
