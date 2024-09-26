@@ -2,7 +2,7 @@
     position: relative;
     margin: 0;
     padding: 0;
-    width: 100%;
+    width: 90%;
     height: 80vh;
     overflow: hidden;
     perspective: 1000px; /* Adding perspective for 3D effect */
@@ -65,12 +65,23 @@
 }
 
 #left-side {
-    left: 0;
+    position: absolute;
+    left: 0; /* 가운데에 최대한 붙이기 */
+    width: 50%;
+    height: 100%;
+    box-shadow: 10px 0 10px #676565; /* 더 깊은 그림자 */
+    transform: perspective(600px) rotateY(2deg); /* 반대 방향 경사 */
 }
 
 #right-side {
-    right: 0;
+    position: absolute;
+    right: 0; /* 가운데에 최대한 붙이기 */
+    width: 50%;
+    height: 100%;
+    box-shadow: -10px 0 10px #676565; /* 더 강한 그림자 */
+    transform: perspective(600px) rotateY(-2deg); /* 반대 방향 경사 */
 }
+
 #prevPage,#nextPage{
     position: absolute;
     bottom: 0;
