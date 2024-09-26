@@ -34,8 +34,8 @@ body {
 }
 
 .header-left img {
-  width:50px;
-  height: 50px
+  width: 8.8rem;
+  height: 8.8rem;
 }
 
 /* 헤더 오른쪽 스타일 */
@@ -52,14 +52,14 @@ body {
 }
 
 .profile-img {
-width: 40px;
-height: 40px;
-margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 
 .dropdown {
-display: inline-block;
-margin-bottom: -8px;
+  display: inline-block;
+  margin-bottom: -8px;
 }
 
 /* 드롭다운 버튼 스타일 */

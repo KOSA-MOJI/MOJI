@@ -1,11 +1,12 @@
 let currentLocation = {latitude: null, longitude: null};
 let currentRadius = 5; // 기본 반경 값
-const email = "wjdekqls1@example.com"
+const email = "hahaha123@naver.com"
 const listLimit = 5; // 한 번에 불러올 데이터 수
 let communityData = []; // 받아온 데이터 저장 배열
-let curDataIndex = 0; //실제 가리키는 보여줄 데이터의 시작 위치
-let selectedIndex = 1; //1~limit
+let curDataIndex = 0; //하단의 시작위치가 실제 communityDatay에서 가리키는 위치
+let selectedIndex = 1; //1~limit 하단 리스트에서 선택된 항목의 인덱스
 let selectedDistanceValue = 5; //현재
+let curPage;
 
 // 위치정보 가져오기
 function getCurrentLocation() {
@@ -36,9 +37,27 @@ function updateListImage() {
     imageItemDiv.innerText = ""
     imageItemDiv.innerHTML = "";
     let imgTag = document.createElement("img")
-    imgTag.setAttribute("style", "width:100%;height:100%")
-    imgTag.src = communityData[curDataIndex + i].imageUrl
-    imageItemDiv.appendChild(imgTag)
+    imgTag.setAttribute("style",
+        "display: flex; width:100%;height:100%;z-index: 1")
+    imgTag.src = communityData[curDataIndex + i].imageUrl;
+
+    let imgScrapButton = document.createElement("img");
+    imgScrapButton.src = `${imagePath}full-heart.png`;
+    imgScrapButton.alt = "찜하기";
+    imgScrapButton.className = "gallery-scrap-button";
+    imgScrapButton.style.zIndex = 5; // z-index 설정
+
+    // console.log("communityData", communityData)
+
+    // 조건에 따라 하트 이미지의 스타일 조정
+    if (communityData[curDataIndex + i].scrapped) {
+      imgScrapButton.style.display = "block";
+    } else {
+      imgScrapButton.style.display = "none";
+    }
+
+    imageItemDiv.appendChild(imgTag);
+    imageItemDiv.appendChild(imgScrapButton);
 
     // 기존 존재하는 클릭 이벤트 제거 (중복 방지)
     imageItemDiv.onclick = null;
@@ -59,12 +78,13 @@ function updateListImage() {
       imageItemDiv.removeAttribute('title');
     }
   }
+  console.log(communityData)
 }
 
 function updateDiaryContent(element) {
   selectedIndex = Number(element.getAttribute("id").split("-")[2])
-  fetch(`/api/community/page/${communityData[curDataIndex + selectedIndex
-  - 1].pageId}`)
+  curPage = communityData[curDataIndex + selectedIndex - 1]
+  fetch(`/api/community/page/${curPage.pageId}`)
   .then((res) => {
     if (res.ok) {
       return res.json()
@@ -79,7 +99,8 @@ function updateDiaryContent(element) {
         ? `${imagePath}full-heart.png`
         : `${imagePath}gray-heart.png`
   })
-  .catch(err => console.log(err))
+  .catch(err => console.log(err)
+  )
 }
 
 function prevBtn() {
@@ -142,7 +163,23 @@ function fetchCommunityData(offset, limit, isInit) {
     if (isInit) {
       updateDiaryContent(document.querySelector("#image-item-1"))
     }
-  }).catch(err => console.log(err))
+  }).catch(err => {
+    console.log(err)
+    alert("5km 이내 데이트 코스가 존재하지 않습니다.")
+
+    //반경 50km 재설정 및 호출
+    currentRadius = 50;
+    selectedDistanceValue = 50;
+
+    //필터 슬라이더 및 input 값 재조정
+    document.getElementById('distanceRange').value = currentRadius;
+    document.getElementById('selectedDistance').value = currentRadius;
+
+    getCurrentLocation().then(() => {
+      fetchCommunityData(0, 20, true)
+    });
+
+  })
 }
 
 // 페이지 화면 구현
@@ -457,24 +494,25 @@ function resetDefaultData(radius) {
 }
 
 //클릭시, 스크랩 이미지 업데이트1
-function toggleFavorite() {
-  isFavorited = !isFavorited; // 찜 상태 토글
-  updateFavoriteButton(); // 이미지 업데이트
-}
-
-//클릭시, 스크랩 이미지 업데이트2
-function updateFavoriteButton() {
-  const img = document.getElementById('uploadButton');
-  if (isFavorited) {
-    img.src = `${imagePath}full-heart.png`; // 찜된 이미지
-
-  } else {
-    img.src = `${imagePath}gray-heart.png`; // 회색 이미지
-  }
-}
+// function toggleFavorite() {
+//   isFavorited = !isFavorited; // 찜 상태 토글
+//   updateFavoriteButton(); // 이미지 업데이트
+// }
+//
+// //클릭시, 스크랩 이미지 업데이트2
+// function updateFavoriteButton() {
+//   const img = document.getElementById('uploadButton');
+//   if (isFavorited) {
+//     img.src = `${imagePath}full-heart.png`; // 찜된 이미지
+//
+//   } else {
+//     img.src = `${imagePath}gray-heart.png`; // 회색 이미지
+//   }
+// }
 
 function toggleScrap() {
-  let curPage = communityData[curDataIndex + selectedIndex - 1]
+  // let curPage = communityData[curDataIndex + selectedIndex - 1]
+  console.log("스크랩된 페이지" + curPage.pageId)
   fetch(`/api/community/scrap?email=${email}&pageId=${curPage.pageId}`, {
     method: `${curPage.scrapped ? "DELETE" : "POST"}`
   }).then((res) => {
@@ -488,5 +526,8 @@ function toggleScrap() {
     scrapButton.src = curPage.scrapped
         ? `${imagePath}full-heart.png`
         : `${imagePath}gray-heart.png`
+    // TO DO : 스크랩 버튼 여부에 따라 하단 스크랩 isnone/block 처리
+    updateListImage();
+
   }).catch(err => console.log(err))
 }

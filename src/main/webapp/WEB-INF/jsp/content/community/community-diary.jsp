@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/community/open-diary.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/css/content/community/diary-gallery.css">
 <link rel="stylesheet" type="text/css"
       href="${pageContext.request.contextPath}/css/component/login-modal.css">
 
