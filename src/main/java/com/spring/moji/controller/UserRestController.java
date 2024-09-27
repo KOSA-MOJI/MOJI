@@ -98,11 +98,14 @@ public class UserRestController {
 
   @PostMapping("/solo/request/accept")
   public ResponseEntity<?> acceptRequest(@AuthenticationPrincipal CustomerUserDetail user,
-      @RequestParam("requestUserEmail") String requestUserEmail) throws Exception {
+      @RequestParam("requestUserEmail") String requestUserEmail, HttpSession session)
+      throws Exception {
     log.info("백엔드로 넘어온 requestUserEmail : {}", requestUserEmail);
     Map<String, Object> responseBody = new HashMap<>();
     responseBody.put("alert", true);
-    int result = requestService.acceptRequest(requestUserEmail, user.getEmail());
+
+    int result = requestService.acceptRequest(requestUserEmail, user.getEmail(), session);
+
     log.info("acceptRequest 호출완료, 결과 : {}", result);
 
     if (result > 0) {

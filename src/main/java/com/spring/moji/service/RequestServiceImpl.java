@@ -8,11 +8,16 @@ import com.spring.moji.entity.UserAuth;
 import com.spring.moji.mapper.RequestMapper;
 import com.spring.moji.mapper.UserMapper;
 import com.spring.moji.util.Roles;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,7 +87,8 @@ public class RequestServiceImpl implements RequestService {
 
   @Override
   @Transactional
-  public int acceptRequest(String requestEmail, String receiverEmail) throws Exception {
+  public int acceptRequest(String requestEmail, String receiverEmail, HttpSession session)
+      throws Exception {
     int result = requestMapper.addCouple(requestEmail, receiverEmail);
 
     if (result > 0) {
@@ -94,6 +100,14 @@ public class RequestServiceImpl implements RequestService {
       result += userMapper.convertCoupleStatusIntoCouple(receiverEmail);
     }
 
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+    updatedAuthorities.add(new SimpleGrantedAuthority(Roles.COUPLE.getRole()));
+
+    UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+        auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+
+    SecurityContextHolder.getContext().setAuthentication(newAuth);
     return result;
   }
 
