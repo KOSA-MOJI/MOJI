@@ -354,7 +354,7 @@ function UploadImage(input) {
     const formData = new FormData();
     formData.append("diaryCoverImage", file);
 
-    fetch(`/api/diary/coverImage/${diaryId}`, {
+    fetch(`/user/couple/api/diary/coverImage/${coupleId}`, {
       method: "POST",
       headers: {
         'X-CSRF-TOKEN': csrfToken
