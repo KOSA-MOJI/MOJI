@@ -128,7 +128,7 @@ function createLeftChild(idx) {
       + " justify-content: center;"
       + "align-items: center;"
       + " width: 80%;"
-      + "height: 23rem;"
+      + "height: 60%;"
       + "margin-top: .5rem;"
       + "overflow: hidden;")
 
