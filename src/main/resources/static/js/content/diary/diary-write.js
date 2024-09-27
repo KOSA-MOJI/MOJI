@@ -239,9 +239,10 @@ document.addEventListener("DOMContentLoaded", function () {
       placeItem.style.display = "inline-block";
       placeItem.style.width = "100%";
       locInfo.style.float = "left";
+      locInfo.style.marginLeft = "1rem"; // 여기서 margin-left 추가
       locInfo.innerText = place.place_name;
       selectLocBtn.style.float = "right";
-      selectLocBtn.innerText = "선택";
+      selectLocBtn.innerText = "️️✔️";
 
       // 각 버튼 클릭시 추가될 정보
       selectLocBtn.addEventListener("click", function () {
@@ -271,9 +272,80 @@ document.addEventListener("DOMContentLoaded", function () {
       placeList.appendChild(placeItem);
     }
   }
+  // 페이지네이션 스타일 추가 함수
+  // 페이지네이션 스타일 추가 함수
+  function addPaginationStyles() {
+    const style = document.createElement('style');
+    style.innerHTML = `
+    #pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      margin-top: -1.1rem;
+    }
+
+    #pagination .page-link {
+      display: inline-block;
+      margin: 0 8px; /* 버튼 간격 */
+      padding: 10px 16px; /* 버튼 크기 */
+      text-decoration: none;
+      color: #555;
+      border: 1px solid #ddd;
+      border-radius: 10px; /* 둥근 버튼 모양 */
+      background-color: #fafafa;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+      transition: all 0.3s ease;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    #pagination .page-link:hover {
+      background-color: #d5a3fd; /* 버튼에 호버할 때 배경색 */
+      color: white;
+      border-color: #d5a3fd;
+      transform: translateY(-3px); /* 호버 시 살짝 위로 올라가는 효과 */
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 강조 */
+    }
+
+    #pagination .page-link.active {
+      background-color: #cc83fb; /* 현재 페이지 배경색 */
+      color: white;
+      border-color: #cc83fb;
+      pointer-events: none;
+      transform: scale(1.1); /* 현재 페이지는 크기가 조금 더 크게 */
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* 활성화된 페이지 그림자 */
+    }
+
+    /* 페이지네이션 넘버 간격을 줄이기 */
+    #pagination .page-link:first-child {
+      margin-left: 0;
+    }
+
+    #pagination .page-link:last-child {
+      margin-right: 0;
+    }
+
+    /* 페이드 인 애니메이션 추가 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    #pagination .page-link {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  `;
+    document.head.appendChild(style);
+  }
 
   // 장소 검색 결과 페이지네이션 화면 구성 함수
   function displayPagination(pagination) {
+    addPaginationStyles();
     let paginationDiv = document.getElementById("pagination")
     paginationDiv.innerHTML = '';
     for (let i = 1; i <= pagination.last; i++) {
@@ -282,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function () {
       pageButton.innerText = i;
       pageButton.classList.add("page-link");
       if (i === pagination.current) {
-        pageButton.style.color = "red";
+        pageButton.style.color = "purple";
       }
       (function (i) {
         pageButton.addEventListener('click', function (event) {
@@ -293,7 +365,6 @@ document.addEventListener("DOMContentLoaded", function () {
       paginationDiv.appendChild(pageButton);
     }
   }
-
   // 장소검색 버튼 함수
   function searchLocationBtn() {
     let query = document.getElementById('search-query').value;
@@ -323,6 +394,23 @@ document.addEventListener("DOMContentLoaded", function () {
       // imgList가 배열인지 확인
       let imgList = Array.isArray(curLocation.image_urls)
           ? curLocation.image_urls : [];
+      let locationImg = document.getElementById("location_img");
+
+      // 이미지 스타일 설정
+      locationImg.style.width = "80%";             // 너비를 80%로 설정
+      locationImg.style.height = "80%";            // 높이를 80%로 설정
+      locationImg.style.verticalAlign = "middle";  // 수직 정렬을 middle로 설정
+      locationImg.style.padding = "7px";           // 7px의 패딩 설정
+      locationImg.style.objectFit = "contain";     // 이미지 비율을 유지하며 영역에 맞게 조정
+      locationImg.style.visibility = "visible";    // 이미지가 보이도록 설정
+      locationImg.style.marginTop = "90px";        // 위쪽에 90px의 마진 추가
+      locationImg.style.marginBottom = "1.5rem";   // 다른 div와 1.5rem의 간격 추가
+
+      // 이미지 src 설정
+      locationImg.src = imgList[curImageIndex] === undefined ? `${imgCommonPath}color-no-image.png` : imgList[curImageIndex];
+
+
+
 
       // 이미지가 없을 때 기본 이미지 표시
       document.getElementById("location_img").src = imgList[curImageIndex]
@@ -340,134 +428,139 @@ document.addEventListener("DOMContentLoaded", function () {
   //
   // })
 
-  // 이미지 업로드
-  document.getElementById("image-input").addEventListener("change", () => {
-    const fileInput = document.getElementById("image-input");
-    const file = fileInput.files[0]; // 선택된 파일 가져오기
+      // 이미지 업로드
+      document.getElementById("image-input").addEventListener("change", () => {
+        const fileInput = document.getElementById("image-input");
+        const file = fileInput.files[0]; // 선택된 파일 가져오기
 
-    if (file) {
-      const formData = new FormData();
-      formData.append("image", file); // 'image'는 서버에서 받을 파일의 키 이름
+        if (file) {
+          const formData = new FormData();
+          formData.append("image", file); // 'image'는 서버에서 받을 파일의 키 이름
 
-      // Fetch API를 사용해 POST 요청으로 파일을 서버로 전송
-      fetch('/user/couple/api/diary/preupload', {
-        method: 'POST',
-        headers: {
-          'X-CSRF-TOKEN': csrfToken
-        },
-        body: formData, // formData를 body로 전송
-      })
-      .then(response => response.text())
-      .then(data => {
-        console.log('파일 전송 성공:', data);
-        curLocation.image_urls.push(data)
-        curImageIndex = Math.max(curLocation.image_urls.length - 1, 0)
-        displayImages()
-      })
-      .catch(error => {
-        console.error('파일 전송 실패:', error);
-      });
-    } else {
-      console.log('파일이 선택되지 않았습니다.');
-    }
-  })
-
-  // 이미지 삭제
-  document.getElementById("removeImageBtn").addEventListener("click", () => {
-    if (curLocation.image_urls.length > 0) {
-      let preuploadImageUrl = curLocation.image_urls[curImageIndex]
-      fetch(`/user/couple/api/diary/preupload?imageUrl=${preuploadImageUrl}`, {
-        method: 'DELETE',
-        headers: {
-          'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
+          // Fetch API를 사용해 POST 요청으로 파일을 서버로 전송
+          fetch('/user/couple/api/diary/preupload', {
+            method: 'POST',
+            headers: {
+              'X-CSRF-TOKEN': csrfToken
+            },
+            body: formData, // formData를 body로 전송
+          })
+          .then(response => response.text())
+          .then(data => {
+            console.log('파일 전송 성공:', data);
+            curLocation.image_urls.push(data)
+            curImageIndex = Math.max(curLocation.image_urls.length - 1, 0)
+            displayImages()
+          })
+          .catch(error => {
+            console.error('파일 전송 실패:', error);
+          });
+        } else {
+          console.log('파일이 선택되지 않았습니다.');
         }
       })
-      .then((response) => {
-        if (!response.ok) {
-          throw Error();
+
+      // 이미지 삭제
+      document.getElementById("removeImageBtn").addEventListener("click", () => {
+        if (curLocation.image_urls.length > 0) {
+          let preuploadImageUrl = curLocation.image_urls[curImageIndex]
+          fetch(`/user/couple/api/diary/preupload?imageUrl=${preuploadImageUrl}`, {
+            method: 'DELETE',
+            headers: {
+              'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
+            }
+          })
+          .then((response) => {
+            if (!response.ok) {
+              throw Error();
+            }
+          })
+          .then(() => {
+            curLocation.image_urls.splice(curImageIndex, 1)
+            curImageIndex = Math.max(curImageIndex -= 1, 0)
+            displayImages()
+          })
+          .catch(error => {
+            console.error('파일 전송 실패:', error);
+          });
         }
       })
-      .then(() => {
-        curLocation.image_urls.splice(curImageIndex, 1)
-        curImageIndex = Math.max(curImageIndex -= 1, 0)
+
+      function nextImageBtnOnClick() {
+        curImageIndex++;
+        console.log(curLocation)
         displayImages()
-      })
-      .catch(error => {
-        console.error('파일 전송 실패:', error);
-      });
-    }
-  })
-
-  function nextImageBtnOnClick() {
-    curImageIndex++;
-    console.log(curLocation)
-    displayImages()
-  }
-
-  function prevImageBtnOnClick() {
-    curImageIndex--;
-    console.log(curLocation)
-    displayImages()
-  }
-
-  document.getElementById("nextImageButton").addEventListener("click",
-      nextImageBtnOnClick)
-  document.getElementById("prevImageButton").addEventListener("click",
-      prevImageBtnOnClick)
-
-  // 다이어리 작성결과 저장
-  function saveResults() {
-    let date = document.getElementById("dateInput").value
-    let content = document.getElementById("textContentPage1").innerHTML
-    let fontSize = document.getElementById("fontSizeSelect").value
-    let fontColor = document.getElementById("fontColor").value
-    if (disableDate.includes(date)) {
-      alert("해당 날짜는 이미 작성된 페이지가 존재합니다!")
-      return
-    }
-    let locationImageMap = []
-    for (let location of locations) {
-      let locationInfo = {}
-      locationInfo.address = location.address
-      locationInfo.latitude = location.latitude
-      locationInfo.longitude = location.longitude
-      let imageUrlInfo = []
-      for (let imageUrl of location.image_urls) {
-        imageUrlInfo.push({mapImage: imageUrl})
       }
-      locationInfo.imageUrls = imageUrlInfo
-      locationImageMap.push(locationInfo)
-    }
 
-    let result = {
-      coupleId: coupleId,
-      createdAt: date,
-      weather: "맑음",
-      content: content,
-      fontSize: Number(fontSize),
-      fontColor: fontColor,
-      textAlignment: curTextAlignment,
-      publicStatus: 'n',
-      templateId: Number(curTemplateId),
-      locations: locationImageMap
-    }
-    console.log(result)
-    fetch("/user/couple/api/diary/page", {
-      method: "POST",
-      headers: {
-        'X-CSRF-TOKEN': csrfToken,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(result)
-    }).then((res) => {
-      if (res.ok) {
-        return;
+      function prevImageBtnOnClick() {
+        curImageIndex--;
+        console.log(curLocation)
+        displayImages()
       }
-      throw Error
-    }).catch(err => console.log(err))
-  }
 
-  document.getElementById("saveBtn").addEventListener("click", saveResults)
-});
+      document.getElementById("nextImageButton").addEventListener("click",
+          nextImageBtnOnClick)
+      document.getElementById("prevImageButton").addEventListener("click",
+          prevImageBtnOnClick)
 
-//추가
+      // 다이어리 작성결과 저장
+      function saveResults() {
+        let date = document.getElementById("dateInput").value
+        let content = document.getElementById("textContentPage1").innerHTML
+        let fontSize = document.getElementById("fontSizeSelect").value
+        let fontColor = document.getElementById("fontColor").value
+        if (disableDate.includes(date)) {
+          alert("해당 날짜는 이미 작성된 페이지가 존재합니다!")
+          return
+        }
+        let locationImageMap = []
+        for (let location of locations) {
+          let locationInfo = {}
+          locationInfo.address = location.address
+          locationInfo.latitude = location.latitude
+          locationInfo.longitude = location.longitude
+          let imageUrlInfo = []
+          for (let imageUrl of location.image_urls) {
+            imageUrlInfo.push({mapImage: imageUrl})
+          }
+          locationInfo.imageUrls = imageUrlInfo
+          locationImageMap.push(locationInfo)
+        }
+
+        let result = {
+          coupleId: coupleId,
+          createdAt: date,
+          weather: "맑음",
+          content: content,
+          fontSize: Number(fontSize),
+          fontColor: fontColor,
+          textAlignment: curTextAlignment,
+          publicStatus: 'n',
+          templateId: Number(curTemplateId),
+          locations: locationImageMap
+        }
+        console.log(result)
+        // 데이터 저장 요청
+        fetch("/user/couple/api/diary/page", {
+          method: "POST",
+          headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(result)
+        })
+        .then((res) => {
+          if (res.ok) {
+            alert("저장되었습니다."); // 저장 성공 메시지
+            return;
+          }
+          throw new Error('Failed to save the diary page');
+        })
+        .catch(err => {
+          console.error(err);
+          alert("저장에 실패했습니다. 다시 시도해주세요.");
+        });
+      }
+
+      document.getElementById("saveBtn").addEventListener("click", saveResults)
+    });

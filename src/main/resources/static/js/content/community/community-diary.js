@@ -269,11 +269,28 @@ function createLeftChild(pageData) {
       "position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
   container.appendChild(templateImg)
   dateDiv.innerText = data.createdAt;
-  weatherDiv.innerText = data.weather;
+  // weatherDiv.innerText = data.weather;
 
   dateDiv.setAttribute("style", "position: absolute; left: 10%;")
-  weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
-  dateWeatherDiv.appendChild(dateDiv)
+  // weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
+//date css추가
+  // 인라인 스타일 추가
+  dateDiv.setAttribute("style", `
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    background-color: #f0f8ff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 1rem auto;
+    letter-spacing: 0.05rem;
+`);
+
+  // container 또는 원하는 부모 요소에 추가
+  container.appendChild(dateDiv);
   dateWeatherDiv.appendChild(weatherDiv)
 
   dateWeatherDiv.setAttribute("style",
@@ -284,7 +301,7 @@ function createLeftChild(pageData) {
   contentDiv.innerText = data.content;
   contentDiv.setAttribute("style",
       `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment};`
-      + "overflow-y: auto; max-height: 100%; padding: 10px;"
+      + "overflow-y: auto; max-height: 100%; padding: 10px;margin-top:-1rem;"
   )
 
   topContentDiv.setAttribute("style",
@@ -293,8 +310,8 @@ function createLeftChild(pageData) {
       + " justify-content: center;"
       + "align-items: center;"
       + " width: 80%;"
-      + "height: 23rem;"
-      + "margin-top: .5rem;"
+      + "height: 21rem;"
+      + "margin-top: -4.5rem;"
       + "overflow: hidden;")
 
   topContentDiv.appendChild(contentDiv)
