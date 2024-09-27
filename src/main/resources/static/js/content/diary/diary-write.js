@@ -239,6 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
       placeItem.style.display = "inline-block";
       placeItem.style.width = "100%";
       locInfo.style.float = "left";
+      locInfo.style.marginLeft = "1rem"; // 여기서 margin-left 추가
       locInfo.innerText = place.place_name;
       selectLocBtn.style.float = "right";
       selectLocBtn.innerText = "️️✔️";
@@ -281,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
       justify-content: center;
       align-items: center;
       padding: 1rem;
-      margin-top: 1rem;
+      margin-top: -1.1rem;
     }
 
     #pagination .page-link {
@@ -393,6 +394,23 @@ document.addEventListener("DOMContentLoaded", function () {
       // imgList가 배열인지 확인
       let imgList = Array.isArray(curLocation.image_urls)
           ? curLocation.image_urls : [];
+      let locationImg = document.getElementById("location_img");
+
+      // 이미지 스타일 설정
+      locationImg.style.width = "80%";             // 너비를 80%로 설정
+      locationImg.style.height = "80%";            // 높이를 80%로 설정
+      locationImg.style.verticalAlign = "middle";  // 수직 정렬을 middle로 설정
+      locationImg.style.padding = "7px";           // 7px의 패딩 설정
+      locationImg.style.objectFit = "contain";     // 이미지 비율을 유지하며 영역에 맞게 조정
+      locationImg.style.visibility = "visible";    // 이미지가 보이도록 설정
+      locationImg.style.marginTop = "90px";        // 위쪽에 90px의 마진 추가
+      locationImg.style.marginBottom = "1.5rem";   // 다른 div와 1.5rem의 간격 추가
+
+      // 이미지 src 설정
+      locationImg.src = imgList[curImageIndex] === undefined ? `${imgCommonPath}color-no-image.png` : imgList[curImageIndex];
+
+
+
 
       // 이미지가 없을 때 기본 이미지 표시
       document.getElementById("location_img").src = imgList[curImageIndex]
@@ -522,6 +540,7 @@ document.addEventListener("DOMContentLoaded", function () {
           locations: locationImageMap
         }
         console.log(result)
+        // 데이터 저장 요청
         fetch("/user/couple/api/diary/page", {
           method: "POST",
           headers: {
@@ -529,12 +548,18 @@ document.addEventListener("DOMContentLoaded", function () {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(result)
-        }).then((res) => {
+        })
+        .then((res) => {
           if (res.ok) {
+            alert("저장되었습니다."); // 저장 성공 메시지
             return;
           }
-          throw Error
-        }).catch(err => console.log(err))
+          throw new Error('Failed to save the diary page');
+        })
+        .catch(err => {
+          console.error(err);
+          alert("저장에 실패했습니다. 다시 시도해주세요.");
+        });
       }
 
       document.getElementById("saveBtn").addEventListener("click", saveResults)
