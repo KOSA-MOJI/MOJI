@@ -12,11 +12,6 @@
   var principalCoupleId = "${principal.couple.couple_id}";
 </script>
 
-
-
-  <a href="/user/couple/diary/write" class="diary-write-btn">
-    <img src="${pageContext.request.contextPath}/image/content/diary/write.png" alt="Diary">
-  </a>
 <div id="book-container">
   <!-- Book content section -->
 
@@ -32,6 +27,9 @@
         </div>
     </div>
 </div>
+<a href="/user/couple/diary/write" class="diary-write-btn">
+    <img src="${pageContext.request.contextPath}/image/content/diary/write.png" alt="Diary">
+</a>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApiKey}"></script>
 <script> const imagePath = `${pageContext.request.contextPath}/image/content/diary/`;</script>
 <script src="${pageContext.request.contextPath}/js/content/diary/diary-read.js"></script>
