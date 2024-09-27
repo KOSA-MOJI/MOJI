@@ -38,9 +38,7 @@
   perspective: 1000px; /* Adding perspective for 3D effect */
   transform-style: preserve-3d;
   color: #333; /* Global text color */
-  /*display: flex;*/
-  /*align-items: center;*/
-  /*justify-content: center; !* 기본 중앙 정렬 추가 *!*/
+  border-radius: 15px;
   transition: transform 0.5s ease; /* 책 위치 변화 애니메이션 */
 }
 
@@ -82,11 +80,15 @@
 }
 
 #left-side {
+  box-shadow: 10px 0 10px #676565; /* 더 깊은 그림자 */
   left: 0;
+  transform: perspective(600px) rotateY(1deg); /* 반대 방향 경사 */
 }
 
 #right-side {
+  box-shadow: -10px 0 10px #676565; /* 더 강한 그림자 */
   right: 0;
+  transform: perspective(600px) rotateY(-1deg); /* 반대 방향 경사 */
 }
 
 #prevPage, #nextPage {
