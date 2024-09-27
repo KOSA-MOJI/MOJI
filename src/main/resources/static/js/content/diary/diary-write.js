@@ -552,6 +552,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((res) => {
           if (res.ok) {
             alert("저장되었습니다."); // 저장 성공 메시지
+            // 저장 성공 시 /user/couple/diary로 이동
+            window.location.href = "/user/couple/diary";
             return;
           }
           throw new Error('Failed to save the diary page');
