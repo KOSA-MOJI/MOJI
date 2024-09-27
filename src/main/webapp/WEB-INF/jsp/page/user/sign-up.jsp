@@ -9,12 +9,10 @@
     <meta name="_csrf" content="${_csrf.token}"/>
     <title>회원가입</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/user/register-style.css">
-    <!-- <link rel="shortcut icon" href="../../assets/images/favicon.png" /> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="container">
-    <!-- <div class="form-container"> -->
     <h2>회원가입</h2>
     <form action="signup-process" method="post" id="signupForm">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
@@ -22,7 +20,7 @@
             <label for="email">이메일</label>
             <div class="email-container">
                 <input type="email" id="email" placeholder="example@naver.com" name="email">
-                <button type="button" class="btn btn-check" id="check-email">이메일 중복 확인
+                <button type="button" class="btn btn-success" id="check-email">이메일 중복 확인
                 </button>
             </div>
             <span id="emailResult"></span>
@@ -63,7 +61,7 @@
         </div>
 
 
-        <button type="submit" class="btn">회원가입</button>
+        <button type="submit" class="btn btn-success">회원가입</button>
     </form>
 </div>
 
