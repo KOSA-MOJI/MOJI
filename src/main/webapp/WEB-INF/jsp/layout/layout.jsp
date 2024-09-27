@@ -44,6 +44,9 @@
                             <a class="dropdown-item" href="/user/logout">로그아웃</a>
                         </li>
                         <li><a class="dropdown-item" href="/user/solo">MyPage</a></li>
+                        <li><a class="dropdown-item"
+                               href="${pageContext.request.contextPath}/user/couple">Couple Page</a>
+                        </li>
                     </ul>
                 </div>
             </div>
