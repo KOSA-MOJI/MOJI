@@ -1,10 +1,16 @@
 package com.spring.moji.service;
 
+import com.spring.moji.security.CustomerUserDetail;
 import com.spring.moji.entity.UserAuth;
 import com.spring.moji.entity.User;
+import com.spring.moji.mapper.RequestMapper;
 import com.spring.moji.mapper.UserMapper;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +24,7 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
 
   private final PasswordEncoder passwordEncoder;
+  private final RequestMapper requestMapper;
 
   @Override
   @Transactional
@@ -39,15 +46,57 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public int updateProfileImageUrl(String email, String profileImageUrl) throws Exception {
+  public int updateProfileImageUrl(String email, String profileImageUrl, HttpSession session)
+      throws Exception {
     int result = userMapper.updateProfileImageUrl(email, profileImageUrl);
 
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth != null && auth.isAuthenticated()) {
+      CustomerUserDetail currentUser = (CustomerUserDetail) auth.getPrincipal();
+      currentUser.getUser().setProfileImageUrl(profileImageUrl);
+      UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+          currentUser, auth.getCredentials(), auth.getAuthorities());
+      SecurityContextHolder.getContext().setAuthentication(newAuth);
+      session.setAttribute("profileImageUrl", profileImageUrl);
+      log.info("Profile image URL updated in session and authentication object");
+    }
     return result;
   }
 
   @Override
-  public User findUserbyEmail(String email) throws Exception {
-    User user = userMapper.findUserByEmail(email);
-    return null;
+  public int updateCoupleProfile(Long coupleId
+      , String coupleName
+      , String profileImageUrl
+      , HttpSession session)
+      throws Exception {
+    int result = userMapper.updateCoupleProfile(coupleId, profileImageUrl, coupleName);
+
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth != null && auth.isAuthenticated()) {
+      CustomerUserDetail currentUser = (CustomerUserDetail) auth.getPrincipal();
+      currentUser.getCouple().setCoupleProfileImage(profileImageUrl);
+
+      UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+          currentUser, auth.getCredentials(), auth.getAuthorities());
+
+      SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+      session.setAttribute("coupleProfileImage", profileImageUrl);
+      session.setAttribute("coupleName", coupleName);
+      log.info("Profile image URL updated in session and authentication object");
+    }
+    return result;
   }
+
+  @Override
+  public User findPartner(String email) throws Exception {
+    return userMapper.findPartner(email);
+  }
+
+  @Override
+  public boolean isEmailAvailable(String email) throws Exception {
+    return userMapper.countByEmail(email) == 0;
+  }
+
+
 }

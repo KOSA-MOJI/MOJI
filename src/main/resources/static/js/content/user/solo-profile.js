@@ -1,36 +1,59 @@
 document.addEventListener('DOMContentLoaded', function () {
   const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
       'content');
-  const coupleInvitationModal = document.getElementById(
-      "couple-invitation-modal"
+
+  const coupleRequestModal = document.getElementById(
+      "couple-request-modal"
   );
-  const coupleInvitionBtn = document.getElementById("couple-invitation-btn");
-  const cancelInvitationBtn = document.getElementById("cancel-invitation-btn");
+  const checkRequestModal = document.getElementById(
+      "check-request-modal");
 
-  const checkInvitationModal = document.getElementById(
-      "check-invitation-modal");
-  const checkInvitationBtn = document.getElementById("check-invitation-btn");
-  const cancelCheckBtn = document.getElementById("cancel-check-btn");
+  const coupleRequestBtn = document.getElementById("couple-request-btn");
+  const checkRequestBtn = document.getElementById("check-request-btn");
+  const sendRequestBtn = document.getElementById("send-request-btn");
+  const acceptRequestBtn = document.getElementById("accept-request-btn");
+  const denyRequestBtn = document.getElementById("deny-request-btn");
+  const cancelModalBtn = document.getElementById("cancel-modal-btn"); // 커플신청 모달창 닫기
+  const cancelCheckBtn = document.getElementById("cancel-check-btn"); // 커플신청확인 모
+  const cancelRequestBtn = document.getElementById("cancel-request-btn");
 
-  const emailInput = document.getElementById("email-input")
+  const emailInput = document.getElementById("email-input");
+  const requestUserEmail = document.getElementById("request-user-email").value;
 
-  const requestConfirmBtn = document.getElementById("request-confirm-btn")
-  coupleInvitionBtn.onclick = function () {
-    coupleInvitationModal.style.display = "block";
+  // 커플 신청 모달창 토글하기
+  coupleRequestBtn.onclick = function () {
+    coupleRequestModal.style.display = "block";
   };
 
-  cancelInvitationBtn.onclick = function () {
-    coupleInvitationModal.style.display = "none";
+  cancelModalBtn.onclick = function () {
+    coupleRequestModal.style.display = "none";
   };
 
-  checkInvitationBtn.onclick = function () {
-    checkInvitationModal.style.display = "block";
+  // 커플 신청 확인 모달창 토글 및 확인하기
+  checkRequestBtn.onclick = function () {
+    fetch('/api/user/solo/request/check', {
+      method: "GET",
+      headers: {}
+    })
+    .then(response => response.json())
+    .then(response => {
+      if (response.alert) {
+        alert(response.message);
+      } else {
+        checkRequestModal.style.display = "block";
+      }
+    }).catch(error => {
+      console.error("Error: ", error);
+      alert("Error: " + error.message);
+    })
   };
 
+  // 커플신청확인 모달창 숨기기
   cancelCheckBtn.onclick = function () {
-    checkInvitationModal.style.display = "none";
+    checkRequestModal.style.display = "none";
   };
-  requestConfirmBtn.onclick = function () {
+
+  sendRequestBtn.onclick = function () {
     const formData = new FormData();
 
     formData.append('receiverEmail', emailInput.value);
@@ -56,6 +79,96 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => {
       console.error("Error: ", error);
       alert("Error: " + error.message);
+    });
+  };
+
+  acceptRequestBtn.onclick = function () {
+    const formData = new FormData();
+    formData.append('requestUserEmail', requestUserEmail);
+
+    fetch('http://localhost:8090/api/user/solo/request/accept', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      },
+      body: formData
+    })
+
+    .then(response => {
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`).stack;
+      }
+      return response.json();
+    })
+
+    .then(response => {
+      console.log(response);
+      alert(response.message);
+    })
+
+    .catch(error => {
+      console.error("Error: ", error);
+      alert("Error: " + error.name + ' ' + error.message + ' ' + error.stack);
+
+    });
+
+  };
+
+  denyRequestBtn.onclick = function () {
+
+    fetch('http://localhost:8090/api/user/solo/request/deny', {
+      method: 'DELETE',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      }
+    })
+
+    .then(response => {
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`).stack;
+      }
+      return response.json();
+    })
+
+    .then(response => {
+      console.log(response);
+      alert(response.message);
+    })
+
+    .catch(error => {
+      console.error("Error: ", error);
+      alert("Error: " + error.name + ' ' + error.message + ' ' + error.stack);
+
+    });
+  }
+
+  cancelRequestBtn.onclick = function () {
+    fetch('http://localhost:8090/api/user/solo/request/cancel', {
+      method: 'DELETE',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      }
+    })
+
+    .then(response => {
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`).stack;
+      }
+      return response.json();
+    })
+
+    .then(response => {
+      console.log(response);
+      alert(response.message);
+    })
+
+    .catch(error => {
+      console.error("Error: ", error);
+      alert("Error: " + error.name + ' ' + error.message + ' ' + error.stack);
+
     });
   }
 })

@@ -1,24 +1,27 @@
 document.addEventListener('DOMContentLoaded', function () {
   const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
       'content');
-  const pfpContainer = document.getElementsByClassName("pfp-container")[0];
-  const soloProfilePicture = document.getElementById("solo-pfp");
-  const pfpInput = document.getElementById("solo-pfp-file-input");
+
+  const couplePfpContainer = document.getElementById("couple-pfp-container");
+  const pfpInput = document.getElementById("couple-pfp-file-input");
+
+  const profilePicture = document.getElementById("couple-pfp");
   const saveBtn = document.getElementById("save-profile-update-btn");
 
-  pfpContainer.addEventListener("click", function () {
+  couplePfpContainer.addEventListener("click", function () {
     pfpInput.click();
-  });
 
-  pfpInput.addEventListener("change", function (changeEvent) {
-    const file = changeEvent.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (loadEvent) {
-        soloProfilePicture.src = loadEvent.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
+    pfpInput.addEventListener("change", function (changeEvent) {
+      const file = changeEvent.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (loadEvent) {
+          profilePicture.src = loadEvent.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    })
   });
 
   saveBtn.addEventListener("click", function (event) {
@@ -27,13 +30,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (pfpInput.files[0]) {
       formData.append('file', pfpInput.files[0]);
-    } else {
-      formData.append('file', null);
     }
 
-    formData.append('email', document.getElementById("email").innerText);
-
-    fetch('/api/user/solo/update-profile', {
+    fetch('/api/user/couple/update-profile', {
       method: 'POST',
       headers: {
         'X-CSRF-TOKEN': csrfToken
@@ -41,14 +40,16 @@ document.addEventListener('DOMContentLoaded', function () {
       body: formData
     })
     .then(response => {
+      console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
     .then(resp => {
+      console.log(resp);
       alert("회원수정이 완료되었습니다.");
-      window.location.href = "/user/solo/";
+      window.location.href = "/user/couple/";
     })
     .catch(error => {
       console.error("Error: ", error);
