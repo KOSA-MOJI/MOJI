@@ -10,15 +10,15 @@
 
 <script>
   var principalCoupleId = "${principal.couple.couple_id}";
+  var principalCoupleName = "${principal.couple.coupleName}";
 </script>
 
 
-
-  <a href="/user/couple/diary/write" class="diary-write-btn">
+<a href="/user/couple/diary/write" class="diary-write-btn">
     <img src="${pageContext.request.contextPath}/image/content/diary/write.png" alt="Diary">
-  </a>
+</a>
 <div id="book-container">
-  <!-- Book content section -->
+    <!-- Book content section -->
 
     <!-- Book content section -->
     <div id="book-content" class="book-content">

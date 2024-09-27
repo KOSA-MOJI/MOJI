@@ -1,6 +1,6 @@
 const coupleId = principalCoupleId;//document.getElementById("log-in-couple-id").value
 // const coupleName = document.getElementById("log-in-couple-id").value
-const coupleName = "광환커플2"
+const coupleName = principalCoupleName
 let currentPage = 0;
 let diaryId;
 const lazyLoadLimit = 2;
