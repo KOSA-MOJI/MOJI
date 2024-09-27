@@ -1,0 +1,82 @@
+.map-content{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 80vh;
+}
+
+.custom-image-marker {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 5;
+}
+
+.custom-image-marker img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.custom-image-marker:hover{
+    transform: scale(1.2, 1.2); transition-duration: 0.5s;
+}
+
+.custom-spot-marker {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #fff;
+    background-color: #9aff93;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 5;
+}
+
+.button-container {
+    position: absolute;
+    top:0;
+    left:0;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.button-container button {
+    font-size: 12px;
+    margin: 2px;
+    padding: 5px 8px;
+}
+
+.page-container{
+    position: absolute;
+    bottom:0;
+    left:50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    width:80%;
+    height: 50%;
+    transform: translate(-50%, 0%);
+    z-index: 10;
+    display: flex;
+    flex-direction: row;
+}
+
+.text-container {
+    width: 50%;
+    height: 100%;
+}
+
+.image-container{
+    width: 50%;
+    height:100%
+}
