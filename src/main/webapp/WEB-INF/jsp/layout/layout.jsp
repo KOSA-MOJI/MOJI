@@ -88,6 +88,10 @@
             <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/About.png"
                                  alt="About Us"></a>
             </li>
+            <li><a class="dropdown-item"
+                   href="${pageContext.request.contextPath}/user/couple">Couple Page</a>
+            </li>
+
         </ul>
     </nav>
 </div>

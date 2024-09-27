@@ -1,11 +1,9 @@
 package com.spring.moji.controller;
 
-import com.spring.moji.dto.request.UserRequestDTO;
+import com.spring.moji.security.CustomerUserDetail;
 import com.spring.moji.entity.User;
 import com.spring.moji.service.RequestServiceImpl;
-import com.spring.moji.service.UserService;
 import com.spring.moji.service.UserServiceImpl;
-import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +24,7 @@ public class UserController {
 
 
   @GetMapping({"/solo/", "/solo",})
-  public String readProfile(Model model, @AuthenticationPrincipal UserRequestDTO user)
+  public String readProfile(Model model, @AuthenticationPrincipal CustomerUserDetail user)
       throws Exception {
     User requestUser = requestService.checkRequestUser(user.getEmail());
     model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/solo-profile.jsp");
@@ -44,7 +42,7 @@ public class UserController {
   }
 
   @GetMapping({"/couple/", "/couple",})
-  public String readCoupleProfile(@AuthenticationPrincipal UserRequestDTO user, Model model)
+  public String readCoupleProfile(@AuthenticationPrincipal CustomerUserDetail user, Model model)
       throws Exception {
     User partner = userService.findPartner(user.getEmail());
     model.addAttribute("partner", partner);
@@ -53,7 +51,7 @@ public class UserController {
   }
 
   @GetMapping({"/couple/update-profile"})
-  public String updateCoupleProfile(@AuthenticationPrincipal UserRequestDTO user, Model model)
+  public String updateCoupleProfile(@AuthenticationPrincipal CustomerUserDetail user, Model model)
       throws Exception {
     User partner = userService.findPartner(user.getEmail());
     model.addAttribute("partner", partner);

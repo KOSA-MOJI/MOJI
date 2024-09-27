@@ -8,14 +8,20 @@ public interface RequestMapper {
 
   int requestCouple(String requestEmail, String receiverEmail) throws Exception;
 
-  int addCouple(String user1Email, String user2Email) throws Exception;
 
   Request checkRequest(String receiverEmail) throws Exception;
 
   int deleteRequest(String email) throws Exception;
 
+  int addCouple(String user1Email, String user2Email) throws Exception;
+
+  int deleteCouple(String email) throws Exception;
+
   int addCoupleAuth(String requestEmail) throws Exception;
+
+  int deleteCoupleAuth(String email) throws Exception;
 
   int cancelRequest(String email) throws Exception;
 
+  Request checkMyRequest(String requestEmail) throws Exception;
 }

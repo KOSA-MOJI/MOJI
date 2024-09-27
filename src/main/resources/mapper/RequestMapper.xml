@@ -14,29 +14,46 @@
     <result column="user_email" property="userEmail"/>
     <result column="auth" property="auth"/>
   </resultMap>
-  <!--  커플 신청 -->
   <insert id="requestCouple">
     insert into requests(REQUEST_EMAIL, RECEIVER_EMAIL, CREATED_AT)
     values (#{requestEmail}, #{receiverEmail}, sysdate)
   </insert>
 
-  <!--  커플신청 확인 -->
   <select id="checkRequest" resultMap="requestMap">
     select REQUEST_ID, REQUEST_EMAIL, RECEIVER_EMAIL, CREATED_AT
     from REQUESTS
     where RECEIVER_EMAIL = #{receiverEmail}
   </select>
-  <!--  커플 신청 수락-->
+
+  <select id="checkMyRequest" resultMap="requestMap">
+    select REQUEST_ID, REQUEST_EMAIL, RECEIVER_EMAIL, CREATED_AT
+    from REQUESTS
+    where REQUEST_EMAIL = #{requestEmail}
+  </select>
   <insert id="addCouple">
     insert into COUPLES(user1_email, user2_email, couple_name, couple_profile_image)
     values (#{user1Email}, #{user2Email}, '커플',
             '/image/content/user/default-avatar.avif')
   </insert>
 
+  <delete id="deleteCouple">
+    delete
+    from COUPLES
+    where USER1_EMAIL = #{email}
+       or user2_email = #{email}
+  </delete>
+
   <insert id="addCoupleAuth">
     insert into user_auth(user_email, auth)
     values (#{userEmail}, 'ROLE_COUPLE')
   </insert>
+
+  <delete id="deleteCoupleAuth">
+    delete
+    from USER_AUTH
+    where user_email = #{email}
+      and auth = 'ROLE_COUPLE'
+  </delete>
 
   <delete id="deleteRequest">
     delete

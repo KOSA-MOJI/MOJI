@@ -1,14 +1,12 @@
-package com.spring.moji.dto.request;
+package com.spring.moji.security;
 
 import com.spring.moji.entity.Couple;
 import com.spring.moji.entity.User;
-import com.spring.moji.mapper.UserMapper;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -18,11 +16,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Slf4j
 @Data
 @NoArgsConstructor
-public class UserRequestDTO implements UserDetails {
+public class CustomerUserDetail implements UserDetails {
 
   private User user;
 
-  public UserRequestDTO(User user) {
+  public CustomerUserDetail(User user) {
     this.user = user;
   }
 
@@ -45,12 +43,10 @@ public class UserRequestDTO implements UserDetails {
   }
 
   public String getEmail() {
-    log.info("[[  getEmail 메서드 호출됨  ]]");
     return user.getEmail();
   }
 
 
-  // jstl에서 user의 정보를 조회하는데 필요한 메서드
   public String getUserName() {
     return user.getUserName();
   }

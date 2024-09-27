@@ -1,16 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-
+  const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
+      'content');
   const breakUpAnchor = document.getElementById("break-up");
-  const changeCoupleProfileAnchor = document.getElementById(
-      "change-couple-profile")
   const breakUpModal = document.getElementById("break-up-modal");
   const cancelInvitationBtn = document.getElementById("cancel-break-up-btn");
-
-  const cameraIcons = document.getElementsByClassName("bi-camera-fill");
-  const pfpContainers = document.getElementsByClassName("pfp-container");
-
-  const profilePictures = document.getElementsByClassName("pfp");
-  const pfpInputs = document.getElementsByClassName("pfp-file-input");
+  const breakupBtn = document.getElementById("breakup-btn");
+  const email = document.getElementById("email").value
 
   breakUpAnchor.onclick = function (event) {
     event.preventDefault();
@@ -20,22 +15,34 @@ document.addEventListener('DOMContentLoaded', function () {
   cancelInvitationBtn.onclick = function () {
     breakUpModal.style.display = "none";
   };
-// change-couple-profile
-  for (let i = 0; i < 3; i++) {
-    pfpContainers[i].addEventListener("click", function () {
-      pfpInputs[i].click();
-    });
+  breakupBtn.onclick = function (e) {
+    e.preventDefault();
 
-    pfpInputs[i].addEventListener("change", function (changeEvent) {
-      const file = changeEvent.target.files[0];
-
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (loadEvent) {
-          profilePictures[i].src = loadEvent.target.result;
-        };
-        reader.readAsDataURL(file);
+    fetch(
+        "/api/user/couple/breakup", {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-TOKEN': csrfToken
+          },
+          body: JSON.stringify({
+            receiverEmail: email
+          })
+        }
+    ).then(response => response.json())
+    .then(response => {
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      return response.json();
+    })
+    .then(response => {
+      console.log(response);
+      alert(response.message);
+    })
+    .catch(error => {
+      console.error("Error: ", error);
+      alert("Error: " + error.message);
     });
   }
-})
+});

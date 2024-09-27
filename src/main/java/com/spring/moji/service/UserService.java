@@ -1,6 +1,5 @@
 package com.spring.moji.service;
 
-import com.spring.moji.entity.Request;
 import com.spring.moji.entity.User;
 import jakarta.servlet.http.HttpSession;
 
@@ -18,4 +17,6 @@ public interface UserService {
   ) throws Exception;
 
   User findPartner(String email) throws Exception;
+
+  boolean isEmailAvailable(String email) throws Exception;
 }

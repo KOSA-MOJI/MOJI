@@ -106,4 +106,10 @@
                       OR USER2_EMAIL = #{email})
   </select>
 
+  <select id="countByEmail" resultType="int">
+    SELECT COUNT(*)
+    FROM users
+    WHERE email = #{email}
+  </select>
+
 </mapper>

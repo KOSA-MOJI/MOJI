@@ -2,7 +2,6 @@ package com.spring.moji.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.spring.moji.dto.request.UserRequestDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +21,7 @@ public class SignInSuccessHandler implements AuthenticationSuccessHandler {
       Authentication authentication) throws IOException, ServletException {
     log.info("로그인 인증 성공");
 
-    UserRequestDTO user = (UserRequestDTO) authentication.getPrincipal();
+    CustomerUserDetail user = (CustomerUserDetail) authentication.getPrincipal();
 
     log.info(user.toString());
     log.info("아이디 :" + user.getUsername());

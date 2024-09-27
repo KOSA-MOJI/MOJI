@@ -1,8 +1,9 @@
 package com.spring.moji.service;
 
-import com.spring.moji.dto.request.UserRequestDTO;
+import com.spring.moji.security.CustomerUserDetail;
 import com.spring.moji.entity.UserAuth;
 import com.spring.moji.entity.User;
+import com.spring.moji.mapper.RequestMapper;
 import com.spring.moji.mapper.UserMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
 
   private final PasswordEncoder passwordEncoder;
+  private final RequestMapper requestMapper;
 
   @Override
   @Transactional
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth != null && auth.isAuthenticated()) {
-      UserRequestDTO currentUser = (UserRequestDTO) auth.getPrincipal();
+      CustomerUserDetail currentUser = (CustomerUserDetail) auth.getPrincipal();
       currentUser.getUser().setProfileImageUrl(profileImageUrl);
       UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
           currentUser, auth.getCredentials(), auth.getAuthorities());
@@ -71,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth != null && auth.isAuthenticated()) {
-      UserRequestDTO currentUser = (UserRequestDTO) auth.getPrincipal();
+      CustomerUserDetail currentUser = (CustomerUserDetail) auth.getPrincipal();
       currentUser.getCouple().setCoupleProfileImage(profileImageUrl);
 
       UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
@@ -90,4 +92,11 @@ public class UserServiceImpl implements UserService {
   public User findPartner(String email) throws Exception {
     return userMapper.findPartner(email);
   }
+
+  @Override
+  public boolean isEmailAvailable(String email) throws Exception {
+    return userMapper.countByEmail(email) == 0;
+  }
+
+
 }

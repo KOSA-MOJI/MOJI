@@ -68,7 +68,6 @@
                         </div>
                     </div>
                 </div>
-                <p>박보검과 배수지 커플입니다.</p>
             </div>
             <jsp:include page="/WEB-INF/jsp/component/couple-info.jsp"/>
             <div class="btn-container d-flex justify-content-between">
@@ -80,7 +79,8 @@
                 <button
                         type="button"
                         class="btn btn-light cancel-button"
-                        id="cancel-check-btn">
+                        id="cancel-check-btn"
+                >
                     취소
                 </button>
             </div>
@@ -112,6 +112,7 @@
                         type="button"
                         class="btn btn-light cancel-button"
                         id="cancel-break-up-btn"
+                        onclick="this.href='/user/couple'"
                 >
                     취소
                 </button>

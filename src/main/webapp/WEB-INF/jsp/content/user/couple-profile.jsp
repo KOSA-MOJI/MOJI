@@ -6,6 +6,9 @@
 <security:authorize access="isAuthenticated()">
     <security:authentication property="principal" var="principal"/>
 </security:authorize>
+
+<meta name="_csrf" content="${_csrf.token}"/>
+
 <!-- css -->
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/user/profile-style.css"/>
@@ -13,7 +16,7 @@
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/user/profile-modal-style.css"/>
 
-
+<input type="hidden" value="${partner.email}" id="email"/>
 <!-- jsp -->
 <div class="main-panel">
     <div class="content-wrapper">
@@ -94,15 +97,8 @@
                 <span class="float-end text-muted">
                 <a href="/user/couple/update-profile" id="break-up"
                    style="color: rgb(255, 148, 148)"
-                >변경</a>
+                >이별</a>
                 </span>
-            <p class="clearfix">
-                <span class="float-start"> 커플 상태 변경 </span>
-                <span class="float-end text-muted">
-                <a href="#" id="change-couple-profile" style="color: rgb(255, 148, 148)"
-                >커플 끊기</a>
-                </span>
-            </p>
 
         </div>
     </div>
@@ -113,42 +109,40 @@
         <div class="card-body">
             <h4 class="card-title">커플 정보</h4>
             <p class="card-description">정보를 입력하세요</p>
-            <form class="forms-sample">
-                <div class="form-group">
-                    <label for="exampleInputName1">커플 닉네임</label>
+            <div class="form-group">
+                <label for="exampleInputName1">커플 닉네임</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="exampleInputName1"
+                        placeholder="커플 닉네임"
+                />
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail3">애칭</label>
+                <div id="nickname-form-group">
                     <input
                             type="text"
-                            class="form-control"
-                            id="exampleInputName1"
-                            placeholder="커플 닉네임"
+                            class="form-control nickname-input"
+                            id="exampleInputEmail2"
+                            placeholder="여자 애칭"
+                    />
+                    <input
+                            type="text"
+                            class="form-control nickname-input"
+                            id="exampleInputPassword4"
+                            placeholder="남자 애칭"
                     />
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail3">애칭</label>
-                    <div id="nickname-form-group">
-                        <input
-                                type="text"
-                                class="form-control nickname-input"
-                                id="exampleInputEmail2"
-                                placeholder="여자 애칭"
-                        />
-                        <input
-                                type="text"
-                                class="form-control nickname-input"
-                                id="exampleInputPassword4"
-                                placeholder="남자 애칭"
-                        />
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-success">확인</button>
-                <button
-                        type="button"
-                        class="btn btn-light cancel-button"
-                        id="cancel-info-edit-btn"
-                >
-                    취소
-                </button>
-            </form>
+            </div>
+            <button type="submit" class="btn btn-success">확인</button>
+            <button
+                    type="button"
+                    class="btn btn-light cancel-button"
+                    id="cancel-info-edit-btn"
+            >
+                취소
+            </button>
         </div>
     </div>
 </div>
@@ -171,12 +165,11 @@
                         placeholder="사유"
                 />
             </div>
-            <button type="submit" class="btn btn-success">확인</button>
+            <button type="button" class="btn btn-success" id="breakup-btn">확인</button>
             <button
                     type="button"
                     class="btn btn-light cancel-button"
-                    id="cancel-break-up-btn"
-            >
+                    id="cancel-break-up-btn">
                 취소
             </button>
         </div>

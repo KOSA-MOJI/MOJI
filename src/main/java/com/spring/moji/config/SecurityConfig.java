@@ -34,9 +34,14 @@ public class SecurityConfig {
 //    http.csrf(csrf -> csrf.disable());
 
     http.authorizeHttpRequests(auth -> auth
+        .requestMatchers("/api/user/diary/**").hasRole("COUPLE")
+        .requestMatchers("/api/user/solo/**").hasAnyRole("SOLO", "COUPLE")
+        .requestMatchers("/api/user/couple/**").hasRole("COUPLE")
+
         .requestMatchers("/user/couple/**").hasRole("COUPLE")
         .requestMatchers("/user/solo/**").hasAnyRole("COUPLE", "SOLO")
         .requestMatchers("/user/community").hasAnyRole("COUPLE", "SOLO")
+
         .anyRequest().permitAll()
     );
 
@@ -83,6 +88,7 @@ public class SecurityConfig {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
+
 
   @Bean
   public AuthenticationSuccessHandler authenticationSuccessHandler() {

@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 커플 신청 확인 모달창 토글 및 확인하기
   checkRequestBtn.onclick = function () {
-    fetch('/user/solo/api/request/check', {
+    fetch('/api/user/solo/request/check', {
       method: "GET",
       headers: {}
     })
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     formData.append('receiverEmail', emailInput.value);
 
-    fetch('/user/solo/api/request', {
+    fetch('/api/user/solo/request', {
       method: 'POST',
       headers: {
         'X-CSRF-TOKEN': csrfToken
@@ -85,12 +85,8 @@ document.addEventListener('DOMContentLoaded', function () {
   acceptRequestBtn.onclick = function () {
     const formData = new FormData();
     formData.append('requestUserEmail', requestUserEmail);
-    console.log(
-        'Preparing to send fetch request to /user/solo/api/request/accept');
-    console.log('Request User Email:', requestUserEmail);
-    console.log('CSRF Token:', csrfToken);
 
-    fetch('http://localhost:8090/user/solo/api/request/accept', {
+    fetch('http://localhost:8090/api/user/solo/request/accept', {
       method: 'POST',
       headers: {
         'X-CSRF-TOKEN': csrfToken
@@ -121,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   denyRequestBtn.onclick = function () {
 
-    fetch('http://localhost:8090/user/solo/api/request/deny', {
+    fetch('http://localhost:8090/api/user/solo/request/deny', {
       method: 'DELETE',
       headers: {
         'X-CSRF-TOKEN': csrfToken
@@ -149,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   cancelRequestBtn.onclick = function () {
-    fetch('http://localhost:8090/user/solo/api/request/cancel', {
+    fetch('http://localhost:8090/api/user/solo/request/cancel', {
       method: 'DELETE',
       headers: {
         'X-CSRF-TOKEN': csrfToken
