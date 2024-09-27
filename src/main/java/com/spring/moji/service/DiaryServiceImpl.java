@@ -122,6 +122,6 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public List<LocalDate> getDates(Long coupleId) {
-		return pageMapper.findAllByCoupleId(coupleId);
+		return pageMapper.findDateByCoupleId(coupleId);
 	}
 }

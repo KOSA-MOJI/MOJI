@@ -1,4 +1,4 @@
-const coupleId = document.getElementById("log-in-couple-id").value
+const coupleId = principalCoupleId;//document.getElementById("log-in-couple-id").value
 // const coupleName = document.getElementById("log-in-couple-id").value
 const coupleName = "광환커플2"
 let currentPage = 0;
@@ -6,6 +6,9 @@ let diaryId;
 const lazyLoadLimit = 2;
 const lazyLoadNum = 5;
 let pages = []
+
+const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
+    'content');
 
 function updatePageContent() {
   resetSideChild()
@@ -87,12 +90,31 @@ function createLeftChild(idx) {
   dateDiv.innerText = data.createdAt;
   weatherDiv.innerText = data.weather;
   dateDiv.setAttribute("style", "position: absolute; left: 10%;")
-  weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
-  dateWeatherDiv.appendChild(dateDiv)
-  dateWeatherDiv.appendChild(weatherDiv)
-  dateWeatherDiv.setAttribute("style",
-      "display: flex; flex-direction: row; width: 100%;")
-  container.appendChild(dateWeatherDiv)
+  // weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
+  // dateWeatherDiv.appendChild(dateDiv)
+  // dateWeatherDiv.appendChild(weatherDiv)
+  // dateWeatherDiv.setAttribute("style",
+  //     "display: flex; flex-direction: row; width: 100%;")
+  // container.appendChild(dateWeatherDiv)
+
+  //date css추가
+  // 인라인 스타일 추가
+  dateDiv.setAttribute("style", `
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    background-color: #f0f8ff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 1rem auto;
+    letter-spacing: 0.05rem;
+`);
+
+  // container 또는 원하는 부모 요소에 추가
+  container.appendChild(dateDiv);
 
   contentDiv.innerText = data.content;
   contentDiv.setAttribute("style",
@@ -214,8 +236,6 @@ function createRightChild(idx) {
         "display: inline-block;" +
         "align-items: center;")
 
-
-
     // 만들어진 위치 마커와 이미지연결
     data.locations.forEach((location, idx) => {
       let marker = new kakao.maps.Marker({
@@ -282,7 +302,6 @@ function createRightChild(idx) {
         "margin-top: 90px;"
     );
 
-
     img_box.setAttribute("onerror", "this.style.visibility='hidden';")
     img_container.appendChild(img_prev_btn)
     img_container.appendChild(img_box)
@@ -311,10 +330,11 @@ function deleteCurPage() {
 
 function togglePublicStatus(elem) {
   let curPage = pages[currentPage].left
-  console.log(curPage)
-  fetch(`/api/diary/public/${curPage.pageId}?publicStatus=${curPage === "y"
-      ? "false" : "true"}`, {
-    method: `POST`
+  fetch(`/user/couple/api/diary/public/${curPage.pageId}?publicStatus=${curPage.publicStatus === "y" ? "false" : "true"}`, {
+    method: `POST`,
+    headers: {
+      'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
+    }
   }).then((res) => {
     if (res.ok) {
       return null
@@ -334,8 +354,11 @@ function UploadImage(input) {
     const formData = new FormData();
     formData.append("diaryCoverImage", file);
 
-    fetch(`/api/diary/coverImage/${diaryId}`, {
+    fetch(`/user/couple/api/diary/coverImage/${coupleId}`, {
       method: "POST",
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      },
       body: formData,
     })
     .then(response => {
@@ -424,7 +447,7 @@ function preparePageTransition(direction, oldPage, newPage) {
     if (direction === 'right') {
       pageTransition.style.animation = 'page-flip-right 1s forwards';
     } else {
-      if(currentPage===0) {
+      if (currentPage === 0) {
         leftSide.classList.add('hidden');
       }
       pageTransition.style.animation = 'page-flip-left 1s forwards';
@@ -471,8 +494,14 @@ function createPagesData(pageData) {
   }
 }
 
+//coupleId 세션
 function loadDiary(id) {
-  fetch("api/diary/" + id).then((res) => {
+  console.log("id" + id)
+  fetch("api/diary/" + id, {
+    headers: {
+      'X-CSRF-TOKEN': csrfToken
+    }
+  }).then((res) => {
     console.log(id)
     if (res.ok) {
       return res.json()
@@ -511,7 +540,11 @@ async function prefetchPages(direction) {
   console.log(
       `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`)
   fetch(
-      `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`).then(
+      `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`, {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken
+        }
+      }).then(
       (res) => {
         if (res.ok) {
           return res.json()
@@ -533,5 +566,6 @@ async function prefetchPages(direction) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  console.log("커플id는" + coupleId)
   loadDiary(coupleId)
 });

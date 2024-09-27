@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.moji.mapper.LocationMapper">
+		<resultMap id="LocationResultMap" type="com.spring.moji.entity.Location">
+				<id property="locationId" column="location_id"/>
+				<result property="pageId" column="page_id"/>
+				<result property="address" column="address"/>
+				<result property="latitude" column="latitude"/>
+				<result property="longitude" column="longitude"/>
+				<result property="createdAt" column="location_created_at"/>
+				<collection property="imageUrls" ofType="com.spring.moji.entity.ImageUrl">
+						<id property="imageUrlId" column="image_url_id"/>
+						<result property="locationId" column="image_location_id"/>
+						<result property="mapImage" column="map_image"/>
+						<result property="createdAt" column="image_url_created_at"/>
+				</collection>
+		</resultMap>
+
    <select id="findAllByPageId" parameterType="java.lang.Long" resultType="com.spring.moji.entity.Location">
        select *
        from locations
@@ -15,5 +30,112 @@
     VALUES (#{pageId}, #{address}, #{latitude}, #{longitude}, sysdate)
   </insert>
 
+		<select id="findAllFirstLocation" parameterType="java.lang.Long" resultMap="LocationResultMap">
+				SELECT
+						l.location_id,
+						l.page_id,
+						l.address,
+						l.latitude,
+						l.longitude,
+						l.created_at AS location_created_at,
+						iu.image_url_id,
+						iu.location_id AS image_location_id,
+						iu.map_image,
+						iu.created_at AS image_url_created_at
+				FROM (
+								 SELECT page_id, diary_id
+								 FROM pages
+								 WHERE diary_id = (
+										 SELECT diary_id
+										 FROM diaries
+										 WHERE couple_id = #{coupleId}
+								 )
+						 ) p
+								 LEFT JOIN (
+						SELECT l.*, ROW_NUMBER() OVER (PARTITION BY l.page_id ORDER BY l.created_at ASC) AS rn
+						FROM locations l
+				) l ON p.page_id = l.page_id AND l.rn = 1
+								 LEFT JOIN (
+						SELECT iu.*, ROW_NUMBER() OVER (PARTITION BY iu.location_id ORDER BY iu.created_at ASC) AS rn
+						FROM image_urls iu
+				) iu ON l.location_id = iu.location_id AND iu.rn = 1
+				WHERE l.location_id IS NOT NULL
+				ORDER BY p.page_id
+		</select>
 
+		<select id="findScrapedLocations" parameterType="String" resultMap="LocationResultMap">
+				SELECT
+						l.location_id,
+						l.page_id,
+						l.address,
+						l.latitude,
+						l.longitude,
+						l.created_at AS location_created_at,
+						iu.image_url_id,
+						iu.location_id AS image_location_id,
+						iu.map_image,
+						iu.created_at AS image_url_created_at
+				FROM (
+								 SELECT page_id, diary_id, created_at
+								 FROM pages
+								 WHERE page_id IN (
+										 SELECT page_id
+										 FROM scraps
+										 WHERE email = #{email}
+								 )
+						 ) p
+								 LEFT JOIN (
+						SELECT l.*, ROW_NUMBER() OVER (PARTITION BY l.page_id ORDER BY l.created_at ASC) AS rn
+						FROM locations l
+				) l ON p.page_id = l.page_id AND l.rn = 1
+								 LEFT JOIN (
+						SELECT iu.*, ROW_NUMBER() OVER (PARTITION BY iu.location_id ORDER BY iu.created_at ASC) AS rn
+						FROM image_urls iu
+				) iu ON l.location_id = iu.location_id AND iu.rn = 1
+				WHERE l.location_id IS NOT NULL
+				ORDER BY p.created_at
+		</select>
+
+		<select id="findPartnerScrapedLocations" parameterType="com.spring.moji.dto.request.MapRequestDTO" resultMap="LocationResultMap">
+				SELECT
+						l.location_id,
+						l.page_id,
+						l.address,
+						l.latitude,
+						l.longitude,
+						l.created_at AS location_created_at,
+						iu.image_url_id,
+						iu.location_id AS image_location_id,
+						iu.map_image,
+						iu.created_at AS image_url_created_at
+				FROM (
+								 SELECT page_id, diary_id, created_at
+								 FROM pages
+								 WHERE page_id IN (
+										 SELECT page_id
+										 FROM scraps
+										 WHERE email = (
+												 SELECT
+														 CASE
+																 WHEN user1_email = #{email} THEN user2_email
+																 WHEN user2_email = #{email} THEN user1_email
+																 ELSE NULL
+																 END AS other_email
+												 FROM couples
+												 WHERE couple_id = #{coupleId}
+													 AND (user1_email = #{email} OR user2_email = #{email})
+										 )
+								 )
+						 ) p
+								 LEFT JOIN (
+						SELECT l.*, ROW_NUMBER() OVER (PARTITION BY l.page_id ORDER BY l.created_at ASC) AS rn
+						FROM locations l
+				) l ON p.page_id = l.page_id AND l.rn = 1
+								 LEFT JOIN (
+						SELECT iu.*, ROW_NUMBER() OVER (PARTITION BY iu.location_id ORDER BY iu.created_at ASC) AS rn
+						FROM image_urls iu
+				) iu ON l.location_id = iu.location_id AND iu.rn = 1
+				WHERE l.location_id IS NOT NULL
+				ORDER BY p.created_at
+		</select>
 </mapper>

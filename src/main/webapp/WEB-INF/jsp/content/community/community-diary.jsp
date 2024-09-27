@@ -1,12 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <link rel="stylesheet"
-      href="${pageContext.request.contextPath}/css/content/community/open-diary.css">
+      href="${pageContext.request.contextPath}/css/content/community/community-diary.css">
 <link rel="stylesheet" type="text/css"
       href="${pageContext.request.contextPath}/css/component/login-modal.css">
 
 
-<div class="community-content">
+<security:authorize access="isAuthenticated()">
+    <security:authentication property="principal" var="principal"/>
+</security:authorize>
 
+<meta name="_csrf" content="${_csrf.token}"/>
+
+<%--이메일 js에 보내주기--%>
+<script>
+  var userEmail = "${principal.email}";
+</script>
+
+<div class="community-content">
     <div class="filter-div" onclick="showModal()">
         <img src="${pageContext.request.contextPath}/image/content/community/filter-icon.png"
              alt="필터 아이콘"
@@ -60,10 +71,13 @@
                 </div>
             </div>
             <div class="scrap-component" id="favoriteButton" onclick="toggleScrap()">
+                <div id="scrap-count">
+                    갯수
+                </div>
+
                 <div class="circle-background">
                     <img src="${pageContext.request.contextPath}/image/content/community/gray-heart.png"
-                         alt="찜하기" class="scrap-button" id="scrapButton"
-                    >
+                         alt="찜하기" class="scrap-button" id="scrapButton">
                 </div>
             </div>
         </div>

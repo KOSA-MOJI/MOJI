@@ -44,8 +44,10 @@
                             <a class="dropdown-item"
                                href="${pageContext.request.contextPath}/user/logout" id="logoutBtn">로그아웃</a>
                         </li>
+                        <li><a class="dropdown-item" href="/user/solo">MyPage</a></li>
                         <li><a class="dropdown-item"
-                               href="${pageContext.request.contextPath}/user/solo">MyPage</a></li>
+                               href="${pageContext.request.contextPath}/user/couple">Couple Page</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -70,7 +72,7 @@
 
 <div class="sidebar" id="sidebar">
     <div class="profile">
-        <img src="${principal.profileImageUrl}" alt="Profile">
+        <img src="${principal.couple.coupleProfileImage}" alt="Profile">
         <h3>${principal.userName}</h3>
         <p>${principal.couple.coupleName}</p>
     </div>
@@ -88,10 +90,6 @@
             <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/About.png"
                                  alt="About Us"></a>
             </li>
-            <li><a class="dropdown-item"
-                   href="${pageContext.request.contextPath}/user/couple">Couple Page</a>
-            </li>
-
         </ul>
     </nav>
 </div>
