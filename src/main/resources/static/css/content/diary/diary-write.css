@@ -237,6 +237,7 @@
 
 /* 지도와 버튼을 담는 컨테이너 스타일 */
 .map-container {
+    left: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between; /* 지도와 버튼 사이 여백 */
@@ -246,6 +247,7 @@
 
 /* 지도 스타일 */
 .map {
+    left: 1.5rem;
     border: 2px solid #ccc; /* 지도에 테두리 추가 */
     border-radius: 12px; /* 지도의 모서리를 둥글게 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 지도에 그림자 추가 */
@@ -261,6 +263,7 @@
 
 /* 버튼 기본 스타일 */
 .mode-select-btn-container button {
+    width:90%;
     display: inline-block;
     margin-bottom: 10px; /* 버튼 사이 간격 */
     padding: 0.1rem 0.3rem;
