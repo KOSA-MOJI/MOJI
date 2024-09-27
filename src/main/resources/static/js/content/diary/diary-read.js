@@ -330,9 +330,7 @@ function deleteCurPage() {
 
 function togglePublicStatus(elem) {
   let curPage = pages[currentPage].left
-  console.log(curPage)
-  fetch(`/api/diary/public/${curPage.pageId}?publicStatus=${curPage === "y"
-      ? "false" : "true"}`, {
+  fetch(`/user/couple/api/diary/public/${curPage.pageId}?publicStatus=${curPage.publicStatus === "y" ? "false" : "true"}`, {
     method: `POST`,
     headers: {
       'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
@@ -356,7 +354,7 @@ function UploadImage(input) {
     const formData = new FormData();
     formData.append("diaryCoverImage", file);
 
-    fetch(`/api/diary/coverImage/${diaryId}`, {
+    fetch(`/user/couple/api/diary/coverImage/${coupleId}`, {
       method: "POST",
       headers: {
         'X-CSRF-TOKEN': csrfToken
