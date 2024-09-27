@@ -60,7 +60,10 @@
                     <button
                             type="button"
                             class="btn btn-light cancel-button"
-                            id="cancel-check-btn">
+                            id="cancel-check-btn"
+                            onclick="window.location.href='/user/solo'"
+                    >
+                        
                         취소
                     </button>
                 </div>
