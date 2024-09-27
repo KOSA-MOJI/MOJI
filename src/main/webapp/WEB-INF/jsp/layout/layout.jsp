@@ -41,7 +41,8 @@
                             data-bs-toggle="dropdown" aria-expanded="false"></button>
                     <ul class="dropdown-menu">
                         <li security:authorize="isAuthenticated()">
-                            <a class="dropdown-item" href="/user/logout">로그아웃</a>
+                            <a class="dropdown-item"
+                               href="${pageContext.request.contextPath}/user/logout" id="logoutBtn">로그아웃</a>
                         </li>
                         <li><a class="dropdown-item" href="/user/solo">MyPage</a></li>
                         <li><a class="dropdown-item"
@@ -71,7 +72,7 @@
 
 <div class="sidebar" id="sidebar">
     <div class="profile">
-        <img src="${principal.profileImageUrl}" alt="Profile">
+        <img src="${principal.couple.coupleProfileImage}" alt="Profile">
         <h3>${principal.userName}</h3>
         <p>${principal.couple.coupleName}</p>
     </div>

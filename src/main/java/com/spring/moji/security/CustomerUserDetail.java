@@ -1,4 +1,4 @@
-package com.spring.moji.dto.request;
+package com.spring.moji.security;
 
 import com.spring.moji.entity.Couple;
 import com.spring.moji.entity.User;
@@ -16,11 +16,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Slf4j
 @Data
 @NoArgsConstructor
-public class UserRequestDTO implements UserDetails {
+public class CustomerUserDetail implements UserDetails {
 
   private User user;
 
-  public UserRequestDTO(User user) {
+  public CustomerUserDetail(User user) {
     this.user = user;
   }
 
@@ -28,7 +28,8 @@ public class UserRequestDTO implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return user.getAuthList()
         .stream()
-        .map((auth) -> new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList());
+        .map((auth) -> new SimpleGrantedAuthority(auth.getAuth())).distinct()
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -42,19 +43,15 @@ public class UserRequestDTO implements UserDetails {
   }
 
   public String getEmail() {
-    log.info("[[  getEmail 메서드 호출됨  ]]");
     return user.getEmail();
   }
 
 
-  // jstl에서 user의 정보를 조회하는데 필요한 메서드
   public String getUserName() {
-
     return user.getUserName();
   }
 
   public LocalDate getBirthday() {
-
     return user.getBirthday();
   }
 

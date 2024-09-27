@@ -8,17 +8,11 @@
 </security:authorize>
 
 <meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
 <!-- css -->
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/user/profile-style.css"/>
-<link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous"
-/>
+
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/user/profile-modal-style.css"/>
 <link
@@ -37,7 +31,7 @@
             <!-- 정보 -->
             <div class="profile-content border-bottom text-center pb-4">
                 <div class="pfp-background">
-                    <div class="pfp-container">
+                    <div class="pfp-container central-pfp-container">
                         <img
                                 class="pfp"
                                 id="solo-pfp"
@@ -48,10 +42,11 @@
                     </div>
                 </div>
                 <div class="btn-container d-flex justify-content-between">
-                    <button class="btn btn-success btn-lg" id="couple-invitation-btn">
+                    <button class="btn btn-success btn-lg" id="couple-request-btn">
                         이메일로 커플 신청
                     </button>
-                    <button class="btn btn-success btn-lg" id="check-invitation-btn">
+                    <button class="btn btn-success btn-lg" id="check-request-btn"
+                    >
                         커플 신청 확인
                     </button>
                 </div>
@@ -66,44 +61,49 @@
         </div>
     </div>
 
-    <!-- 커플신청 확인 모n창 -->
-    <div class="modal" id="check-invitation-modal">
+    <!-- 커플신청 확인 모달창 -->
+    <div class="modal" id="check-request-modal">
         <div class="modal-content">
             <div class="card-body">
                 <h4 class="card-title">커플 신청 확인</h4>
+                <input value="${requestUserEmail}" id="request-user-email"/>
                 <p class="card-description">
-                    000으로부터 커플신청이 왔습니다. 수락하시겠습니까?
+                    ${requestUserName}으로부터 커플신청이 왔습니다. 수락하시겠습니까?
                 </p>
-                <form class="forms-sample">
-                    <div class="profile-content text-center pb-4">
-                        <div class="pfp-background">
-                            <div class="pfp-container">
-                                <img
-                                        class="pfp"
-                                        src="${pageContext.request.contextPath}/image/content/user/man.jpg"
-                                        alt="남자의 프로필 사진"
-                                />
-                            </div>
-                        </div>
-                        <p>안녕하세요 인도사람 입니다</p>
-                        <div class="btn-container d-flex justify-content-between">
-                            <button type="submit" class="btn btn-success">확인</button>
-                            <button
-                                    type="button"
-                                    class="btn btn-light cancel-button"
-                                    id="cancel-check-btn"
-                            >
-                                취소
-                            </button>
+                <div class="profile-content text-center pb-4">
+                    <div class="pfp-background">
+                        <div class="pfp-container">
+                            <img
+                                    class="pfp"
+                                    src="${requestUserProfileImageSource}"
+                            />
+
                         </div>
                     </div>
-                </form>
+                    <div class="btn-container d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success"
+                                id="accept-request-btn">수락
+                        </button>
+
+                        <button type="submit" class="btn btn-success btn-light"
+                                id="deny-request-btn">거절
+                        </button>
+
+                        <button
+                                type="button"
+                                class="btn btn-light cancel-button"
+                                id="cancel-check-btn"
+                        >
+                            취소
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- 이메일로 커플 신청 모달창 -->
-    <div id="couple-invitation-modal" class="modal">
+    <div id="couple-request-modal" class="modal">
         <div class="modal-content">
             <div class="card-body">
                 <h4 class="card-title">이메일로 커플 신청</h4>
@@ -130,12 +130,15 @@
                             placeholder="Email"
                     />
                 </div>
-                <button type="submit" class="btn btn-success" id="request-confirm-btn">확인
+                <button type="submit" class="btn btn-success" id="send-request-btn">전송
+                </button>
+
+                <button type="submit" class="btn btn-light" id="cancel-request-btn">커플신청 취소
                 </button>
                 <button
                         type="button"
                         class="btn btn-light cancel-button"
-                        id="cancel-invitation-btn"
+                        id="cancel-modal-btn"
                 >
                     취소
                 </button>

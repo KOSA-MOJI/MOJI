@@ -5,7 +5,6 @@ import com.spring.moji.service.UserService;
 import java.security.Principal;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +37,7 @@ public class HomeController {
     int result = userService.join(user);
 
     if (result > 0) {
-      return "redirect:/user/sign-in";
+      return "redirect:/signin";
     }
     return "redirect:/signup?error";
   }
@@ -54,4 +53,11 @@ public class HomeController {
     String loginId = principal != null ? principal.getName() : "guest";
     return "user/sign-in";
   }
+
+  @GetMapping("/forbidden")
+  public String forbidden() {
+    return "user/forbidden";
+  }
+
+
 }

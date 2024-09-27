@@ -1,4 +1,3 @@
-
 @font-face {
   font-family: "KyoboHand";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff") format("woff");
@@ -9,8 +8,7 @@
 
 body {
   font-family: "KyoboHand";
-  background-color: #ffeeb3;
-  
+  background-color: #fffae7;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,7 +59,7 @@ label {
 .btn {
   font-family: "KyoboHand";
   padding: 10px;
-  background-color: #ffe898;
+  background-color: #ffe4f8;
   border: none;
   border-radius: 5px;
   font-size: 23px;
@@ -70,8 +68,14 @@ label {
 }
 
 .btn:hover {
-  background-color: #ddb347;
+  background-color: #d5a3fd;
 }
+
+.btn:active {
+  background-color: #cc83fb;
+
+}
+
 
 .text-center {
   text-align: center;
@@ -87,7 +91,6 @@ label {
 }
 
 
-
 .auth-links {
   display: flex;
   justify-content: space-between;
@@ -95,18 +98,17 @@ label {
 }
 
 
-
 /* 모달창 */
 .modal {
-  display: none; /* 기본적으로 숨김 */
-  position: fixed; 
-  z-index: 1; 
+  /*display: none; !* 기본적으로 숨김 *!*/
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; 
-  height: 100%; 
-  overflow: auto; 
-  background-color: rgba(0, 0, 0, 0.4); 
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  /*background-color: rgba(0, 0, 0, 0.4);*/
   display: flex; /* 모달을 flex로 설정 */
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
@@ -115,11 +117,11 @@ label {
 .modal-content {
   border-radius: 2%;
   background-color: #fefefe;
-  margin: auto; 
+  margin: auto;
   padding: 2rem;
-  border: 1px solid #888;
+  /*border: 1px solid #888;*/
   max-width: 450px;
-  width: 80%; 
+  width: 80%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: relative; /* 자식 요소의 위치 기준 */
 }
