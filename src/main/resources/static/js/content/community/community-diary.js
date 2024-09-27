@@ -301,7 +301,7 @@ function createLeftChild(pageData) {
   contentDiv.innerText = data.content;
   contentDiv.setAttribute("style",
       `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment};`
-      + "overflow-y: auto; max-height: 100%; padding: 10px;margin-top:-4rem;"
+      + "overflow-y: auto; max-height: 100%; padding: 10px;margin-top:-1rem;"
   )
 
   topContentDiv.setAttribute("style",
