@@ -92,7 +92,6 @@ public class DiaryServiceImpl implements DiaryService {
 	@Override
 	@Transactional
 	public void createPage(PageInsertRequestDTO pageInsertRequestDTO) {
-		System.out.println(pageInsertRequestDTO.toString());
 		pageMapper.insertPage(pageInsertRequestDTO);
 		Long pageId = pageInsertRequestDTO.getPageId();
 		for (LocationInsertRequestDTO locationInsertRequestDTO : pageInsertRequestDTO.getLocations()) {
@@ -110,13 +109,14 @@ public class DiaryServiceImpl implements DiaryService {
 	public void deletePageById(Long pageId) {
 		List<ImageUrl> imageUrls = imageUrlMapper.findAllByPageId(pageId);
 		for (ImageUrl imageUrl : imageUrls) {
-			System.out.println(imageUrl.getMapImage());
+			if(imageUrl==null) continue;
 			try {
 				s3Util.deleteFile(imageUrl.getMapImage());
-			}catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+
 		pageMapper.deleteByPageId(pageId);
 	}
 

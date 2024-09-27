@@ -13,6 +13,7 @@ import com.spring.moji.dto.request.MapRequestDTO;
 import com.spring.moji.entity.Location;
 import com.spring.moji.entity.Page;
 import com.spring.moji.service.MapService;
+import com.spring.moji.service.MapServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("api/map")
 public class MapRestController {
-	private final MapService mapService;
+	private final MapServiceImpl mapService;
 
 	// 커플 다이어리로 가져오기
 	@GetMapping("/diary/{coupleId}")

@@ -57,7 +57,7 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public Page getPublicPage(Long pageId) {
-		return pageMapper.findByPageId(pageId);
+		return pageMapper.findPublicPageByPageId(pageId);
 	}
 
 	@Override

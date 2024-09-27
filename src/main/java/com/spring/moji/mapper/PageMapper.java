@@ -16,6 +16,7 @@ public interface PageMapper {
 	List<Page> findByDuration(PageRequestDTO pageRequestDTO);
 	List<Page> findPublicByDistance(CommunityRequestDTO communityRequestDTO);
 	Page findByPageId(Long pageId);
+	Page findPublicPageByPageId(Long pageId);
 	// Page findRecentPage(PageRequestDTO pageRequestDTO);
 	void deleteByPageId(Long pageId);
 	void insertPage(PageInsertRequestDTO pageInsertRequestDTO);
