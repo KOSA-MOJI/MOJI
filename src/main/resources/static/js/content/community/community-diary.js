@@ -396,7 +396,8 @@ function createRightChild(pageData) {
     }, 100); // 지연 시간 100ms (필요에 따라 조정 가능)
   }
 
-  cur_img_list = img_lists
+  //TODO
+  cur_img_list = img_lists[0]
   img_box.src = cur_img_list[cur_img_pointer]
 
   img_next_btn.innerText = "▶"
@@ -429,7 +430,7 @@ function createRightChild(pageData) {
       "visibility: visible;" +
       "margin-top: 75px;"
   );
-  img_box.setAttribute("onerror", "this.style.visibility='hidden';")
+  // img_box.setAttribute("onerror", "this.style.visibility='hidden';")
 
   img_container.appendChild(img_prev_btn)
   img_container.appendChild(img_box)
