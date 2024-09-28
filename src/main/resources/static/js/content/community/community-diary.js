@@ -298,10 +298,10 @@ function createLeftChild(pageData) {
   container.appendChild(dateWeatherDiv) //(상단영역)
 
   //일기내용
-  contentDiv.innerText = data.content;
+  contentDiv.innerHTML = data.content;
   contentDiv.setAttribute("style",
-      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment};`
-      + "overflow-y: auto; max-height: 100%; padding: 10px;margin-top:-1rem;"
+      `font-size:${fontSize}px; color:${fontColor}; text-align:${textAlignment};`
+      + "overflow-y: auto; max-height: 100%; padding: 10px;margin-top:-1rem; width: 100%"
   )
 
   topContentDiv.setAttribute("style",
@@ -396,7 +396,6 @@ function createRightChild(pageData) {
     }, 100); // 지연 시간 100ms (필요에 따라 조정 가능)
   }
 
-  //TODO
   cur_img_list = img_lists[0]
   img_box.src = cur_img_list[cur_img_pointer]
 
