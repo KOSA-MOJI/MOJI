@@ -2,10 +2,13 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <security:authorize access="isAuthenticated()">
     <security:authentication property="principal" var="principal"/>
 </security:authorize>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,11 +29,8 @@
 <div class="main-content" id="mainContent">
     <header class="header">
             <span class="header-left">
-    <%--            <img src="${pageContext.request.contextPath}/image/common/diaryLogo.png"--%>
-    <%--                 class="menu-bar" alt="Menu Bar">--%>
-                <img src="${pageContext.request.contextPath}/image/common/logo.png"
-                     class="logo" alt="Logo" style="width: 7rem; height: 7rem">
-    <%--            <h1>Moji</h1>--%>
+                    <img src="${pageContext.request.contextPath}/image/common/logo.png"
+                         class="logo" alt="Logo" style="width: 7rem; height: 7rem">
             </span>
         <div class="header-right">
             <div class="user-info">
@@ -72,15 +72,26 @@
 
 <div class="sidebar" id="sidebar">
     <div class="profile">
-        <img src="${principal.couple.coupleProfileImage}" alt="Profile">
-        <h3>${principal.userName}</h3>
-        <p>${principal.couple.coupleName}</p>
+        <c:choose>
+            <c:when test="${fn:contains(principal.authorities, 'ROLE_COUPLE')}">
+                <img src="${principal.couple.coupleProfileImage}" alt="Profile">
+                <h3>${principal.userName}</h3>
+                <p>${principal.couple.coupleName}</p>
+            </c:when>
+            <c:otherwise>
+                <img src="${principal.profileImageUrl}" alt="Profile">
+                <h3>${principal.userName}</h3>
+            </c:otherwise>
+        </c:choose>
     </div>
     <nav>
         <ul>
-            <li><a href="/user/couple/diary"><img
-                    src="${pageContext.request.contextPath}/image/common/diary.png"
-                    alt="Diary"></a></li>
+
+            <c:if test="${fn:contains(principal.authorities, 'ROLE_COUPLE')}">
+                <li><a href="/user/couple/diary"><img
+                        src="${pageContext.request.contextPath}/image/common/diary.png"
+                        alt="Diary"></a></li>
+            </c:if>
             <li><a href="/user/community"><img
                     src="${pageContext.request.contextPath}/image/common/community.png"
                     alt="Community"></a>
