@@ -72,15 +72,17 @@
 
 <div class="sidebar" id="sidebar">
     <div class="profile">
-        <c:if test="${fn:contains(principal.authorities, 'ROLE_COUPLE')}">
-            <img src="${principal.couple.coupleProfileImage}" alt="Profile">
-            <h3>${principal.userName}</h3>
-            <p>${principal.couple.coupleName}</p>
-        </c:if>
-        <c:if test="${fn:contains(principal.authorities, 'ROLE_SOLO')}">
-            <img src="${principal.profileImageUrl}" alt="Profile">
-            <h3>${principal.userName}</h3>
-        </c:if>
+        <c:choose>
+            <c:when test="${fn:contains(principal.authorities, 'ROLE_COUPLE')}">
+                <img src="${principal.couple.coupleProfileImage}" alt="Profile">
+                <h3>${principal.userName}</h3>
+                <p>${principal.couple.coupleName}</p>
+            </c:when>
+            <c:otherwise>
+                <img src="${principal.profileImageUrl}" alt="Profile">
+                <h3>${principal.userName}</h3>
+            </c:otherwise>
+        </c:choose>
     </div>
     <nav>
         <ul>
