@@ -13,7 +13,6 @@
   var principalCoupleName = "${principal.couple.coupleName}";
 </script>
 
-
 <div id="book-container">
     <!-- Book content section -->
 
