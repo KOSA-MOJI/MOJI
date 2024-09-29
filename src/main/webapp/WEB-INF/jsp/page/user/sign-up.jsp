@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,54 +18,46 @@
         <div class="form-group">
             <label for="email">이메일</label>
             <div class="email-container">
-                <input type="email" id="email" placeholder="example@naver.com" name="email" value="${user.email != null ? user.email : ''}">
-                <button type="button" class="btn btn-success" id="check-email">이메일 중복 확인
-                </button>
+                <input type="email" id="email" placeholder="example@naver.com" name="email"
+                       value="${user != null ? user.email : ''}">
+                <button type="button" class="btn btn-success" id="check-email">이메일 중복 확인</button>
             </div>
-            <span id="emailResult"></span>
+            <span id="emailResult" style="color: ${emailCheckColor != null ? emailCheckColor : 'black'}">
+                ${emailResultMessage != null ? emailResultMessage : ''}
+            </span>
         </div>
         <div class="form-group">
             <label for="password">비밀번호</label>
-            <input type="password" id="password" placeholder="********"
-                   oninput="validatePassword()" name="password" value="${user.password != null ? user.password : ''}">
+            <input type="password" id="password" placeholder="********" oninput="validatePassword()"
+                   name="password" value="${user != null ? user.password : ''}">
             <small id="passwordValidation" class="form-text text-danger" style="display: none;">비밀번호는
                 8~15자, 영문, 숫자, 특수문자를 포함해야 합니다.</small>
         </div>
         <div class="form-group">
             <label for="confirmPassword">비밀번호 확인</label>
-            <input type="password" id="confirmPassword" placeholder="********"
-                   oninput="checkPasswordMatch()" value="${user.password != null ? user.password : ''}">
-            <small id="passwordHelp" class="form-text text-danger" style="display: none;">비밀번호가 일치하지
-                않습니다.</small>
+            <input type="password" id="confirmPassword" placeholder="********" oninput="checkPasswordMatch()">
+            <small id="passwordHelp" class="form-text text-danger" style="display: none;">비밀번호가 일치하지 않습니다.</small>
         </div>
-
         <div class="form-group">
             <label for="username">이름</label>
-            <input type="text" id="username" placeholder="홍길동" name="userName" value="${user.userName != null ? user.userName : ''}">
+            <input type="text" id="username" placeholder="홍길동" name="userName"
+                   value="${user != null ? user.userName : ''}">
         </div>
-
         <div class="form-group">
             <label for="birthdate">생년월일</label>
-            <input type="date" id="birthdate" class="date-selec" name="birthday" value="${user.birthday != null ? user.birthday : ''}">
+            <input type="date" id="birthdate" class="date-selec" name="birthday"
+                   value="${user != null ? user.birthday : ''}">
         </div>
-
-
-        <!-- 성별 -->
         <div class="form-group">
             <label for="genderSelect">성별</label>
-            <select id="genderSelect" class="gender-select" name="gender" value="${user.gender != null ? user.gender : ''}">
-                <option value="F">여자</option>
-                <option value="M">남자</option>
+            <select id="genderSelect" class="gender-select" name="gender">
+                <option value="F" ${user != null && user.gender == 'F' ? 'selected' : ''}>여자</option>
+                <option value="M" ${user != null && user.gender == 'M' ? 'selected' : ''}>남자</option>
             </select>
         </div>
-
-
         <button type="submit" class="btn btn-success">회원가입</button>
-        <!-- 에러 메시지 표시 -->
         <c:if test="${not empty errorMessage}">
-            <div class="error-msg">
-                    ${errorMessage}
-            </div>
+            <div class="error-msg">${errorMessage}</div>
         </c:if>
     </form>
 </div>
@@ -76,5 +67,3 @@
 
 </body>
 </html>
-
-
