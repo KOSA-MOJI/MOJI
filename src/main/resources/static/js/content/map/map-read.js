@@ -1,10 +1,11 @@
-const coupleId = document.getElementById("coupleId").value;
-const email= document.getElementById("email").value;
+// const coupleId = document.getElementById("coupleId").value;
 let curStatus = 1;
 let map, clusterer;
 let pageMarkers = [];
 let polylines= [];
 let curLocMarker;
+const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
+  'content');
 
 function resetMap() {
   console.log("리셋 호출")
@@ -51,7 +52,12 @@ function fetchLocations(caseNum) {
       : `/api/map/scrap/partner?coupleId=${coupleId}&email=${email}`;
 
   console.log(url)
-  fetch(url)
+  fetch(url,{
+    method:'GET',
+    headers: {
+      'X-CSRF-TOKEN': csrfToken
+    }
+  })
     .then((res) => res.json())
     .then((locations) => {
       if (!Array.isArray(locations)) {
@@ -129,7 +135,12 @@ function createOverlay(location){
 function showPageLocation(pageId) {
   resetMap()
   console.log(pageId);
-  fetch(`/api/map/page/${pageId}`).then((res) => {
+  fetch(`/api/map/page/${pageId}`,{
+    method:'GET',
+    headers: {
+      'X-CSRF-TOKEN': csrfToken
+    }
+  }).then((res) => {
     if (res.ok) return res.json();
     throw Error();
   }).then((data) => {
