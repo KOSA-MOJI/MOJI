@@ -44,16 +44,16 @@
                             <a class="dropdown-item"
                                href="${pageContext.request.contextPath}/user/logout" id="logoutBtn">로그아웃</a>
                         </li>
-                        <li><a class="dropdown-item" href="/user/solo">MyPage</a></li>
+                        <li><a class="dropdown-item" href="/user/solo">마이페이지</a></li>
                         <li><a class="dropdown-item"
-                               href="${pageContext.request.contextPath}/user/couple">Couple Page</a>
+                               href="${pageContext.request.contextPath}/user/couple">커플페이지</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <p class="auth-options" id="authOptions" style="display: none; margin-right: 10px;">
-                <a href="#" id="signupBtn" class="auth-link">Signup</a> |
-                <a href="#" id="loginBtn" class="auth-link">Login</a>
+                <a href="#" id="signupBtn" class="auth-link">회원가입</a> |
+                <a href="#" id="loginBtn" class="auth-link">로그인</a>
                 <%--            <p class="notification">🔔</p>--%>
             </p>
         </div>
