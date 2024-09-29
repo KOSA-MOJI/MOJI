@@ -1,5 +1,12 @@
 # MOJI
-한국소프트웨어산업협회 공공SI개발자과정 2차 팀 프로젝트 MOJI입니다.
+<p align="center" >
+  <img src="https://github.com/user-attachments/assets/84208774-2e09-4bc1-8142-e44aeaf5eead"
+    width = "430" height = "320">
+</p>
+<b>한국소프트웨어산업협회 공공SI개발자과정 2차 팀 프로젝트 MOJI입니다.</b>
+
+<br><br>
+
 ## ⛳Ground Rule
 - 10시 스크럼 회의
 - 4시 전 완성된 파트 pr올리기
@@ -8,7 +15,14 @@
 - 기능 단위 커밋 올리기
 - 주말 오후 2시까지 출석
 
+<br>
+
 ## ERD
+<p align="center" >
+  <img src="https://github.com/user-attachments/assets/85d9abbf-8f49-46cb-8ad5-0f20417dfbd2"
+    width = "530" height = "350">
+</p>
+
 
 ## 화면 구상
 ### 회원가입
