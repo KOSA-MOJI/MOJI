@@ -127,9 +127,14 @@
   height: 40%;
 }
 
+#selected_location {
+  margin-right: .5rem;
+}
+
 #selected-location-box {
   display: flex;
   flex-direction: row;
+  padding: .5rem;
 }
 
 #image-container {
