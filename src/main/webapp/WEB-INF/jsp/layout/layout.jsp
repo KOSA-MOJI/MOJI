@@ -29,11 +29,8 @@
 <div class="main-content" id="mainContent">
     <header class="header">
             <span class="header-left">
-    <%--            <img src="${pageContext.request.contextPath}/image/common/diaryLogo.png"--%>
-    <%--                 class="menu-bar" alt="Menu Bar">--%>
-                <img src="${pageContext.request.contextPath}/image/common/logo.png"
-                     class="logo" alt="Logo" style="width: 7rem; height: 7rem">
-    <%--            <h1>Moji</h1>--%>
+                    <img src="${pageContext.request.contextPath}/image/common/logo.png"
+                         class="logo" alt="Logo" style="width: 7rem; height: 7rem">
             </span>
         <div class="header-right">
             <div class="user-info">
