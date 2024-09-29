@@ -197,7 +197,7 @@ function createRightChild(idx) {
         "position:absolute; top:2%; right:11%; width:7%; height:6%;")
     setPublicStatusBtn.setAttribute("onclick", "togglePublicStatus(this)")
     deletePageBtn.src = `${imagePath}delete-page.png`
-    setPublicStatusBtn.src = `${imagePath}${pages[idx].left.publicStatus
+    setPublicStatusBtn.src = `${imagePath}${pages[idx].left.publicStatus==='y'
         ? "show-page.png" : "hide-page.png"}`
     btnContainer.setAttribute("style",
         "display:flex; flex-direction: row; top:0;width : 100%; height: 8%")
@@ -246,7 +246,7 @@ function createRightChild(idx) {
         position: new kakao.maps.LatLng(location.latitude, location.longitude),
       });
       img_lists.push(location.imageUrls.length > 0 ? location.imageUrls.map(
-          data => data.mapImage) : [`${imageCommonPath}no-image.png`])
+          data => data.mapImage) : [`${imageCommonPath}color-no-image.png`])
       kakao.maps.event.addListener(marker, 'click', function () {
         cur_img_list = img_lists[idx]
         cur_img_pointer = 0
@@ -585,13 +585,12 @@ async function prefetchPages(direction,addDateNum) {
       currentPage += dataList.length
     }
   }).then(()=>{
-    if(curSize===pages.length) {
+    if(curSize===pages.length && addDateNum < 400) {
       prefetchPages(direction,addDateNum+10)
     }
   }).catch(err => console.log(err))
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log("커플id는" + coupleId)
   loadDiary(coupleId)
 });
