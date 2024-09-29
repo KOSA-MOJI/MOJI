@@ -59,12 +59,13 @@ public class SecurityConfig {
     http.sessionManagement(session -> session
         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
         .maximumSessions(1)
-        .maxSessionsPreventsLogin(true)
+        .maxSessionsPreventsLogin(false)
     );
     http.logout((logout) -> logout
         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
         .logoutSuccessUrl("/signin")
-        .invalidateHttpSession(true));
+        .invalidateHttpSession(true)
+        .deleteCookies("JSESSIONID"));
 
     http.exceptionHandling(exceptions -> exceptions
         .accessDeniedHandler(accessDeniedHandler())
