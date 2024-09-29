@@ -14,9 +14,6 @@
 </script>
 
 
-<a href="/user/couple/diary/write" class="diary-write-btn">
-    <img src="${pageContext.request.contextPath}/image/content/diary/write.png" alt="Diary">
-</a>
 <div id="book-container">
     <!-- Book content section -->
 
