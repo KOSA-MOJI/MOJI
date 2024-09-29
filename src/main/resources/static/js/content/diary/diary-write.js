@@ -2,6 +2,9 @@ const fontSizeSelect = document.getElementById('fontSizeSelect');
 const fontColor = document.getElementById('fontColor');
 const textContent = document.getElementById('textContentPage1');
 const mainImage = document.getElementById('mainImage');
+let curFontSize = 15
+let curFontColor = "#000000"
+let curTextAlignment = "center"
 // const templateDiv = document.getElementById('template');
 // const templateButton = document.getElementById('templateButton');
 // // 템플릿 버튼 클릭 시 템플릿 목록 표시/숨기기
@@ -28,18 +31,23 @@ function curDate() {
 
 fontSizeSelect.addEventListener('change', function () {
   textContent.style.fontSize = fontSizeSelect.value + 'px';
+  curFontSize=fontSizeSelect.value;
 });
 fontColor.addEventListener('input', function () {
   textContent.style.color = fontColor.value;
+  curFontColor = fontColor.value;
 });
 document.getElementById('alignLeft').addEventListener('click', function () {
   textContent.style.textAlign = 'left';
+  curTextAlignment = "left"
 });
 document.getElementById('alignCenter').addEventListener('click', function () {
   textContent.style.textAlign = 'center';
+  curTextAlignment="center"
 });
 document.getElementById('alignRight').addEventListener('click', function () {
   textContent.style.textAlign = 'right';
+  curTextAlignment="right"
 });
 textContent.addEventListener('focus', function () {
   if (textContent.innerHTML.trim() === '일기 내용 입력') {
@@ -504,10 +512,6 @@ document.addEventListener("DOMContentLoaded", function () {
   async function saveResults() {
     let date = document.getElementById("dateInput").value;
     let content = document.getElementById("textContentPage1").innerHTML;
-    let fontSize = document.getElementById("fontSizeSelect").value;
-    let fontColor = document.getElementById("fontColor").value;
-    let textAlignment = textContent.style.textAlign;
-    console.log(date);
 
     // 비동기 함수 호출 시 await 사용
     let disabledDates = await getDisabledDates(coupleId);
@@ -536,9 +540,9 @@ document.addEventListener("DOMContentLoaded", function () {
       createdAt: date,
       weather: "맑음",
       content: content,
-      fontSize: Number(fontSize),
-      fontColor: fontColor,
-      textAlignment: textAlignment,
+      fontSize: Number(curFontSize),
+      fontColor: curFontColor,
+      textAlignment: curTextAlignment,
       publicStatus: 'n',
       templateId: Number(curTemplateId),
       locations: locationImageMap
