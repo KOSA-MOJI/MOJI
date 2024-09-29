@@ -37,9 +37,10 @@ function checkLoad() {
     return
   }
   if (currentPage < lazyLoadLimit) {
-    prefetchPages("before")
-  } else if ((pages.length - lazyLoadLimit) < currentPage) {
-    prefetchPages("after")
+    prefetchPages("before",0)
+  }
+  if ((pages.length - lazyLoadLimit) < currentPage) {
+    prefetchPages("after",0)
   }
 }
 
@@ -235,13 +236,17 @@ function createRightChild(idx) {
         "align-items: center;")
 
     // 만들어진 위치 마커와 이미지연결
+    if(data.locations.length===0) {
+      img_lists = [[`${imageCommonPath}color-no-image.png`]]
+    }
+
     data.locations.forEach((location, idx) => {
       let marker = new kakao.maps.Marker({
         map: map,
         position: new kakao.maps.LatLng(location.latitude, location.longitude),
       });
       img_lists.push(location.imageUrls.length > 0 ? location.imageUrls.map(
-          data => data.mapImage) : ["https://placehold.co/400"])
+          data => data.mapImage) : [`${imageCommonPath}no-image.png`])
       kakao.maps.event.addListener(marker, 'click', function () {
         cur_img_list = img_lists[idx]
         cur_img_pointer = 0
@@ -266,7 +271,8 @@ function createRightChild(idx) {
       }, 100); // 지연 시간 100ms (필요에 따라 조정 가능)
     }
 
-    cur_img_list = img_lists
+
+    cur_img_list = img_lists[0]
     console.log("여기가 오류 cur_img_list", cur_img_list)
     img_box.src = cur_img_list[cur_img_pointer]
 
@@ -301,7 +307,7 @@ function createRightChild(idx) {
         "margin-top: 90px;"
     );
 
-    img_box.setAttribute("onerror", "this.style.visibility='hidden';")
+    // img_box.setAttribute("onerror", "this.style.visibility='hidden';")
     img_container.appendChild(img_prev_btn)
     img_container.appendChild(img_box)
     img_container.appendChild(img_next_btn)
@@ -548,19 +554,18 @@ function addDays(date, days) {
   return result.toISOString().split('T')[0];
 }
 
-async function prefetchPages(direction) {
+async function prefetchPages(direction,addDateNum) {
+  let curSize = pages.length
   let curDate = pages[currentPage].left.createdAt
   let date = new Date(curDate);
   let startDate, endDate;
   if (direction === 'after') {
     startDate = addDays(date, 1)
-    endDate = addDays(date, lazyLoadNum)
+    endDate = addDays(date, lazyLoadNum+addDateNum)
   } else {
-    startDate = addDays(date, -(lazyLoadNum))
+    startDate = addDays(date, -(lazyLoadNum+addDateNum))
     endDate = addDays(date, -1)
   }
-  console.log(
-      `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`)
   fetch(
       `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`, {
         headers: {
@@ -573,7 +578,6 @@ async function prefetchPages(direction) {
         }
         throw Error()
       }).then((data) => {
-    console.log(data)
     let dataList = []
     data.forEach((page) => {
       dataList.push(createPagesData(page))
@@ -583,6 +587,10 @@ async function prefetchPages(direction) {
     } else {
       pages.splice(currentPage, 0, ...dataList)
       currentPage += dataList.length
+    }
+  }).then(()=>{
+    if(curSize===pages.length) {
+      prefetchPages(direction,addDateNum+10)
     }
   }).catch(err => console.log(err))
 }
