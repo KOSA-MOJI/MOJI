@@ -9,8 +9,8 @@
 <meta name="_csrf" content="${_csrf.token}"/>
 
 <script>
-  var principalCoupleId = "${principal.couple.couple_id}";
-  var principalCoupleName = "${principal.couple.coupleName}";
+  let principalCoupleId = "${principal.couple.couple_id}";
+  let principalCoupleName = "${principal.couple.coupleName}";
 </script>
 
 <div id="book-container">
@@ -33,4 +33,5 @@
 </a>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApiKey}"></script>
 <script> const imagePath = `${pageContext.request.contextPath}/image/content/diary/`;</script>
+<script> const imageCommonPath = `${pageContext.request.contextPath}/image/common/`;</script>
 <script src="${pageContext.request.contextPath}/js/content/diary/diary-read.js"></script>

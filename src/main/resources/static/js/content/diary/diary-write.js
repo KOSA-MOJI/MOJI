@@ -2,6 +2,9 @@ const fontSizeSelect = document.getElementById('fontSizeSelect');
 const fontColor = document.getElementById('fontColor');
 const textContent = document.getElementById('textContentPage1');
 const mainImage = document.getElementById('mainImage');
+let curFontSize = 15
+let curFontColor = "#000000"
+let curTextAlignment = "center"
 // const templateDiv = document.getElementById('template');
 // const templateButton = document.getElementById('templateButton');
 // // 템플릿 버튼 클릭 시 템플릿 목록 표시/숨기기
@@ -28,23 +31,23 @@ function curDate() {
 
 fontSizeSelect.addEventListener('change', function () {
   textContent.style.fontSize = fontSizeSelect.value + 'px';
-  curFontSize = fontSizeSelect.value
+  curFontSize=fontSizeSelect.value;
 });
 fontColor.addEventListener('input', function () {
   textContent.style.color = fontColor.value;
-  curFontColor = fontColor.value
+  curFontColor = fontColor.value;
 });
 document.getElementById('alignLeft').addEventListener('click', function () {
   textContent.style.textAlign = 'left';
-  curTextAlignment = 'left'
+  curTextAlignment = "left"
 });
 document.getElementById('alignCenter').addEventListener('click', function () {
   textContent.style.textAlign = 'center';
-  curTextAlignment = 'center'
+  curTextAlignment="center"
 });
 document.getElementById('alignRight').addEventListener('click', function () {
   textContent.style.textAlign = 'right';
-  curTextAlignment = 'right'
+  curTextAlignment="right"
 });
 textContent.addEventListener('focus', function () {
   if (textContent.innerHTML.trim() === '일기 내용 입력') {
@@ -58,21 +61,6 @@ textContent.addEventListener('blur', function () {
     textContent.style.color = '#888';
   }
 });
-
-function getDisabledDates(coupleId) {
-  fetch(`/user/couple/api/diary/date/${coupleId}`, {
-    headers: {
-      'X-CSRF-TOKEN': csrfToken
-    }
-  }).then((res) => {
-    if (res.ok) {
-      return res.json()
-    }
-    throw Error()
-  }).then((data) => {
-    return data
-  }).catch(err => console.log(err))
-}
 
 document.addEventListener("DOMContentLoaded", function () {
   let curTemplateId;
@@ -128,11 +116,28 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
   console.log("loaded");
-  let curTextAlignment = "right";
   const coupleId = principalCoupleId;
 
   // 날짜 정보
-  let disableDate = getDisabledDates(coupleId) || []
+  let getDisabledDates = async function(coupleId) {
+    try {
+      let res = await fetch(`/user/couple/api/diary/date/${coupleId}`, {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken
+        }
+      });
+      if (!res.ok) {
+        throw new Error('Failed to fetch disabled dates');
+      }
+      let result = await res.json();
+      return result;
+    } catch (err) {
+      console.log(err);
+      return [];  // 에러 발생 시 빈 배열 반환
+    }
+  };
+
+
   let dateInput = document.getElementById("dateInput");
   dateInput.max = curDate()
   dateInput.min = `1900-01-01`
@@ -460,109 +465,113 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
 
-      // 이미지 삭제
-      document.getElementById("removeImageBtn").addEventListener("click", () => {
-        if (curLocation.image_urls.length > 0) {
-          let preuploadImageUrl = curLocation.image_urls[curImageIndex]
-          fetch(`/user/couple/api/diary/preupload?imageUrl=${preuploadImageUrl}`, {
-            method: 'DELETE',
-            headers: {
-              'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
-            }
-          })
-          .then((response) => {
-            if (!response.ok) {
-              throw Error();
-            }
-          })
-          .then(() => {
-            curLocation.image_urls.splice(curImageIndex, 1)
-            curImageIndex = Math.max(curImageIndex -= 1, 0)
-            displayImages()
-          })
-          .catch(error => {
-            console.error('파일 전송 실패:', error);
-          });
-        }
-      })
-
-      function nextImageBtnOnClick() {
-        curImageIndex++;
-        console.log(curLocation)
-        displayImages()
-      }
-
-      function prevImageBtnOnClick() {
-        curImageIndex--;
-        console.log(curLocation)
-        displayImages()
-      }
-
-      document.getElementById("nextImageButton").addEventListener("click",
-          nextImageBtnOnClick)
-      document.getElementById("prevImageButton").addEventListener("click",
-          prevImageBtnOnClick)
-
-      // 다이어리 작성결과 저장
-      function saveResults() {
-        let date = document.getElementById("dateInput").value
-        let content = document.getElementById("textContentPage1").innerHTML
-        let fontSize = document.getElementById("fontSizeSelect").value
-        let fontColor = document.getElementById("fontColor").value
-        if (disableDate.includes(date)) {
-          alert("해당 날짜는 이미 작성된 페이지가 존재합니다!")
-          return
-        }
-        let locationImageMap = []
-        for (let location of locations) {
-          let locationInfo = {}
-          locationInfo.address = location.address
-          locationInfo.latitude = location.latitude
-          locationInfo.longitude = location.longitude
-          let imageUrlInfo = []
-          for (let imageUrl of location.image_urls) {
-            imageUrlInfo.push({mapImage: imageUrl})
-          }
-          locationInfo.imageUrls = imageUrlInfo
-          locationImageMap.push(locationInfo)
-        }
-
-        let result = {
-          coupleId: coupleId,
-          createdAt: date,
-          weather: "맑음",
-          content: content,
-          fontSize: Number(fontSize),
-          fontColor: fontColor,
-          textAlignment: curTextAlignment,
-          publicStatus: 'n',
-          templateId: Number(curTemplateId),
-          locations: locationImageMap
-        }
-        console.log(result)
-        // 데이터 저장 요청
-        fetch("/user/couple/api/diary/page", {
-          method: "POST",
+    // 이미지 삭제
+    document.getElementById("removeImageBtn").addEventListener("click", () => {
+      if (curLocation.image_urls.length > 0) {
+        let preuploadImageUrl = curLocation.image_urls[curImageIndex]
+        fetch(`/user/couple/api/diary/preupload?imageUrl=${preuploadImageUrl}`, {
+          method: 'DELETE',
           headers: {
-            'X-CSRF-TOKEN': csrfToken,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(result)
-        })
-        .then((res) => {
-          if (res.ok) {
-            alert("저장되었습니다."); // 저장 성공 메시지
-            // 저장 성공 시 /user/couple/diary로 이동
-            window.location.href = "/user/couple/diary";
-            return;
+            'X-CSRF-TOKEN': csrfToken // CSRF 헤더 추가
           }
-          throw new Error('Failed to save the diary page');
         })
-        .catch(err => {
-          console.error(err);
-          alert("저장에 실패했습니다. 다시 시도해주세요.");
+        .then((response) => {
+          if (!response.ok) {
+            throw Error();
+          }
+        })
+        .then(() => {
+          curLocation.image_urls.splice(curImageIndex, 1)
+          curImageIndex = Math.max(curImageIndex -= 1, 0)
+          displayImages()
+        })
+        .catch(error => {
+          console.error('파일 전송 실패:', error);
         });
       }
+    })
 
-      document.getElementById("saveBtn").addEventListener("click", saveResults)
-    });
+    function nextImageBtnOnClick() {
+      curImageIndex++;
+      console.log(curLocation)
+      displayImages()
+    }
+
+    function prevImageBtnOnClick() {
+      curImageIndex--;
+      console.log(curLocation)
+      displayImages()
+    }
+
+    document.getElementById("nextImageButton").addEventListener("click",
+        nextImageBtnOnClick)
+    document.getElementById("prevImageButton").addEventListener("click",
+        prevImageBtnOnClick)
+
+  // 다이어리 작성결과 저장
+  async function saveResults() {
+    let date = document.getElementById("dateInput").value;
+    let content = document.getElementById("textContentPage1").innerHTML;
+
+    // 비동기 함수 호출 시 await 사용
+    let disabledDates = await getDisabledDates(coupleId);
+
+    if (disabledDates.includes(date)) {
+      alert("해당 날짜는 이미 작성된 페이지가 존재합니다!");
+      return;
+    }
+
+    let locationImageMap = [];
+    for (let location of locations) {
+      let locationInfo = {};
+      locationInfo.address = location.address;
+      locationInfo.latitude = location.latitude;
+      locationInfo.longitude = location.longitude;
+      let imageUrlInfo = [];
+      for (let imageUrl of location.image_urls) {
+        imageUrlInfo.push({ mapImage: imageUrl });
+      }
+      locationInfo.imageUrls = imageUrlInfo;
+      locationImageMap.push(locationInfo);
+    }
+
+    let result = {
+      coupleId: coupleId,
+      createdAt: date,
+      weather: "맑음",
+      content: content,
+      fontSize: Number(curFontSize),
+      fontColor: curFontColor,
+      textAlignment: curTextAlignment,
+      publicStatus: 'n',
+      templateId: Number(curTemplateId),
+      locations: locationImageMap
+    };
+
+    console.log(result);
+
+    // 데이터 저장 요청
+    fetch("/user/couple/api/diary/page", {
+      method: "POST",
+      headers: {
+        'X-CSRF-TOKEN': csrfToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(result)
+    })
+      .then((res) => {
+        if (res.ok) {
+          alert("저장되었습니다."); // 저장 성공 메시지
+          // 저장 성공 시 /user/couple/diary로 이동
+          window.location.href = "/user/couple/diary";
+          return;
+        }
+        throw new Error('Failed to save the diary page');
+      })
+      .catch(err => {
+        console.error(err);
+        alert("저장에 실패했습니다. 다시 시도해주세요.");
+      });
+    }
+  document.getElementById("saveBtn").addEventListener("click", saveResults)
+});

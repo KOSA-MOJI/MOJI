@@ -141,6 +141,7 @@
     </div>
 </div>
 <!-- js -->
+<script> const imgCommonPath = `${pageContext.request.contextPath}/image/common/`;</script>
 <script src="${pageContext.request.contextPath}/js/content/diary/diary-write.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApiKey}&libraries=services"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

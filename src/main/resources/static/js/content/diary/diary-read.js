@@ -1,5 +1,4 @@
-const coupleId = principalCoupleId;//document.getElementById("log-in-couple-id").value
-// const coupleName = document.getElementById("log-in-couple-id").value
+const coupleId = principalCoupleId;
 const coupleName = principalCoupleName
 let currentPage = 0;
 let diaryId;
@@ -38,9 +37,10 @@ function checkLoad() {
     return
   }
   if (currentPage < lazyLoadLimit) {
-    prefetchPages("before")
-  } else if ((pages.length - lazyLoadLimit) < currentPage) {
-    prefetchPages("after")
+    prefetchPages("before",0)
+  }
+  if ((pages.length - lazyLoadLimit) < currentPage) {
+    prefetchPages("after",0)
   }
 }
 
@@ -115,11 +115,10 @@ function createLeftChild(idx) {
 
   // container 또는 원하는 부모 요소에 추가
   container.appendChild(dateDiv);
-
-  contentDiv.innerText = data.content;
+  contentDiv.innerHTML = data.content;
   contentDiv.setAttribute("style",
-      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment};`
-      + "overflow-y: auto; max-height: 100%; padding: 10px;"
+      `font-size:${fontSize}px; color:${fontColor}; text-align:${textAlignment};`
+      + "overflow-y: auto; max-height: 100%; padding: 10px; width: 100%;"
   )
 
   topContentDiv.setAttribute("style",
@@ -198,7 +197,7 @@ function createRightChild(idx) {
         "position:absolute; top:2%; right:11%; width:7%; height:6%;")
     setPublicStatusBtn.setAttribute("onclick", "togglePublicStatus(this)")
     deletePageBtn.src = `${imagePath}delete-page.png`
-    setPublicStatusBtn.src = `${imagePath}${pages[idx].left.publicStatus
+    setPublicStatusBtn.src = `${imagePath}${pages[idx].left.publicStatus==='y'
         ? "show-page.png" : "hide-page.png"}`
     btnContainer.setAttribute("style",
         "display:flex; flex-direction: row; top:0;width : 100%; height: 8%")
@@ -237,13 +236,17 @@ function createRightChild(idx) {
         "align-items: center;")
 
     // 만들어진 위치 마커와 이미지연결
+    if(data.locations.length===0) {
+      img_lists = [[`${imageCommonPath}color-no-image.png`]]
+    }
+
     data.locations.forEach((location, idx) => {
       let marker = new kakao.maps.Marker({
         map: map,
         position: new kakao.maps.LatLng(location.latitude, location.longitude),
       });
       img_lists.push(location.imageUrls.length > 0 ? location.imageUrls.map(
-          data => data.mapImage) : ["https://placehold.co/400"])
+          data => data.mapImage) : [`${imageCommonPath}color-no-image.png`])
       kakao.maps.event.addListener(marker, 'click', function () {
         cur_img_list = img_lists[idx]
         cur_img_pointer = 0
@@ -268,8 +271,8 @@ function createRightChild(idx) {
       }, 100); // 지연 시간 100ms (필요에 따라 조정 가능)
     }
 
-    cur_img_list = img_lists
-    console.log("여기가 오류 cur_img_list", cur_img_list)
+
+    cur_img_list = img_lists[0]
     img_box.src = cur_img_list[cur_img_pointer]
 
     img_next_btn.innerText = "▶"
@@ -303,7 +306,7 @@ function createRightChild(idx) {
         "margin-top: 90px;"
     );
 
-    img_box.setAttribute("onerror", "this.style.visibility='hidden';")
+    // img_box.setAttribute("onerror", "this.style.visibility='hidden';")
     img_container.appendChild(img_prev_btn)
     img_container.appendChild(img_box)
     img_container.appendChild(img_next_btn)
@@ -325,9 +328,6 @@ function deleteCurPage() {
     alert("페이지를 삭제하시겠습니까?")
     console.dir(pages[currentPage].left);
     let curPage = pages[currentPage].left;
-    //TODO: 페이지 삭제
-    // 페이지 실제 DB에서 삭제
-    // 이전페이지로 옮기고, 해당 아이디를 기준으로 pages에서도 삭제
 
     fetch(`/user/couple/api/diary/page/${curPage.pageId}`, {
       method: `DELETE`,
@@ -521,7 +521,7 @@ function createPagesData(pageData) {
 //coupleId 세션
 function loadDiary(id) {
   console.log("id" + id)
-  fetch("api/diary/" + id, {
+  fetch("/user/couple/api/diary/" + id, {
     headers: {
       'X-CSRF-TOKEN': csrfToken
     }
@@ -550,19 +550,18 @@ function addDays(date, days) {
   return result.toISOString().split('T')[0];
 }
 
-async function prefetchPages(direction) {
+async function prefetchPages(direction,addDateNum) {
+  let curSize = pages.length
   let curDate = pages[currentPage].left.createdAt
   let date = new Date(curDate);
   let startDate, endDate;
   if (direction === 'after') {
     startDate = addDays(date, 1)
-    endDate = addDays(date, lazyLoadNum)
+    endDate = addDays(date, lazyLoadNum+addDateNum)
   } else {
-    startDate = addDays(date, -(lazyLoadNum))
+    startDate = addDays(date, -(lazyLoadNum+addDateNum))
     endDate = addDays(date, -1)
   }
-  console.log(
-      `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`)
   fetch(
       `api/diary/page/${diaryId}?startDate=${startDate}&endDate=${endDate}`, {
         headers: {
@@ -575,7 +574,6 @@ async function prefetchPages(direction) {
         }
         throw Error()
       }).then((data) => {
-    console.log(data)
     let dataList = []
     data.forEach((page) => {
       dataList.push(createPagesData(page))
@@ -586,10 +584,13 @@ async function prefetchPages(direction) {
       pages.splice(currentPage, 0, ...dataList)
       currentPage += dataList.length
     }
+  }).then(()=>{
+    if(curSize===pages.length && addDateNum < 400) {
+      prefetchPages(direction,addDateNum+10)
+    }
   }).catch(err => console.log(err))
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log("커플id는" + coupleId)
   loadDiary(coupleId)
 });

@@ -17,7 +17,10 @@
             <result property="diaryId" column="page_diary_id"/>
             <result property="createdAt" column="page_created_at"/>
             <result property="weather" column="weather"/>
-            <result property="content" column="content"/>
+						<result property="content" column="content"/>
+						<result property="fontSize" column="font_size"/>
+						<result property="fontColor" column="font_color"/>
+						<result property="textAlignment" column="text_alignment"/>
             <result property="publicStatus" column="public_status"/>
             <association property="template" javaType="com.spring.moji.entity.Template">
                 <id property="templateId" column="template_id"/>
@@ -54,6 +57,9 @@
             p.created_at AS page_created_at,
             p.weather,
             p.content,
+            p.font_size,
+            p.font_color,
+            p.text_alignment,
             p.public_status,
             t.template_id,
             t.template_image,
