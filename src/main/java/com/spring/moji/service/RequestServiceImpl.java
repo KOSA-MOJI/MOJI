@@ -21,6 +21,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Slf4j
 @Service
@@ -86,18 +87,21 @@ public class RequestServiceImpl implements RequestService {
   }
 
   @Override
-  @Transactional
   public int acceptRequest(String requestEmail, String receiverEmail, HttpSession session)
       throws Exception {
-    int result = requestMapper.addCouple(requestEmail, receiverEmail);
+    int result = 0;
+    Request request = requestMapper.checkRequest(receiverEmail);
 
-    if (result > 0) {
+    if (request != null) {
+      result += requestMapper.addCouple(requestEmail, receiverEmail);
       result += requestMapper.addCoupleAuth(requestEmail);
       result += requestMapper.addCoupleAuth(receiverEmail);
 
       result += requestMapper.deleteRequest(receiverEmail);
       result += userMapper.convertCoupleStatusIntoCouple(requestEmail);
       result += userMapper.convertCoupleStatusIntoCouple(receiverEmail);
+    } else {
+      return 0;
     }
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();

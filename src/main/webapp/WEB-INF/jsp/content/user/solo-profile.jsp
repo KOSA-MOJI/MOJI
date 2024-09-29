@@ -66,7 +66,7 @@
         <div class="modal-content">
             <div class="card-body">
                 <h4 class="card-title">커플 신청 확인</h4>
-                <input value="${requestUserEmail}" id="request-user-email"/>
+                <input type="hidden" value="${requestUserEmail}" id="request-user-email"/>
                 <p class="card-description">
                     ${requestUserName}으로부터 커플신청이 왔습니다. 수락하시겠습니까?
                 </p>

@@ -80,6 +80,8 @@
                         type="button"
                         class="btn btn-light cancel-button"
                         id="cancel-check-btn"
+                        onclick="window.location.href='/user/couple'"
+
                 >
                     취소
                 </button>
@@ -112,7 +114,6 @@
                         type="button"
                         class="btn btn-light cancel-button"
                         id="cancel-break-up-btn"
-                        onclick="this.href='/user/couple'"
                 >
                     취소
                 </button>

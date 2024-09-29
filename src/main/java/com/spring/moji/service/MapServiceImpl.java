@@ -38,6 +38,7 @@ public class MapServiceImpl implements MapService {
 
 	@Override
 	public Page getPage(Long pageId) {
+		System.out.println(pageId);
 		return pageMapper.findByPageId(pageId);
 	}
 }

@@ -41,6 +41,7 @@ public class SecurityConfig {
         .requestMatchers("/user/couple/**").hasRole("COUPLE")
         .requestMatchers("/user/solo/**").hasAnyRole("COUPLE", "SOLO")
         .requestMatchers("/user/community").hasAnyRole("COUPLE", "SOLO")
+        .requestMatchers("/user/map").hasAnyRole("COUPLE", "SOLO")
 
         .anyRequest().permitAll()
     );

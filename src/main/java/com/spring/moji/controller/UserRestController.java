@@ -108,11 +108,11 @@ public class UserRestController {
 
     log.info("acceptRequest 호출완료, 결과 : {}", result);
 
-    if (result > 0) {
+    if (result == 6) {
       responseBody.put("message", "커플 신청을 성공적으로 받았습니다.");
 
-    } else {
-      responseBody.put("message", "알 수없는 오류가 발생했습니다.");
+    } else if (result == 0) {
+      responseBody.put("message", "진행중인 커플 신청이 존재하지 않습니다.");
     }
     return ResponseEntity.ok().body(responseBody);
   }
