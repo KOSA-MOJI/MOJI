@@ -153,18 +153,9 @@
         <div class="card-body">
             <h4 class="card-title">커플 끊기 신청</h4>
             <p class="card-description">
-                커플 끊기 신청 후 회원님에게 40일간 유예기간이 적용되며 유예기간
-                동안 회원님은 커플 게시물을 조회할 수 없습니다
+                커플 끊기를 하시겠습니까?
             </p>
-            <div class="form-group">
-                <label for="exampleInputEmail3">사유를 입력하세요</label>
-                <input
-                        type="email"
-                        class="form-control"
-                        id="exampleInputEmail3"
-                        placeholder="사유"
-                />
-            </div>
+
             <button type="button" class="btn btn-success" id="breakup-btn">확인</button>
             <button
                     type="button"
