@@ -1,11 +1,14 @@
-# MOJI
+
 <p align="center" >
   <img src="https://github.com/user-attachments/assets/84208774-2e09-4bc1-8142-e44aeaf5eead"
-    width = "430" height = "320">
+    width = "450" height = "380">
 </p>
-<b>한국소프트웨어산업협회 공공SI개발자과정 2차 팀 프로젝트 MOJI입니다.</b>
 
-<br><br>
+# 🔰 프로젝트 소개
+MOJI는 커플들이 데이트 코스와 사진을 공유하며, 서로의 일기를 통해 근처 데이트 코스 및 경험을 나눌 수 있는 서비스입니다.
+한국소프트웨어산업협회 공공SI개발자과정 2차 팀 프로젝트 MOJI입니다.
+
+<br>
 
 ## ⛳Ground Rule
 - 10시 스크럼 회의
@@ -19,8 +22,7 @@
 
 ## ERD
 <p align="center" >
-  <img src="https://github.com/user-attachments/assets/85d9abbf-8f49-46cb-8ad5-0f20417dfbd2"
-    width = "530" height = "350">
+  <img src="https://github.com/user-attachments/assets/85d9abbf-8f49-46cb-8ad5-0f20417dfbd2">
 </p>
 
 
