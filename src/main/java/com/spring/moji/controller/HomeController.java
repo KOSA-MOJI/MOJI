@@ -33,13 +33,15 @@ public class HomeController {
   }
 
   @PostMapping("/signup-process")
-  public String signUpProcess(User user) throws Exception {
-    int result = userService.join(user);
+  public String signUpProcess(User user, Model model) throws Exception {
+    int result = userService.join(user, model);
 
     if (result > 0) {
       return "redirect:/signin";
     }
-    return "redirect:/signup?error";
+    // 에러가 있으면 다시 회원가입 페이지로 이동하지만, 리다이렉트 대신 바로 JSP 페이지 반환
+    model.addAttribute("user", user); // 입력한 사용자 데이터를 다시 모델에 넣음
+    return "user/sign-up";
   }
 
   @GetMapping("/find-info")
