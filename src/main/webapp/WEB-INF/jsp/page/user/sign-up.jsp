@@ -51,8 +51,8 @@
         <div class="form-group">
             <label for="genderSelect">성별</label>
             <select id="genderSelect" class="gender-select" name="gender">
-                <option value="F" ${user != null && user.gender == 'F' ? 'selected' : ''}>여자</option>
-                <option value="M" ${user != null && user.gender == 'M' ? 'selected' : ''}>남자</option>
+                <option value="F">여자</option>
+                <option value="M">남자</option>
             </select>
         </div>
         <button type="submit" class="btn btn-success">회원가입</button>

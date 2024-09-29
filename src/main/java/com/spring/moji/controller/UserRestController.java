@@ -1,5 +1,8 @@
 package com.spring.moji.controller;
 
+import com.spring.moji.dto.request.BreakupRequestDTO;
+import com.spring.moji.dto.request.CoupleInfoEditRequestDTO;
+import com.spring.moji.dto.request.UserInfoEditRequestDTO;
 import com.spring.moji.security.CustomerUserDetail;
 import com.spring.moji.entity.User;
 import com.spring.moji.service.RequestServiceImpl;
@@ -14,9 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,10 +39,11 @@ public class UserRestController {
 
   @PostMapping({"/solo/update-profile"})
   public ResponseEntity<?> updateProfileProcess(
-      @RequestParam("file") MultipartFile file,
-      @RequestParam("email") String email,
+      @ModelAttribute UserInfoEditRequestDTO userInfoEditRequestDTO,
       HttpSession session)
       throws Exception {
+    MultipartFile file = userInfoEditRequestDTO.getFile();
+    String email = userInfoEditRequestDTO.getEmail();
     if (file != null) {
       String profileImageUrl = s3Util.uploadFile(file);
       userService.updateProfileImageUrl(email, profileImageUrl, session);
@@ -46,28 +53,39 @@ public class UserRestController {
   }
 
   @PostMapping({"/couple/update-profile"})
-  public ResponseEntity<?> updateCoupleProfileProcess(
-      @RequestParam("file") MultipartFile file,
+  public ResponseEntity<Map<String, String>> updateCoupleProfileProcess(
+      @ModelAttribute CoupleInfoEditRequestDTO coupleInfoEditRequestDTO,
       @AuthenticationPrincipal CustomerUserDetail user,
       HttpSession session)
       throws Exception {
-    if (file != null) {
-      String profileImageUrl = s3Util.uploadFile(file);
-      userService.updateCoupleProfile(
-          user.getCouple().getCouple_id()
-          , user.getCouple().getCoupleName()
-          , profileImageUrl
-          , session
-      );
+    MultipartFile file = coupleInfoEditRequestDTO.getFile();
+    String profileImageUrl;
+
+    if (file != null && !file.isEmpty()) {
+      profileImageUrl = s3Util.uploadFile(file);
+    } else {
+      profileImageUrl = user.getCouple().getCoupleProfileImage();
     }
+
+    int result = userService.updateCoupleProfile(
+        user.getCouple().getCouple_id()
+        , coupleInfoEditRequestDTO.getCoupleName()
+        , profileImageUrl
+        , session
+    );
+    log.info("db에 커플네임이 바꼈는지 여부 {}", result);
+
     return ResponseEntity.ok()
-        .body(Map.of("message", "Profile updated successfully", "redirectUrl", "/user/solo/"));
+        .body(Map.of("message", "Profile updated successfully",
+            "couple_id", user.getCouple().getCouple_id().toString()
+        ));
+
   }
 
 
   @PostMapping("/solo/request")
   public ResponseEntity<?> requestCouple(@AuthenticationPrincipal CustomerUserDetail user,
-      @RequestParam("receiverEmail") String receiverEmail) throws Exception {
+      @RequestPart("receiverEmail") String receiverEmail) throws Exception {
     String requestEmail = user.getEmail();
     String message = requestService.requestCouple(requestEmail, receiverEmail);
 
@@ -152,12 +170,17 @@ public class UserRestController {
 
   @DeleteMapping("/couple/breakup")
   public ResponseEntity<?> breakup(@AuthenticationPrincipal CustomerUserDetail user,
-      @RequestParam("receiverEmail") String receiverEmail) throws Exception {
+      @RequestBody BreakupRequestDTO breakupRequestDTO, HttpSession session) throws Exception {
     Map<String, Object> responseBody = new HashMap<>();
     responseBody.put("alert", true);
 
-    int result = requestService.breakup(user.getEmail(), receiverEmail);
+    String receiverEmail = breakupRequestDTO.getReceiverEmail();
+    log.info("파트너의 이메일 : {}", receiverEmail);
+    log.info("결별하는 사람의 이메일 : {}", user.getEmail());
 
+    int result = requestService.breakup(user.getEmail(), receiverEmail, session);
+
+    log.info("결별의 결과 {} ", result);
     if (result > 0) {
       responseBody.put("message", "헤어졌습니다.");
 

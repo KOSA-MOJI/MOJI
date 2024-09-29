@@ -30,7 +30,8 @@
     <header class="header">
             <span class="header-left">
                     <img src="${pageContext.request.contextPath}/image/common/logo.png"
-                         class="logo" alt="Logo" style="width: 7rem; height: 7rem">
+                         class="logo" alt="Logo" style="width: 7rem; height: 7rem"
+                         onclick="window.location.href = '/user/community';">
             </span>
         <div class="header-right">
             <div class="user-info">

@@ -95,12 +95,17 @@ public class UserServiceImpl implements UserService {
       , String profileImageUrl
       , HttpSession session)
       throws Exception {
-    int result = userMapper.updateCoupleProfile(coupleId, profileImageUrl, coupleName);
+    int result = userMapper.updateCoupleProfile(coupleId, profileImageUrl,
+        coupleName); // 여기에 바꿀 커플 이름과 url을 넣어줘야 함
 
+    // 세션 정보를 바꾸는 부분
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
     if (auth != null && auth.isAuthenticated()) {
+
       CustomerUserDetail currentUser = (CustomerUserDetail) auth.getPrincipal();
       currentUser.getCouple().setCoupleProfileImage(profileImageUrl);
+      currentUser.getCouple().setCoupleName(coupleName);
 
       UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
           currentUser, auth.getCredentials(), auth.getAuthorities());
@@ -109,7 +114,6 @@ public class UserServiceImpl implements UserService {
 
       session.setAttribute("coupleProfileImage", profileImageUrl);
       session.setAttribute("coupleName", coupleName);
-      log.info("Profile image URL updated in session and authentication object");
     }
     return result;
   }

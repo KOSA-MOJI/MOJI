@@ -18,5 +18,5 @@ public interface RequestService {
 
   int cancelRequest(String email) throws Exception;
 
-  int breakup(String requestEmail, String receiverEmail) throws Exception;
+  int breakup(String requestEmail, String receiverEmail, HttpSession session) throws Exception;
 }

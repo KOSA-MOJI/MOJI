@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const couplePfpContainer = document.getElementById("couple-pfp-container");
   const pfpInput = document.getElementById("couple-pfp-file-input");
+  const coupleNameInput = document.getElementById("couple-name-input");
 
   const profilePicture = document.getElementById("couple-pfp");
   const saveBtn = document.getElementById("save-profile-update-btn");
@@ -27,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
   saveBtn.addEventListener("click", function (event) {
     event.preventDefault();
     const formData = new FormData();
+
+    formData.append('coupleName', coupleNameInput.value)
 
     if (pfpInput.files[0]) {
       formData.append('file', pfpInput.files[0]);
@@ -55,5 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error("Error: ", error);
       alert("Error: " + error.message);
     });
+
   });
 });

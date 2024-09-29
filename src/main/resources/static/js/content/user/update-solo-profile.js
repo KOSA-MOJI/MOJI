@@ -27,8 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (pfpInput.files[0]) {
       formData.append('file', pfpInput.files[0]);
-    } else {
-      formData.append('file', null);
     }
 
     formData.append('email', document.getElementById("email").innerText);
