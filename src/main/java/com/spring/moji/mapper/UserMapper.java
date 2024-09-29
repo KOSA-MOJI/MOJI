@@ -23,6 +23,8 @@ public interface UserMapper {
 
   int convertCoupleStatusIntoCouple(String email) throws Exception;
 
+  int convertCoupleStatusIntoSolo(String email) throws Exception;
+
   User findPartner(String email) throws Exception;
 
   int countByEmail(String email);

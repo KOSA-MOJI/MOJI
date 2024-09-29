@@ -19,7 +19,8 @@
         <div class="form-group">
             <label for="email">이메일</label>
             <div class="email-container">
-                <input type="email" id="email" placeholder="example@naver.com" name="email">
+                <input type="email" id="email" placeholder="example@naver.com" name="email"
+                       required>
                 <button type="button" class="btn btn-success" id="check-email">이메일 중복 확인
                 </button>
             </div>
@@ -28,26 +29,26 @@
         <div class="form-group">
             <label for="password">비밀번호</label>
             <input type="password" id="password" placeholder="********"
-                   oninput="validatePassword()" name="password">
+                   oninput="validatePassword()" name="password" required>
             <small id="passwordValidation" class="form-text text-danger" style="display: none;">비밀번호는
                 8~15자, 영문, 숫자, 특수문자를 포함해야 합니다.</small>
         </div>
         <div class="form-group">
             <label for="confirmPassword">비밀번호 확인</label>
             <input type="password" id="confirmPassword" placeholder="********"
-                   oninput="checkPasswordMatch()">
+                   oninput="checkPasswordMatch()" required>
             <small id="passwordHelp" class="form-text text-danger" style="display: none;">비밀번호가 일치하지
                 않습니다.</small>
         </div>
 
         <div class="form-group">
             <label for="username">이름</label>
-            <input type="text" id="username" placeholder="홍길동" name="userName">
+            <input type="text" id="username" placeholder="홍길동" name="userName" required>
         </div>
 
         <div class="form-group">
             <label for="birthdate">생년월일</label>
-            <input type="date" id="birthdate" class="date-selec" name="birthday">
+            <input type="date" id="birthdate" class="date-selec" name="birthday" required>
         </div>
 
 

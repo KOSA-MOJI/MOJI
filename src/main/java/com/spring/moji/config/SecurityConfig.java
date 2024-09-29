@@ -31,19 +31,19 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-//    http.csrf(csrf -> csrf.disable());
+    http.csrf(csrf -> csrf.disable());
 
     http.authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/user/diary/**").hasRole("COUPLE")
-        .requestMatchers("/api/user/solo/**").hasAnyRole("SOLO", "COUPLE")
-        .requestMatchers("/api/user/couple/**").hasRole("COUPLE")
+//        .requestMatchers("/api/user/diary/**").hasRole("COUPLE")
+//        .requestMatchers("/api/user/solo/**").hasAnyRole("SOLO", "COUPLE")
+//        .requestMatchers("/api/user/couple/**").hasRole("COUPLE")
+//
+//        .requestMatchers("/user/couple/**").hasRole("COUPLE")
+//        .requestMatchers("/user/solo/**").hasAnyRole("COUPLE", "SOLO")
+//        .requestMatchers("/user/community").hasAnyRole("COUPLE", "SOLO")
+//        .requestMatchers("/user/map").hasAnyRole("COUPLE", "SOLO")
 
-        .requestMatchers("/user/couple/**").hasRole("COUPLE")
-        .requestMatchers("/user/solo/**").hasAnyRole("COUPLE", "SOLO")
-        .requestMatchers("/user/community").hasAnyRole("COUPLE", "SOLO")
-        .requestMatchers("/user/map").hasAnyRole("COUPLE", "SOLO")
-
-        .anyRequest().permitAll()
+            .anyRequest().permitAll()
     );
 
     http.formLogin(form -> form

@@ -14,6 +14,10 @@
   max-width: none !important;
 }
 
+.modal .card-body {
+  padding: 10px;
+}
+
 .modal .btn-success {
   background-color: #ffe4f8;
   width: 156px;

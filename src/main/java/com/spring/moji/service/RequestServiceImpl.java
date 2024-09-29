@@ -141,8 +141,12 @@ public class RequestServiceImpl implements RequestService {
   public int breakup(String requestEmail, String receiverEmail) throws Exception {
     int result = 0;
     result += requestMapper.deleteCoupleAuth(requestEmail);
-    result += requestMapper.deleteCoupleAuth(requestEmail);
+    result += requestMapper.deleteCoupleAuth(receiverEmail);
+
     result += requestMapper.deleteCouple(requestEmail);
+
+    result += userMapper.convertCoupleStatusIntoSolo(requestEmail);
+    result += userMapper.convertCoupleStatusIntoSolo(receiverEmail);
     return result;
   }
 }

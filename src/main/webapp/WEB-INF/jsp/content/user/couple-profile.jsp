@@ -16,7 +16,7 @@
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/content/user/profile-modal-style.css"/>
 
-<input type="hidden" value="${partner.email}" id="email"/>
+<input value="${partner.email}" id="email"/>
 <!-- jsp -->
 <div class="main-panel">
     <div class="content-wrapper">

@@ -80,6 +80,12 @@
     where email = #{email}
   </update>
 
+  <update id="convertCoupleStatusIntoSolo">
+    update users
+    set COUPLE_STATUS = 0
+    where email = #{email}
+  </update>
+
   <update id="updateCoupleProfile">
     update COUPLES
     set COUPLE_PROFILE_IMAGE = #{profileImageUrl},

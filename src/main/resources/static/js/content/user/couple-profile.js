@@ -5,8 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const breakUpModal = document.getElementById("break-up-modal");
   const cancelInvitationBtn = document.getElementById("cancel-break-up-btn");
   const breakupBtn = document.getElementById("breakup-btn");
-  const email = document.getElementById("email").value
+  const receiverEmail = document.getElementById("email").value
 
+  console.log(receiverEmail);
   breakUpAnchor.onclick = function (event) {
     event.preventDefault();
     breakUpModal.style.display = "block";
@@ -22,22 +23,21 @@ document.addEventListener('DOMContentLoaded', function () {
         "/api/user/couple/breakup", {
           method: 'DELETE',
           headers: {
-            'X-CSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': csrfToken,
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            receiverEmail: email
+            'receiverEmail': receiverEmail
           })
         }
-    ).then(response => response.json())
+    )
     .then(response => {
-      console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
     .then(response => {
-      console.log(response);
       alert(response.message);
     })
     .catch(error => {

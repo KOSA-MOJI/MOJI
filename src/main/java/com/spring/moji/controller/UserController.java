@@ -59,11 +59,11 @@ public class UserController {
     return "user/profile-page";
   }
 
-  @PostMapping({"/couple/breakup"})
-  public String breakup(Model model) {
-    model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/update-couple-profile.jsp");
-    return "user/profile-page";
-  }
+//  @PostMapping({"/couple/breakup"})
+//  public String breakup(Model model) {
+//    model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/update-couple-profile.jsp");
+//    return "user/profile-page";
+//  }
 
 }
 

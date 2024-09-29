@@ -26,7 +26,7 @@
             <h3 class="page-title">Profile</h3>
         </div>
         <div class="profile-card">
-            <input type="text" value="${principal.couple.coupleName}">
+            <input type="text" value="${principal.couple.coupleName}" id="couple-name-input">
             <div class="profile-content border-bottom text-center pb-4">
                 <div class="triple-pfp-container">
                     <div class="individual pfp-background">
