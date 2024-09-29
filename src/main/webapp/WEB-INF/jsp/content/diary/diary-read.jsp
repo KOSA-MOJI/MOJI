@@ -9,14 +9,10 @@
 <meta name="_csrf" content="${_csrf.token}"/>
 
 <script>
-  var principalCoupleId = "${principal.couple.couple_id}";
-  var principalCoupleName = "${principal.couple.coupleName}";
+  let principalCoupleId = "${principal.couple.couple_id}";
+  let principalCoupleName = "${principal.couple.coupleName}";
 </script>
 
-
-<a href="/user/couple/diary/write" class="diary-write-btn">
-    <img src="${pageContext.request.contextPath}/image/content/diary/write.png" alt="Diary">
-</a>
 <div id="book-container">
     <!-- Book content section -->
 

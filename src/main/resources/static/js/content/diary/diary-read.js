@@ -1,5 +1,4 @@
-const coupleId = principalCoupleId;//document.getElementById("log-in-couple-id").value
-// const coupleName = document.getElementById("log-in-couple-id").value
+const coupleId = principalCoupleId;
 const coupleName = principalCoupleName
 let currentPage = 0;
 let diaryId;
