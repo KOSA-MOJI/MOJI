@@ -114,11 +114,10 @@ function createLeftChild(idx) {
 
   // container 또는 원하는 부모 요소에 추가
   container.appendChild(dateDiv);
-
-  contentDiv.innerText = data.content;
+  contentDiv.innerHTML = data.content;
   contentDiv.setAttribute("style",
-      `font-size:${fontSize}px; font-color:${fontColor}; text-align:${textAlignment};`
-      + "overflow-y: auto; max-height: 100%; padding: 10px;"
+      `font-size:${fontSize}px; color:${fontColor}; text-align:${textAlignment};`
+      + "overflow-y: auto; max-height: 100%; padding: 10px; width: 100%;"
   )
 
   topContentDiv.setAttribute("style",
@@ -520,7 +519,7 @@ function createPagesData(pageData) {
 //coupleId 세션
 function loadDiary(id) {
   console.log("id" + id)
-  fetch("api/diary/" + id, {
+  fetch("/user/couple/api/diary/" + id, {
     headers: {
       'X-CSRF-TOKEN': csrfToken
     }
