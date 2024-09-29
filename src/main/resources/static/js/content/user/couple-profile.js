@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(response => {
       alert(response.message);
+      window.location.href = "/user/solo/";
     })
     .catch(error => {
       console.error("Error: ", error);

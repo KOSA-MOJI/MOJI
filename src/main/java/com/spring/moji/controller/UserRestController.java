@@ -170,7 +170,7 @@ public class UserRestController {
 
   @DeleteMapping("/couple/breakup")
   public ResponseEntity<?> breakup(@AuthenticationPrincipal CustomerUserDetail user,
-      @RequestBody BreakupRequestDTO breakupRequestDTO) throws Exception {
+      @RequestBody BreakupRequestDTO breakupRequestDTO, HttpSession session) throws Exception {
     Map<String, Object> responseBody = new HashMap<>();
     responseBody.put("alert", true);
 
@@ -178,7 +178,7 @@ public class UserRestController {
     log.info("파트너의 이메일 : {}", receiverEmail);
     log.info("결별하는 사람의 이메일 : {}", user.getEmail());
 
-    int result = requestService.breakup(user.getEmail(), receiverEmail);
+    int result = requestService.breakup(user.getEmail(), receiverEmail, session);
 
     log.info("결별의 결과 {} ", result);
     if (result > 0) {

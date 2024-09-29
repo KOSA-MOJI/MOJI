@@ -108,10 +108,15 @@ public class RequestServiceImpl implements RequestService {
     List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
     updatedAuthorities.add(new SimpleGrantedAuthority(Roles.COUPLE.getRole()));
 
+    CustomerUserDetail currentUser = (CustomerUserDetail) auth.getPrincipal();
+    currentUser.getUser().setCoupleStatus(1L);
+
     UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
         auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
 
     SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+    session.setAttribute("coupleStatus", 1L);
     return result;
   }
 
@@ -138,7 +143,8 @@ public class RequestServiceImpl implements RequestService {
 
   @Override
   @Transactional
-  public int breakup(String requestEmail, String receiverEmail) throws Exception {
+  public int breakup(String requestEmail, String receiverEmail, HttpSession session)
+      throws Exception {
     int result = 0;
     result += requestMapper.deleteCoupleAuth(requestEmail);
     result += requestMapper.deleteCoupleAuth(receiverEmail);
@@ -147,6 +153,26 @@ public class RequestServiceImpl implements RequestService {
 
     result += userMapper.convertCoupleStatusIntoSolo(requestEmail);
     result += userMapper.convertCoupleStatusIntoSolo(receiverEmail);
+
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    if (auth != null) {
+      List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+
+      // 특정 권한 제거
+      updatedAuthorities.removeIf(
+          authority -> authority.getAuthority().equals(Roles.COUPLE.getRole()));
+
+      CustomerUserDetail currentUser = (CustomerUserDetail) auth.getPrincipal();
+      currentUser.getUser().setCoupleStatus(0L);
+
+      UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+          auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+
+      SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
+
+    session.setAttribute("coupleStatus", 1L);
     return result;
   }
 }

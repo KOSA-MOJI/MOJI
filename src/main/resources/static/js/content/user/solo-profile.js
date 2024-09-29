@@ -105,8 +105,8 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(response => {
       console.log(response);
       alert(response.message);
+      window.location.href = "/user/solo/";
     })
-
     .catch(error => {
       console.error("Error: ", error);
       alert("Error: " + error.name + ' ' + error.message + ' ' + error.stack);
