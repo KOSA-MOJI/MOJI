@@ -2,10 +2,13 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <security:authorize access="isAuthenticated()">
     <security:authentication property="principal" var="principal"/>
 </security:authorize>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,15 +75,24 @@
 
 <div class="sidebar" id="sidebar">
     <div class="profile">
-        <img src="${principal.couple.coupleProfileImage}" alt="Profile">
-        <h3>${principal.userName}</h3>
-        <p>${principal.couple.coupleName}</p>
+        <c:if test="${fn:contains(principal.authorities, 'ROLE_COUPLE')}">
+            <img src="${principal.couple.coupleProfileImage}" alt="Profile">
+            <h3>${principal.userName}</h3>
+            <p>${principal.couple.coupleName}</p>
+        </c:if>
+        <c:if test="${fn:contains(principal.authorities, 'ROLE_SOLO')}">
+            <img src="${principal.profileImageUrl}" alt="Profile">
+            <h3>${principal.userName}</h3>
+        </c:if>
     </div>
     <nav>
         <ul>
-            <li><a href="/user/couple/diary"><img
-                    src="${pageContext.request.contextPath}/image/common/diary.png"
-                    alt="Diary"></a></li>
+
+            <c:if test="${fn:contains(principal.authorities, 'ROLE_COUPLE')}">
+                <li><a href="/user/couple/diary"><img
+                        src="${pageContext.request.contextPath}/image/common/diary.png"
+                        alt="Diary"></a></li>
+            </c:if>
             <li><a href="/user/community"><img
                     src="${pageContext.request.contextPath}/image/common/community.png"
                     alt="Community"></a>
