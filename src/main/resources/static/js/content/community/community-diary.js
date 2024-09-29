@@ -365,6 +365,10 @@ function createRightChild(pageData) {
       "align-items: center;")
 
   // 만들어진 위치 마커와 이미지연결
+  if(data.locations.length===0){
+    img_lists = [[`${imageCommonPath}color-no-image.png`]]
+  }
+
   data.locations.forEach((location, idx) => {
     let marker = new kakao.maps.Marker({
       map: map,

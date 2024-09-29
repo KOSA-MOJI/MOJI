@@ -273,7 +273,6 @@ function createRightChild(idx) {
 
 
     cur_img_list = img_lists[0]
-    console.log("여기가 오류 cur_img_list", cur_img_list)
     img_box.src = cur_img_list[cur_img_pointer]
 
     img_next_btn.innerText = "▶"
@@ -329,9 +328,6 @@ function deleteCurPage() {
     alert("페이지를 삭제하시겠습니까?")
     console.dir(pages[currentPage].left);
     let curPage = pages[currentPage].left;
-    //TODO: 페이지 삭제
-    // 페이지 실제 DB에서 삭제
-    // 이전페이지로 옮기고, 해당 아이디를 기준으로 pages에서도 삭제
 
     fetch(`/user/couple/api/diary/page/${curPage.pageId}`, {
       method: `DELETE`,
