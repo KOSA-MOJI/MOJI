@@ -22,7 +22,8 @@
                        value="${user != null ? user.email : ''}">
                 <button type="button" class="btn btn-success" id="check-email">이메일 중복 확인</button>
             </div>
-            <span id="emailResult" style="color: ${emailCheckColor != null ? emailCheckColor : 'black'}">
+            <span id="emailResult"
+                  style="color: ${emailCheckColor != null ? emailCheckColor : 'black'}">
                 ${emailResultMessage != null ? emailResultMessage : ''}
             </span>
         </div>
@@ -35,8 +36,10 @@
         </div>
         <div class="form-group">
             <label for="confirmPassword">비밀번호 확인</label>
-            <input type="password" id="confirmPassword" placeholder="********" oninput="checkPasswordMatch()">
-            <small id="passwordHelp" class="form-text text-danger" style="display: none;">비밀번호가 일치하지 않습니다.</small>
+            <input type="password" id="confirmPassword" placeholder="********"
+                   oninput="checkPasswordMatch()">
+            <small id="passwordHelp" class="form-text text-danger" style="display: none;">비밀번호가 일치하지
+                않습니다.</small>
         </div>
         <div class="form-group">
             <label for="username">이름</label>
@@ -55,7 +58,7 @@
                 <option value="M">남자</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-success">회원가입</button>
+        <button type="submit" class="btn btn-success" id="sign-up-btn">회원가입</button>
         <c:if test="${not empty errorMessage}">
             <div class="error-msg">${errorMessage}</div>
         </c:if>

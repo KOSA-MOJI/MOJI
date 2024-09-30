@@ -1,5 +1,7 @@
 (
     function ($) {
+      let isPasswordValidated = false;
+      let isPasswordMatch = false;
 
       //비밀번호 유효성 확인
       function validatePassword() {
@@ -10,8 +12,10 @@
 
         if (regex.test(password)) {
           validationMessage.style.display = 'none';
+          isPasswordValidated = true;
         } else {
           validationMessage.style.display = 'block';
+          isPasswordValidated = false;
         }
       }
 
@@ -25,12 +29,23 @@
 
         if (password !== confirmPassword) {
           passwordHelp.show(); // 비밀번호 불일치 시 경고 메시지 표시
+          isPasswordMatch = true
         } else {
           passwordHelp.hide(); // 비밀번호 일치 시 경고 메시지 숨김
+          isPasswordMatch = false
+        }
+      }
+
+      function ifPasswordMatchAndValid(clickEvent) {
+        if (isPasswordMatch === false || isPasswordValidated === false) {
+          clickEvent.preventDefault();
+          alert('비밀번호를 확인해주세요');
         }
       }
 
       // 비밀번호 입력 시 확인
       $('#confirmPassword').on('input', checkPasswordMatch); // 두 필드에 이벤트 등록
+
+      $('#sign-up-btn').on('click', ifPasswordMatchAndValid);
     })(jQuery);
 
