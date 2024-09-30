@@ -409,6 +409,7 @@ function createRightChild(pageData) {
       cur_img_list = img_lists[idx]
       cur_img_pointer = 0
       img_box.src = cur_img_list[cur_img_pointer]
+      updateImageButtons(); //버튼 상태 업데이트
     })
     markers.push(marker)
   });
@@ -432,11 +433,32 @@ function createRightChild(pageData) {
   cur_img_list = img_lists[0]
   img_box.src = cur_img_list[cur_img_pointer]
 
+  // 이미지 이동을 처리하는 함수
+  function updateImageButtons() {
+    // cur_img_pointer 값에 따라 버튼 활성화/비활성화 처리
+    if (cur_img_pointer >= cur_img_list.length - 1) {
+      img_next_btn.disabled = true;
+      img_next_btn.style.opacity = "0.5";  // 버튼 비활성화 시 시각적으로 구분하기 위해 투명도 조정
+    } else {
+      img_next_btn.disabled = false;
+      img_next_btn.style.opacity = "1";
+    }
+
+    if (cur_img_pointer <= 0) {
+      img_prev_btn.disabled = true;
+      img_prev_btn.style.opacity = "0.5";
+    } else {
+      img_prev_btn.disabled = false;
+      img_prev_btn.style.opacity = "1";
+    }
+  }
+
   img_next_btn.innerText = "▶"
   img_next_btn.addEventListener("click", function () {
     if (cur_img_pointer < cur_img_list.length - 1) {
       cur_img_pointer++;
       img_box.src = cur_img_list[cur_img_pointer]
+      updateImageButtons();
     }
   })
   img_next_btn.setAttribute("style", "right:0")
@@ -446,8 +468,12 @@ function createRightChild(pageData) {
     if (0 < cur_img_pointer) {
       cur_img_pointer--;
       img_box.src = cur_img_list[cur_img_pointer]
+      updateImageButtons();
     }
   })
+
+  updateImageButtons();
+
   img_prev_btn.setAttribute("style", "left:0")
   img_next_btn.setAttribute("style",
       "right:0;border:none; outline:none;background:none");
