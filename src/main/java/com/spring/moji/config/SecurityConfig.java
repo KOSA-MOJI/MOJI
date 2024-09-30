@@ -6,6 +6,7 @@ import com.spring.moji.security.CustomerDetailService;
 import com.spring.moji.security.SignInSuccessHandler;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,11 +14,14 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -59,7 +63,7 @@ public class SecurityConfig {
     http.sessionManagement(session -> session
         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
         .maximumSessions(1)
-        .maxSessionsPreventsLogin(false)
+        .maxSessionsPreventsLogin(true)
     );
     http.logout((logout) -> logout
         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
@@ -100,5 +104,17 @@ public class SecurityConfig {
   @Bean
   public AccessDeniedHandler accessDeniedHandler() {
     return new CustomerAccessDeniedHandler();
+  }
+
+  @Bean
+  public SessionRegistry sessionRegistry() {
+    SessionRegistry sessionRegistry = new SessionRegistryImpl();
+    return sessionRegistry;
+
+  }
+
+  @Bean
+  public ServletListenerRegistrationBean httpSessionEventPublisher() {
+    return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
   }
 }
