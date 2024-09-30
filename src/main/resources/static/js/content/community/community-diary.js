@@ -39,6 +39,8 @@ function updateListImage() {
     let imageItemDiv = document.querySelector(`#image-item-${i + 1}`)
     imageItemDiv.innerText = ""
     imageItemDiv.innerHTML = "";
+    console.log("communityData", communityData)
+
     let imgTag = document.createElement("img")
     imgTag.setAttribute("style",
         "display: flex; width:100%;height:100%;z-index: 1")
@@ -79,6 +81,7 @@ function updateListImage() {
       imageItemDiv.removeAttribute('title');
     }
   }
+  updateBtnState();
 }
 
 function updateDiaryContent(element) {
@@ -112,10 +115,35 @@ function updateDiaryContent(element) {
   )
 }
 
+//TODO : 왼쪽 오른쪽 버튼 비활성화/활성화 상태 업데이트 함수
+function updateBtnState() {
+  const leftButton = document.getElementById('leftButton'); // 왼쪽 버튼
+  const rightButton = document.getElementById('rightButton'); // 오른쪽 버튼
+
+  if (curDataIndex === 0) { //왼쪽 버튼 비활성화
+    leftButton.disabled = true;
+    leftButton.style.opacity = "0.5";
+  } else {
+    leftButton.disabled = false;
+    leftButton.style.opacity = "1";
+  }
+
+  //더 이상 가져올,보여줄 데이터가 (x)
+  if (curDataIndex + 5 >= communityData.length) {
+    rightButton.disabled = true;
+    rightButton.style.opacity = "0.5";
+  } else {
+    rightButton.disabled = false;
+    rightButton.style.opacity = "1";
+  }
+
+}
+
 function prevBtn() {
   curDataIndex = Math.max(curDataIndex - (selectedIndex - 1) - 5, 0)
   selectedIndex = 1
   updateListImage()
+  updateBtnState(); //버튼 상태 업데이트
 }
 
 async function nextBtn() {
@@ -123,12 +151,15 @@ async function nextBtn() {
     await fetchCommunityData(communityData.length, 20, false);
     //false를 하는 이유-> 끌고 온 데이터를 바탕으로 curDataIndex를 수정 후, updateListImage()
   }
+
   curDataIndex = (communityData.length - 5) >= (Math.floor(curDataIndex / 5)
       + 1) * 5
       ? (Math.floor(curDataIndex / 5) + 1) * 5
       : communityData.length - 5;
   selectedIndex = 1;
+
   updateListImage();
+  updateBtnState(); //버튼 상태 업데이트
 }
 
 // 커뮤니티 하단 리스트 비동기 불러오기
@@ -272,7 +303,6 @@ function createLeftChild(pageData) {
   // weatherDiv.innerText = data.weather;
 
   dateDiv.setAttribute("style", "position: absolute; left: 10%;")
-  // weatherDiv.setAttribute("style", "position: absolute; right: 10%;")
 //date css추가
   // 인라인 스타일 추가
   dateDiv.setAttribute("style", `
@@ -365,7 +395,7 @@ function createRightChild(pageData) {
       "align-items: center;")
 
   // 만들어진 위치 마커와 이미지연결
-  if(data.locations.length===0){
+  if (data.locations.length === 0) {
     img_lists = [[`${imageCommonPath}color-no-image.png`]]
   }
 
@@ -456,6 +486,7 @@ document.addEventListener("DOMContentLoaded", function () {
       'content');
   getCurrentLocation().then(() => {
     fetchCommunityData(0, 10, true)
+    updateBtnState()
   })
 })
 
@@ -532,23 +563,6 @@ function resetDefaultData(radius) {
   curDataIndex = 0;
   selectedIndex = 1;
 }
-
-//클릭시, 스크랩 이미지 업데이트1
-// function toggleFavorite() {
-//   isFavorited = !isFavorited; // 찜 상태 토글
-//   updateFavoriteButton(); // 이미지 업데이트
-// }
-//
-// //클릭시, 스크랩 이미지 업데이트2
-// function updateFavoriteButton() {
-//   const img = document.getElementById('uploadButton');
-//   if (isFavorited) {
-//     img.src = `${imagePath}full-heart.png`; // 찜된 이미지
-//
-//   } else {
-//     img.src = `${imagePath}gray-heart.png`; // 회색 이미지
-//   }
-// }
 
 function toggleScrap() {
   // let curPage = communityData[curDataIndex + selectedIndex - 1]
