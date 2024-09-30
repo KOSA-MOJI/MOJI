@@ -39,7 +39,6 @@ function updateListImage() {
     let imageItemDiv = document.querySelector(`#image-item-${i + 1}`)
     imageItemDiv.innerText = ""
     imageItemDiv.innerHTML = "";
-    console.log("communityData", communityData)
 
     let imgTag = document.createElement("img")
     imgTag.setAttribute("style",
