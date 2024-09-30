@@ -37,10 +37,10 @@ function checkLoad() {
     return
   }
   if (currentPage < lazyLoadLimit) {
-    prefetchPages("before",0)
+    prefetchPages("before", 0)
   }
   if ((pages.length - lazyLoadLimit) < currentPage) {
-    prefetchPages("after",0)
+    prefetchPages("after", 0)
   }
 }
 
@@ -197,7 +197,7 @@ function createRightChild(idx) {
         "position:absolute; top:2%; right:11%; width:7%; height:6%;")
     setPublicStatusBtn.setAttribute("onclick", "togglePublicStatus(this)")
     deletePageBtn.src = `${imagePath}delete-page.png`
-    setPublicStatusBtn.src = `${imagePath}${pages[idx].left.publicStatus==='y'
+    setPublicStatusBtn.src = `${imagePath}${pages[idx].left.publicStatus === 'y'
         ? "show-page.png" : "hide-page.png"}`
     btnContainer.setAttribute("style",
         "display:flex; flex-direction: row; top:0;width : 100%; height: 8%")
@@ -236,7 +236,7 @@ function createRightChild(idx) {
         "align-items: center;")
 
     // 만들어진 위치 마커와 이미지연결
-    if(data.locations.length===0) {
+    if (data.locations.length === 0) {
       img_lists = [[`${imageCommonPath}color-no-image.png`]]
     }
 
@@ -251,6 +251,7 @@ function createRightChild(idx) {
         cur_img_list = img_lists[idx]
         cur_img_pointer = 0
         img_box.src = cur_img_list[cur_img_pointer]
+        updateImageButtons(); //버튼 상태 업데이트
       })
       markers.push(marker)
     });
@@ -270,7 +271,6 @@ function createRightChild(idx) {
         map.setBounds(bounds); // bounds에 맞게 지도를 설정
       }, 100); // 지연 시간 100ms (필요에 따라 조정 가능)
     }
-
 
     cur_img_list = img_lists[0]
     img_box.src = cur_img_list[cur_img_pointer]
@@ -320,8 +320,10 @@ function createRightChild(idx) {
     updateImageButtons();
 
 // 버튼 스타일 설정
-    img_next_btn.setAttribute("style", "right:0; border:none; outline:none;background:none");
-    img_prev_btn.setAttribute("style", "left:0; border:none; outline:none;background:none");
+    img_next_btn.setAttribute("style",
+        "right:0; border:none; outline:none;background:none");
+    img_prev_btn.setAttribute("style",
+        "left:0; border:none; outline:none;background:none");
 
     img_box.setAttribute("style",
         "width:80%;" +
@@ -577,16 +579,16 @@ function addDays(date, days) {
   return result.toISOString().split('T')[0];
 }
 
-async function prefetchPages(direction,addDateNum) {
+async function prefetchPages(direction, addDateNum) {
   let curSize = pages.length
   let curDate = pages[currentPage].left.createdAt
   let date = new Date(curDate);
   let startDate, endDate;
   if (direction === 'after') {
     startDate = addDays(date, 1)
-    endDate = addDays(date, lazyLoadNum+addDateNum)
+    endDate = addDays(date, lazyLoadNum + addDateNum)
   } else {
-    startDate = addDays(date, -(lazyLoadNum+addDateNum))
+    startDate = addDays(date, -(lazyLoadNum + addDateNum))
     endDate = addDays(date, -1)
   }
   fetch(
@@ -611,9 +613,9 @@ async function prefetchPages(direction,addDateNum) {
       pages.splice(currentPage, 0, ...dataList)
       currentPage += dataList.length
     }
-  }).then(()=>{
-    if(curSize===pages.length && addDateNum < 400) {
-      prefetchPages(direction,addDateNum+10)
+  }).then(() => {
+    if (curSize === pages.length && addDateNum < 400) {
+      prefetchPages(direction, addDateNum + 10)
     }
   }).catch(err => console.log(err))
 }
