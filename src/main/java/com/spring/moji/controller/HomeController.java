@@ -21,8 +21,10 @@ public class HomeController {
 
   @GetMapping({"", "/"})
   public String home(Model model, Principal principal) {
-    String loginId = principal != null ? principal.getName() : "guest";
-    model.addAttribute("contentURL", "/WEB-INF/jsp/content/user/solo-profile.jsp");
+    if (principal == null) {
+      return "user/sign-in";
+    }
+    model.addAttribute("contentURL", "/WEB-INF/jsp/content/community/community-diary-page.jsp");
     return "user/profile-page";
   }
 
