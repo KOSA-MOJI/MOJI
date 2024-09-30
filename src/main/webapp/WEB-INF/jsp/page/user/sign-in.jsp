@@ -38,7 +38,6 @@
                 <button type="submit" class="btn btn-primary btn-block">로그인</button>
 
                 <div class="auth-links">
-                    <a href="password.jsp" class="text-primary">비밀번호 찾기</a>
                     <a href="signup" class="text-primary">회원가입</a>
                 </div>
             </form>
