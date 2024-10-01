@@ -85,27 +85,42 @@
   height: 100%;
 }
 
+/*.text-content {*/
+/*  position: relative;*/
+/*  z-index: 1;*/
+/*  background-color: rgba(255, 255, 255, 0.7);*/
+/*  width: 80%;*/
+/*  height: 60%;*/
+/*  margin-top: .5rem;*/
+/*  margin-left: 3rem;*/
+/*  padding: 1rem;*/
+/*}*/
+
 .text-content {
-  position: relative;
-  z-index: 1;
-  background-color: rgba(255, 255, 255, 0.7);
-  width: 80%;
-  height: 60%;
-  margin-top: .5rem;
-  margin-left: 3rem;
-  padding: 1rem;
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 80%;
+    height: 80%; /* 고정 높이 */
+    margin-top: .5rem;
+    margin-left: 3rem;
+    padding: 1rem;
+    overflow-y: auto; /* 세로 스크롤 허용 */
+    white-space: pre-wrap; /* 줄바꿈을 유지하고 공백을 처리 */
+    word-wrap: break-word; /* 긴 단어는 자동 줄바꿈 */
 }
 
-.text-content2 {
-  position: relative;
-  z-index: 1;
-  border: 2px solid #dfdcdc;
-  width: 80%;
-  height: 18rem;
-  margin-top: .5rem;
-  margin-left: 3rem;
-  padding: 1rem;
-}
+
+/*.text-content2 {*/
+/*  position: relative;*/
+/*  z-index: 1;*/
+/*  border: 2px solid #dfdcdc;*/
+/*  width: 80%;*/
+/*  height: 18rem;*/
+/*  margin-top: .5rem;*/
+/*  margin-left: 3rem;*/
+/*  padding: 1rem;*/
+/*}*/
 
 .current-template-image {
   position: absolute; /* 이미지가 부모 요소 안에서 절대 위치로 배치 */
@@ -117,6 +132,18 @@
   z-index: 0; /* 이미지가 다른 요소들보다 뒤에 표시되도록 설정 */
 }
 
+#add-datespot-btn{
+    white-space: normal; /* 줄바꿈을 허용 */
+    width: 100%;        /* 버튼의 너비를 제한 */
+    word-wrap: break-word; /* 단어를 줄바꿈 처리 */
+}
+
+#add-image-btn{
+    white-space: normal; /* 줄바꿈을 허용 */
+    width: 100%;        /* 버튼의 너비를 제한 */
+    word-wrap: break-word; /* 단어를 줄바꿈 처리 */
+}
+
 #add-datespot-div {
   width: 100%;
   height: 40%
@@ -124,17 +151,32 @@
 
 #add-image-div {
   width: 100%;
-  height: 40%;
+  height: 50%;
+  align-items: center;
+  justify-content: center;
 }
 
 #selected_location {
   margin-right: .5rem;
 }
-
+#selected-image-box{
+    display: flex;
+    padding-left: 30%;
+}
 #selected-location-box {
   display: flex;
   flex-direction: row;
   padding: .5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+#selected-location-box {
+    display: flex;
+    flex-direction: row;
+    padding: .5rem;
+    align-items: center;
+    justify-content: center;
 }
 
 #image-container {
@@ -147,12 +189,12 @@
 }
 
 #location_img_box {
-  display: inline-block;
   position: relative;
+  display: inline-block;
   padding: 0 3%;
-  margin-bottom: 1.5rem;
-  max-height: 300px;
-  max-width: 300px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
 }
 
 #location_img {
@@ -162,10 +204,16 @@
 }
 
 #removeImageBtn {
-  position: absolute;
-  top: 5px; /* 이미지 위에서 5px 아래로 */
-  right: 5px; /* 이미지 왼쪽에서 5px 오른쪽으로 */
-  color: white; /* X 버튼 글자색 */
+  position: absolute;  /* 부모 요소를 기준으로 절대 위치 */
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  right: 30%;
+  text-align: center;
+  font-weight: bold;
+  top: 0;
+  background-color: #ff8686; /* X 버튼 글자색 */
+  color: white;
   border: none;
   cursor: pointer;
   z-index: 1; /* 이미지 위에 올라오도록 z-index 설정 */
@@ -250,6 +298,7 @@
   align-items: center;
   width: 100%;
   padding: 1rem;
+  padding-bottom: 0;
 }
 
 /* 지도와 버튼을 담는 컨테이너 스타일 */
@@ -272,6 +321,8 @@
 
 /* 버튼 컨테이너 (버튼을 세로로 정렬) */
 .mode-select-btn-container {
+  width: 15%;
+  height: 100%;
   display: flex;
   flex-direction: column; /* 버튼을 세로로 배치 */
   align-items: flex-start;

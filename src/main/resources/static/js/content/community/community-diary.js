@@ -481,12 +481,11 @@ function createRightChild(pageData) {
       "left:0; border:none; outline:none;background:none");
   img_box.setAttribute("style",
       "width:80%;" +
-      "height:80%;" +
+      "height:100%;" +
       "vertical-align: middle;" +
       "padding:7px;" +
       "object-fit:contain;" +  // 이미지가 규격 내에 맞춰지도록 변경
-      "visibility: visible;" +
-      "margin-top: 75px;"
+      "visibility: visible;"
   );
   // img_box.setAttribute("onerror", "this.style.visibility='hidden';")
 

@@ -1,5 +1,6 @@
 package com.spring.moji.mapper;
 
+import com.spring.moji.dto.request.CoupleRequestDTO;
 import com.spring.moji.entity.Request;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,7 +14,7 @@ public interface RequestMapper {
 
   int deleteRequest(String email) throws Exception;
 
-  int addCouple(String user1Email, String user2Email) throws Exception;
+  int addCouple(CoupleRequestDTO coupleRequestDTO) throws Exception;
 
   int deleteCouple(String email) throws Exception;
 

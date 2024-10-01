@@ -1,6 +1,8 @@
 package com.spring.moji.service;
 
 
+import com.spring.moji.dto.request.CoupleRequestDTO;
+import com.spring.moji.mapper.DiaryMapper;
 import com.spring.moji.entity.Couple;
 import com.spring.moji.security.CustomerUserDetail;
 import com.spring.moji.entity.Request;
@@ -30,7 +32,9 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
 
-  @Getter
+	private final DiaryMapper diaryMapper;
+
+	@Getter
   private enum Messages {
     CANNOT_SEND_TO_MYSELF("자기 자신에게 커플 신청을 보낼 수 없습니다."),
     USER_NOT_EXISTS("해당 이메일의 사용자가 존재하지 않습니다."),
@@ -95,13 +99,16 @@ public class RequestServiceImpl implements RequestService {
     Request request = requestMapper.checkRequest(receiverEmail);
 
     if (request != null) {
-      result += requestMapper.addCouple(requestEmail, receiverEmail);
+	  CoupleRequestDTO coupleRequestDTO = CoupleRequestDTO.builder().requestEmail(requestEmail).receiverEmail(receiverEmail).build();
+      result += requestMapper.addCouple(coupleRequestDTO);
+	  Long coupleId = coupleRequestDTO.getCoupleId();
       result += requestMapper.addCoupleAuth(requestEmail);
       result += requestMapper.addCoupleAuth(receiverEmail);
 
       result += requestMapper.deleteRequest(receiverEmail);
       result += userMapper.convertCoupleStatusIntoCouple(requestEmail);
       result += userMapper.convertCoupleStatusIntoCouple(receiverEmail);
+	  result += diaryMapper.createDiary(coupleId);
     } else {
       return 0;
     }

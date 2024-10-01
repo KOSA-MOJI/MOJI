@@ -7,6 +7,7 @@ import com.spring.moji.entity.Diary;
 
 @Mapper
 public interface DiaryMapper {
+	int createDiary(Long coupleId);
 	Diary findByCoupleId(Long coupleId);
 	void updateCoverImage(DiaryRequestDTO diaryRequestDTO);
 }
