@@ -1,6 +1,7 @@
 package com.spring.moji.service;
 
 
+import com.spring.moji.entity.Couple;
 import com.spring.moji.security.CustomerUserDetail;
 import com.spring.moji.entity.Request;
 import com.spring.moji.entity.User;
@@ -11,6 +12,7 @@ import com.spring.moji.util.Roles;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -106,10 +108,12 @@ public class RequestServiceImpl implements RequestService {
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+
     updatedAuthorities.add(new SimpleGrantedAuthority(Roles.COUPLE.getRole()));
 
     CustomerUserDetail currentUser = (CustomerUserDetail) auth.getPrincipal();
     currentUser.getUser().setCoupleStatus(1L);
+    currentUser.getUser().setCouple(userMapper.findCoupleByEmail(currentUser.getEmail()));
 
     UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
         auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
@@ -158,21 +162,33 @@ public class RequestServiceImpl implements RequestService {
 
     if (auth != null) {
       List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
-
-      // 특정 권한 제거
+      // 커플 권한 삭제
       updatedAuthorities.removeIf(
           authority -> authority.getAuthority().equals(Roles.COUPLE.getRole()));
 
+      // user의 커플 상태를 솔로로 설정
       CustomerUserDetail currentUser = (CustomerUserDetail) auth.getPrincipal();
       currentUser.getUser().setCoupleStatus(0L);
 
+      // log로 확인하기
+      List<String> stringList = updatedAuthorities.stream()
+          .map(Object::toString)
+          .collect(Collectors.toList());
+
+      System.out.println(stringList);
+
+      // 세션의 상태를 변경하기
       UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
           auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
-
       SecurityContextHolder.getContext().setAuthentication(newAuth);
-    }
 
-    session.setAttribute("coupleStatus", 1L);
+      List<String> authorityNames = new ArrayList<>();
+      for (GrantedAuthority authority : updatedAuthorities) {
+        authorityNames.add(authority.getAuthority());
+      }
+      session.setAttribute("authorities", authorityNames);
+      session.setAttribute("coupleStatus", 0L);
+    }
     return result;
   }
 }
