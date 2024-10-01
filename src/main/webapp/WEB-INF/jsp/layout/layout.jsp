@@ -97,11 +97,13 @@
                     src="${pageContext.request.contextPath}/image/common/community.png"
                     alt="Community"></a>
             </li>
-            <li><a href="/user/map"><img src="${pageContext.request.contextPath}/image/common/map.png"
-                                         alt="Map"></a></li>
-            <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/About.png"
-                                 alt="About Us"></a>
-            </li>
+            <li><a href="/user/map"><img
+                    src="${pageContext.request.contextPath}/image/common/map.png"
+                    alt="Map"></a></li>
+
+            <li><a href="${pageContext.request.contextPath}/html/aboutus.html"><img
+                    src="${pageContext.request.contextPath}/image/common/About.png"
+                    alt="About Us"></a>
         </ul>
     </nav>
 </div>
