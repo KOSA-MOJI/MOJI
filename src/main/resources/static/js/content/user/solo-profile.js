@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(response => {
       console.log(response);
       alert(response.message);
+      window.location.href = "/user/solo/";
     })
     .catch(error => {
       console.error("Error: ", error);
@@ -86,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const formData = new FormData();
     formData.append('requestUserEmail', requestUserEmail);
 
-    fetch('http://localhost:8090/api/user/solo/request/accept', {
+    fetch('/api/user/solo/request/accept', {
       method: 'POST',
       headers: {
         'X-CSRF-TOKEN': csrfToken
@@ -117,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   denyRequestBtn.onclick = function () {
 
-    fetch('http://localhost:8090/api/user/solo/request/deny', {
+    fetch('/api/user/solo/request/deny', {
       method: 'DELETE',
       headers: {
         'X-CSRF-TOKEN': csrfToken
@@ -145,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   cancelRequestBtn.onclick = function () {
-    fetch('http://localhost:8090/api/user/solo/request/cancel', {
+    fetch('/user/solo/request/cancel', {
       method: 'DELETE',
       headers: {
         'X-CSRF-TOKEN': csrfToken

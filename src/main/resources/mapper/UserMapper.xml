@@ -21,6 +21,14 @@
     <collection property="authList" resultMap="authMap"/>
   </resultMap>
 
+  <resultMap id="coupleMap" type="com.spring.moji.entity.Couple">
+    <id property="couple_id" column="couple_id"/>
+    <result property="user1Email" column="user1_email"/>
+    <result property="user2Email" column="user2_email"/>
+    <result property="coupleName" column="couple_name"/>
+    <result property="coupleProfileImage" column="couple_profile_image"/>
+  </resultMap>
+
   <resultMap id="authMap" type="com.spring.moji.entity.UserAuth">
     <id column="auth_no" property="authNo"/>
     <result column="user_email" property="userEmail"/>
@@ -85,6 +93,17 @@
     set COUPLE_STATUS = 0
     where email = #{email}
   </update>
+
+  <select id="findCoupleByEmail" resultMap="coupleMap">
+    select couple_id,
+           COUPLE_NAME,
+           USER1_EMAIL,
+           USER2_EMAIL,
+           COUPLE_PROFILE_IMAGE
+    from couples
+    where USER1_EMAIL = #{email}
+       or user2_email = #{email}
+  </select>
 
   <update id="updateCoupleProfile">
     update COUPLES
