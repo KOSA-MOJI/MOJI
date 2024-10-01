@@ -203,6 +203,7 @@
 #removeImageBtn {
   position: absolute;  /* 부모 요소를 기준으로 절대 위치 */
   left: 60%;
+  top: 0;
   color: white; /* X 버튼 글자색 */
   border: none;
   cursor: pointer;
