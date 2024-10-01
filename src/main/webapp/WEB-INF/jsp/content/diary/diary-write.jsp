@@ -95,7 +95,7 @@
                  src="${pageContext.request.contextPath}/image/content/diary/001.png"
                  alt="Main Image" id="right-current-template">
             <div class="editor-container">
-                <<div class="mode-select-container">
+                <div class="mode-select-container">
                 <div class="map-container">
                     <div id="map" class="map" style="width: 100%; height: 15rem;"></div>
                     <div class="mode-select-btn-container">
