@@ -46,9 +46,11 @@
                                href="${pageContext.request.contextPath}/user/logout" id="logoutBtn">로그아웃</a>
                         </li>
                         <li><a class="dropdown-item" href="/user/solo">마이페이지</a></li>
-                        <li><a class="dropdown-item"
-                               href="${pageContext.request.contextPath}/user/couple">커플페이지</a>
-                        </li>
+                        <c:if test="${principal.coupleStatus eq '1'}">
+                            <li><a class="dropdown-item"
+                                   href="${pageContext.request.contextPath}/user/couple">커플페이지</a>
+                            </li>
+                        </c:if>
                     </ul>
                 </div>
             </div>
@@ -74,7 +76,7 @@
 <div class="sidebar" id="sidebar">
     <div class="profile">
         <c:choose>
-            <c:when test="${fn:contains(principal.authorities, 'ROLE_COUPLE')}">
+            <c:when test="${principal.coupleStatus eq '1'}">
                 <img src="${principal.couple.coupleProfileImage}" alt="Profile">
                 <h3>${principal.userName}</h3>
                 <p>${principal.couple.coupleName}</p>
@@ -88,7 +90,7 @@
     <nav>
         <ul>
 
-            <c:if test="${fn:contains(principal.authorities, 'ROLE_COUPLE')}">
+            <c:if test="${principal.coupleStatus eq '1'}">
                 <li><a href="/user/couple/diary"><img
                         src="${pageContext.request.contextPath}/image/common/diary.png"
                         alt="Diary"></a></li>
@@ -97,8 +99,9 @@
                     src="${pageContext.request.contextPath}/image/common/community.png"
                     alt="Community"></a>
             </li>
-            <li><a href="/user/map"><img src="${pageContext.request.contextPath}/image/common/map.png"
-                                         alt="Map"></a></li>
+            <li><a href="/user/map"><img
+                    src="${pageContext.request.contextPath}/image/common/map.png"
+                    alt="Map"></a></li>
             <li><a href="#"><img src="${pageContext.request.contextPath}/image/common/About.png"
                                  alt="About Us"></a>
             </li>

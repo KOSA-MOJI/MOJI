@@ -29,10 +29,10 @@
 
         if (password !== confirmPassword) {
           passwordHelp.show(); // 비밀번호 불일치 시 경고 메시지 표시
-          isPasswordMatch = true
+          isPasswordMatch = false
         } else {
           passwordHelp.hide(); // 비밀번호 일치 시 경고 메시지 숨김
-          isPasswordMatch = false
+          isPasswordMatch = true
         }
       }
 

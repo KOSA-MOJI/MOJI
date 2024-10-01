@@ -1,6 +1,7 @@
 package com.spring.moji.mapper;
 
 
+import com.spring.moji.entity.Couple;
 import com.spring.moji.entity.UserAuth;
 import com.spring.moji.entity.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -26,6 +27,8 @@ public interface UserMapper {
   int convertCoupleStatusIntoSolo(String email) throws Exception;
 
   User findPartner(String email) throws Exception;
+
+  Couple findCoupleByEmail(String email);
 
   int countByEmail(String email);
 }

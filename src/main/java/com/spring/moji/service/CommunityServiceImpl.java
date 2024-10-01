@@ -22,68 +22,71 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommunityServiceImpl implements CommunityService {
-	private final PageMapper pageMapper;
-	private final ScrapMapper scrapMapper;
 
-	@Override
-	public List<CommunityResponseDTO> getCommunityUnderList(CommunityRequestDTO communityRequestDTO) {
-		List<Page> pages = pageMapper.findPublicByDistance(communityRequestDTO);
+  private final PageMapper pageMapper;
+  private final ScrapMapper scrapMapper;
 
-		List<Long> pageIds = pages.stream().map(Page::getPageId).toList();
-		CommunityScrapRequestDTO communityScrapRequestDTO = CommunityScrapRequestDTO.builder().email(communityRequestDTO.getEmail()).pageIds(pageIds).build();
+  @Override
+  public List<CommunityResponseDTO> getCommunityUnderList(CommunityRequestDTO communityRequestDTO) {
+    List<Page> pages = pageMapper.findPublicByDistance(communityRequestDTO);
+    //TODO
+    List<Long> pageIds = pages.stream().map(Page::getPageId).toList();
+    CommunityScrapRequestDTO communityScrapRequestDTO = CommunityScrapRequestDTO.builder()
+        .email(communityRequestDTO.getEmail()).pageIds(pageIds).build();
 
-		if(!pageIds.isEmpty()) {
-			List<Scrap> scraps = scrapMapper.findAllByPageIds(communityScrapRequestDTO);
-			List<CommunityResponseDTO> communityResponseDTOs = new ArrayList<>();
-			for(Page page : pages) {
-				String imageUrl = null;
-				if (page.getLocations() != null && !page.getLocations().isEmpty()) {
-					Location location = page.getLocations().getFirst();
-					if (location.getImageUrls() != null && !location.getImageUrls().isEmpty()) {
-						imageUrl = location.getImageUrls().getFirst().getMapImage();
-					}
-				}
-				communityResponseDTOs.add(
-					CommunityResponseDTO.builder()
-						.pageId(page.getPageId())
-						.imageUrl(imageUrl)
-						.isScrapped(scraps.stream().anyMatch(scrap ->scrap.getPageId().equals(page.getPageId())))
-						.build());
-			}
-			return communityResponseDTOs;
-		}
-		return null;
-	}
+    if (!pageIds.isEmpty()) {
+      List<Scrap> scraps = scrapMapper.findAllByPageIds(communityScrapRequestDTO);
+      List<CommunityResponseDTO> communityResponseDTOs = new ArrayList<>();
+      for (Page page : pages) {
+        String imageUrl = null;
+        if (page.getLocations() != null && !page.getLocations().isEmpty()) {
+          Location location = page.getLocations().getFirst();
+          if (location.getImageUrls() != null && !location.getImageUrls().isEmpty()) {
+            imageUrl = location.getImageUrls().getFirst().getMapImage();
+          }
+        }
+        communityResponseDTOs.add(
+            CommunityResponseDTO.builder()
+                .pageId(page.getPageId())
+                .imageUrl(imageUrl)
+                .isScrapped(
+                    scraps.stream().anyMatch(scrap -> scrap.getPageId().equals(page.getPageId())))
+                .build());
+      }
+      return communityResponseDTOs;
+    }
+    return null;
+  }
 
-	@Override
-	public Page getPublicPage(Long pageId) {
-		return pageMapper.findPublicPageByPageId(pageId);
-	}
+  @Override
+  public Page getPublicPage(Long pageId) {
+    return pageMapper.findPublicPageByPageId(pageId);
+  }
 
-	@Override
-	@Transactional
-	public boolean addScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
-		try{
-			scrapMapper.createScrap(communityScrapRequestDTO);
-			return true;
-		}catch (Exception e) {
-			return false;
-		}
-	}
+  @Override
+  @Transactional
+  public boolean addScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
+    try {
+      scrapMapper.createScrap(communityScrapRequestDTO);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+  }
 
-	@Override
-	@Transactional
-	public boolean removeScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
-		try{
-			scrapMapper.removeScrap(communityScrapRequestDTO);
-			return true;
-		}catch (Exception e) {
-			return false;
-		}
-	}
+  @Override
+  @Transactional
+  public boolean removeScrap(CommunityScrapRequestDTO communityScrapRequestDTO) {
+    try {
+      scrapMapper.removeScrap(communityScrapRequestDTO);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+  }
 
-	@Override
-	public Long getScrapCount(Long pageId) {
-		return (long)scrapMapper.findAllByPageId(pageId).size();
-	}
+  @Override
+  public Long getScrapCount(Long pageId) {
+    return (long) scrapMapper.findAllByPageId(pageId).size();
+  }
 }
