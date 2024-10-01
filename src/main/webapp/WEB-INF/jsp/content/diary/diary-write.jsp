@@ -80,8 +80,8 @@
                 </div>
                 <!-- 다이어리 내용 포함 -->
                 <div class="editor-content" id="editorContentPage1">
-                    <div class="text-content" id="textContentPage1" contenteditable="true">일기 내용
-                        입력
+                    <div class="text-content" id="textContentPage1" contenteditable="true">
+                        일기 내용 입력
                     </div>
                 </div>
 
@@ -99,8 +99,12 @@
                 <div class="map-container">
                     <div id="map" class="map" style="width: 100%; height: 15rem;"></div>
                     <div class="mode-select-btn-container">
-                        <button id="add-datespot-btn" class="tabActive">장소 추가</button>
-                        <button id="add-image-btn" disabled>이미지 추가</button>
+                        <button id="add-datespot-btn" class="tabActive">
+                            장소<br>추가
+                        </button>
+                        <button id="add-image-btn" disabled>
+                            이미지<br>추가
+                        </button>
                     </div>
                 </div>
             </div>
@@ -121,9 +125,9 @@
                 <div id="add-image-div" style="display: none;">
                     <div id="selected-location-box">
                         <label id="selected_location"></label>
-                        <button id="delete-loc-btn" disabled>마커 삭제</button>
+                        <button id="delete-loc-btn" disabled style="display: none">마커 삭제</button>
                     </div>
-                    <div>
+                    <div id="selected-image-box">
                         <input id="image-input" type="file" accept="image/*">
                     </div>
                     <div id="image-container">
