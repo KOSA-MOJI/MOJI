@@ -30,9 +30,9 @@
     from REQUESTS
     where REQUEST_EMAIL = #{requestEmail}
   </select>
-  <insert id="addCouple">
+  <insert id="addCouple" parameterType="com.spring.moji.dto.request.CoupleRequestDTO" useGeneratedKeys="true" keyColumn="couple_id" keyProperty="coupleId">
     insert into COUPLES(user1_email, user2_email, couple_name, couple_profile_image)
-    values (#{user1Email}, #{user2Email}, '커플',
+    values (#{requestEmail}, #{receiverEmail}, '커플',
             '/image/content/user/default-avatar.avif')
   </insert>
 

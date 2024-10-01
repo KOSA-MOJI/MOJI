@@ -59,7 +59,7 @@ textContent.addEventListener('blur', function () {
   if (textContent.innerHTML.trim() === '') {
     textContent.innerHTML = '일기 내용 입력';
     textContent.style.color = '#888';
-  }
+    }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -402,14 +402,11 @@ document.addEventListener("DOMContentLoaded", function () {
       let locationImg = document.getElementById("location_img");
 
       // 이미지 스타일 설정
-      locationImg.style.width = "80%";             // 너비를 80%로 설정
-      locationImg.style.height = "80%";            // 높이를 80%로 설정
-      locationImg.style.verticalAlign = "middle";  // 수직 정렬을 middle로 설정
+      locationImg.style.width = "100%";             // 너비를 80%로 설정
+      locationImg.style.height = "100%";            // 높이를 80%로 설정
       locationImg.style.padding = "7px";           // 7px의 패딩 설정
       locationImg.style.objectFit = "contain";     // 이미지 비율을 유지하며 영역에 맞게 조정
       locationImg.style.visibility = "visible";    // 이미지가 보이도록 설정
-      locationImg.style.marginTop = "90px";        // 위쪽에 90px의 마진 추가
-      locationImg.style.marginBottom = "1.5rem";   // 다른 div와 1.5rem의 간격 추가
 
       // 이미지 src 설정
       locationImg.src = imgList[curImageIndex] === undefined ? `${imgCommonPath}color-no-image.png` : imgList[curImageIndex];
@@ -419,7 +416,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // 이미지가 없을 때 기본 이미지 표시
       document.getElementById("location_img").src = imgList[curImageIndex]
-      === undefined ? "https://placehold.co/200" : imgList[curImageIndex];
+      === undefined ? `${imageCommonPath}color-no-image.png` : imgList[curImageIndex];
 
       // 버튼 상태 처리
       nextBtn.disabled = curImageIndex >= (imgList.length - 1) || imgList.length

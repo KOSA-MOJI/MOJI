@@ -126,7 +126,7 @@ public class UserRestController {
 
     log.info("acceptRequest 호출완료, 결과 : {}", result);
 
-    if (result == 6) {
+    if (result == 7) {
       responseBody.put("message", "커플 신청을 성공적으로 받았습니다.");
 
     } else if (result == 0) {

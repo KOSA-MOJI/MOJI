@@ -94,4 +94,8 @@
         UPDATE diaries SET cover_image = #{coverImage} WHERE diary_id = (select diary_id from diaries where couple_id = #{coupleId})
     </update>
 
+		<insert id="createDiary">
+				INSERT INTO diaries (couple_id,cover_image,bookmark_id)
+				VALUES (#{coupleId},'https://cookooyas-aws-image-bucket.s3.ap-northeast-2.amazonaws.com/cover-default-image.png',1)
+		</insert>
 </mapper>
