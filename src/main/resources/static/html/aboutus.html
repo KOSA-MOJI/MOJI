@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moji</title>
+  <link rel="stylesheet" href="/css/public/reset.css"/>
+  <link rel="stylesheet" href="/css/public/aboutus.css"/>
+  <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/image/public/favicon.png"
+  />
+</head>
+
+<body>
+<main id="app">
+  <section class="section-intro">
+    <header id="header">
+      <h1 class="txt-invisible">Portfolio</h1>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="#about" class="list-link">About</a></li>
+          <!-- <li><a href="#project" class="list-link">Project</a></li> -->
+          <li><a href="#contact" class="list-link">Contact</a></li>
+
+        </ul>
+      </nav>
+
+      <div class="bar-bg">
+        <span class="bar-ing"></span>
+      </div>
+    </header>
+
+    <div class="cont-intro">
+      <a name="info"></a>
+      <img src="/image/public/logo.png"/>
+      <div>
+        <p class="txt-title"></p>
+        <!-- <a href="#about" class="btn-more">More</a> -->
+      </div>
+    </div>
+  </section>
+
+  <section class="section-about">
+    <a name="about"></a>
+    <h2>About.</h2>
+    <div class="slide-text-container">
+      <div class="slide-container">
+        <button class="btn-prev">◀</button>
+        <div class="slide-wrapper">
+          <div class="slide-images">
+            <img src="/image/public/community.PNG"
+                 alt="커뮤니티"/>
+            <img src="/image/public/diary.PNG" alt="다이어리"/>
+            <img src="/image/public/map.PNG" alt="지도"/>
+          </div>
+        </div>
+        <button class="btn-next">▶</button>
+      </div>
+
+
+      <div class="service-description">
+        우리 서비스는 커플 간의 추억 및 데이트 코스를 공유하고,<br/>
+        이를 일기로 기록하는 서비스를 제공합니다.
+
+      </div>
+    </div>
+  </section>
+  <footer id="footer">
+    <a name="contact"></a>
+    <div class="box-footer">
+      <h2>Contact.</h2>
+      <ul class="link-sns">
+        <li>
+          <a href="https://github.com/KOSA-MOJI/MOJI"
+          ><img
+              class="img-github"
+              src="/image/public/icon-github.png"
+              alt="깃허브 주소"
+          />github</a>
+        </li>
+
+      </ul>
+      <p> Copyright © 2024 Moji. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <button onclick="moveToTop()" class="btn-moveTop"></button>
+  <script src="/js/public/aboutus.js"></script>
+</main>
+</body>
+</html>
